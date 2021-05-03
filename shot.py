@@ -41,6 +41,7 @@ class Shot(pygame.sprite.Sprite):
             self.kill()
 
     def fleet_collision(self, fleet_group, scoreboard):
+        # TODO - alien destruction animation
         for alien in fleet_group:
             if self.corner.colliderect(alien.corner):
                 # The difference between y position of shot and alien is usually < 3 px

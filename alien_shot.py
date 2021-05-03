@@ -58,11 +58,10 @@ class AlienShot(pygame.sprite.Sprite):
 
     def spaceship_collision(self, spaceship, scoreboard):
         if self.corner.colliderect(spaceship.corner):
-            # The difference between y position of shot and alien is usually < 3 px
-            # destroy alien
-            spaceship.kill()
-            # Increase score
-            scoreboard.increase()
+            # Remove life from scoreboard
+            scoreboard.remove_life()
+            # Remove life from spaceship
+            spaceship.remove_life()
             # destroy shot
             self.kill()
             # return True as spaceship was hit
@@ -71,10 +70,18 @@ class AlienShot(pygame.sprite.Sprite):
         return False
 
     def collision_detect(self, obstacle_group, spaceship, scoreboard):
+        """Handles collision detection methods. Returns True when spaceship was hit, otherwise False.
+        :type obstacle_group: pygame.sprite.Group
+        :type spaceship: pygame.sprite.Sprite
+        :type scoreboard: scoreboard.Scoreboard
+        :rtype: bool"""
         # Shield obstacles fleet collision detection
         self.target_collision(obstacle_group, scoreboard)
-        # Spaceship collision detection
-        self.spaceship_collision(obstacle_group, scoreboard)
         # Detect if shot is out of screen
         self.out_of_screen()
+        # Spaceship collision detection
+        if spaceship is not None and self.spaceship_collision(spaceship, scoreboard):
+            return True
+
+        return False
 

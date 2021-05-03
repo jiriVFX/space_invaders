@@ -9,25 +9,23 @@ YELLOW = (255, 210, 0)
 
 # Screen
 SCREEN_WIDTH = 920
-SCREEN_HEIGHT = 920
+SCREEN_HEIGHT = 1000
 BORDER = 5
 
 # Spaceship
 SPACESHIP_WIDTH = 44
 SPACESHIP_HEIGHT = 10
 SPACESHIP_PATH = "static/img/spaceship.png"
+LIVES = 3
 
 # Aliens
 ROWS = 6
 ALIEN_HEIGHT = 32
 ALIEN_WIDTH = 48
 ALIEN_SHOT_PATH = "static/img/alien_shot.gif"
-POINTS_10_1 = "static/img/10_points_1.png"
-POINTS_10_2 = "static/img/10_points_2.png"
-POINTS_20_1 = "static/img/20_points_1.png"
-POINTS_20_2 = "static/img/20_points_2.png"
-POINTS_30_1 = "static/img/30_points_1.png"
-POINTS_30_2 = "static/img/30_points_2.png"
+POINTS_10 = ("static/img/10_points_1.png", "static/img/10_points_2.png")
+POINTS_20 = ("static/img/20_points_1.png", "static/img/20_points_2.png")
+POINTS_30 = ("static/img/30_points_1.png", "static/img/30_points_2.png")
 MOVEMENT_DELAY = 0.25
 ALIEN_MOVEMENT = 10
 COLUMNS = 11

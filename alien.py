@@ -3,10 +3,11 @@ from constants import *
 
 
 class Alien(pygame.sprite.Sprite):
-    def __init__(self, position_x, position_y, alien_path, alien_color=WHITE):
+    def __init__(self, position_x, position_y, alien_paths, alien_color=WHITE):
         super().__init__()
         try:
-            self.surface = pygame.image.load(alien_path).convert_alpha()
+            self.alien_paths = alien_paths
+            self.surface = pygame.image.load(alien_paths[0]).convert_alpha()
             self.surface.set_colorkey((255, 255, 255), pygame.RLEACCEL)
         except FileNotFoundError:
             self.width = SCREEN_WIDTH // 11 - 5
@@ -21,10 +22,21 @@ class Alien(pygame.sprite.Sprite):
         # Direction
         self.direction = 1
         self.step_down = 0
+        # animation iterator
+        self.anim_iterator = 0
+
+    def animate(self):
+        if self.anim_iterator == 0:
+            self.anim_iterator = 1
+        else:
+            self.anim_iterator = 0
+        # change image path to create animation effect
+        self.surface = pygame.image.load(self.alien_paths[self.anim_iterator]).convert_alpha()
 
     def move(self):
         increase_speed = False
-        # TODO - animate while moving
+        # animate
+        self.animate()
         # 4 movements to one side, then change sides
         if self.movements == MOVEMENTS_NUM:
             # Aliens have to move back to original 0 position, then 4 times more

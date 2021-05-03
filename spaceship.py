@@ -4,7 +4,7 @@ import time
 
 
 class SpaceShip(pygame.sprite.Sprite):
-    def __init__(self, spaceship_path, spaceship_width=160, spaceship_height=15, spaceship_color=RED):
+    def __init__(self, spaceship_path, spaceship_width=44, spaceship_height=32, spaceship_color=WHITE):
         super().__init__()
         try:
             self.surface = pygame.image.load(spaceship_path).convert_alpha()
@@ -15,13 +15,16 @@ class SpaceShip(pygame.sprite.Sprite):
             self.surface = pygame.Surface((self.width, self.height))
             self.surface.fill(spaceship_color)
 
-        # Top left corner position coordinates
-        self.corner = self.surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 40))
+        # Top left corner position coordinates - position = (center=(X, Y))
+        self.corner = self.surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 120))
         self.speed = 7
         self.direction = 0
 
         # Time of the last shot
         self.last_shot = 0
+
+        # Lives
+        self.lives = LIVES
 
     def control(self, pressed_keys):
         """Controls spaceship movement and shooting.
@@ -50,3 +53,6 @@ class SpaceShip(pygame.sprite.Sprite):
         if shoot:
             print(shoot)
         return shoot
+
+    def remove_life(self):
+        self.lives -= 1

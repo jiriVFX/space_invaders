@@ -27,6 +27,8 @@ pygame.font.init()
 font = pygame.font.SysFont("Consolas", 60, bold=True)
 text_won = font.render("You won!", True, WHITE)
 text_won_corner = text_won.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 40))
+text_lost = font.render("You lost.", True, WHITE)
+text_lost_corner = text_won.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 40))
 
 # Sounds
 collision_sound = pygame.mixer.Sound("static/sound/hit1.mp3")
@@ -60,17 +62,17 @@ for i in range(ROWS):
     groups_list.append([])
     colour = None
     if i == 0:
-        alien_path = POINTS_30_1
+        alien_path = POINTS_30
     elif i == 1:
-        alien_path = POINTS_30_1
+        alien_path = POINTS_30
     elif i == 2:
-        alien_path = POINTS_20_1
+        alien_path = POINTS_20
     elif i == 3:
-        alien_path = POINTS_20_1
+        alien_path = POINTS_20
     elif i == 4:
-        alien_path = POINTS_10_1
+        alien_path = POINTS_10
     else:
-        alien_path = POINTS_10_1
+        alien_path = POINTS_10
     # Create one row of aliens
     for j in range(COLUMNS):
         # Each brick's starting position is
@@ -119,6 +121,8 @@ while game_on:
     # Aliens movement and shooting -------------------------------------------------------------------------------------
     # TODO - alien shots have to destroy player
     # TODO - only the alien with no other aliens in front of him can shoot
+    # TODO - spaceship destruction animation
+    # TODO - HUD on the bottom of the screen
 
     # Make random alien shoot
     if time.time() - shoot_time > ALIEN_SHOOT_DELAY:
@@ -129,7 +133,6 @@ while game_on:
     # Collision detection and movement of existing alien shots
     for shot in alien_shots:
         shot.move()
-        # TODO - if spaceship was hit, it has to be removed here in main
         shot.collision_detect(obstacle_group, spaceship, scoreboard)
 
     # move aliens in intervals
@@ -162,7 +165,7 @@ while game_on:
         screen.blit(alien.surface, alien.corner)
 
     # Place the ship on the screen
-    # Places ship in the middle + paddle corner(rect) position (changes when paddle moves)
+    # Places ship in the middle + spaceship corner(rect) position (changes when paddle moves)
     screen.blit(spaceship.surface, spaceship.corner)
 
     # Place player shots on the screen
@@ -176,6 +179,9 @@ while game_on:
     # Place scoreboard on the screen
     screen.blit(scoreboard.score_text, scoreboard.corner)
 
+    # Place remaining lives on the screen
+    screen.blit(scoreboard.lives_text, scoreboard.lives_corner)
+
     # Check whether there are any bricks left
     # Render End Game text - has to be the last to render, otherwise covered by other surfaces
     if not fleet:
@@ -183,7 +189,18 @@ while game_on:
         winning_sound.play()
         screen.blit(text_won, text_won_corner)
         pygame.display.update()
-        # Wait for x miliseconds until closing the game
+        # Wait for x milliseconds until closing the game
+        pygame.time.delay(3000)
+        game_on = False
+
+    # Check whether player has any lives left
+    # Render End Game text - has to be the last to render, otherwise covered by other surfaces
+    if scoreboard.lives == 0:
+        # Play losing sound
+        winning_sound.play()
+        screen.blit(text_lost, text_lost_corner)
+        pygame.display.update()
+        # Wait for x milliseconds until closing the game
         pygame.time.delay(3000)
         game_on = False
 
