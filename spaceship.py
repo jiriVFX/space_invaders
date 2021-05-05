@@ -8,7 +8,7 @@ class SpaceShip(pygame.sprite.Sprite):
         super().__init__()
         try:
             self.surface = pygame.image.load(spaceship_path).convert_alpha()
-            self.surface.set_colorkey((255, 255, 255), pygame.RLEACCEL)
+            self.surface.set_colorkey(BLACK, pygame.RLEACCEL)
         except FileNotFoundError:
             self.width = spaceship_width
             self.height = spaceship_height

@@ -24,10 +24,10 @@ scoreboard = Scoreboard()
 
 # Font
 pygame.font.init()
-font = pygame.font.SysFont("Consolas", 60, bold=True)
-text_won = font.render("You won!", True, WHITE)
+font = pygame.font.SysFont("Consolas", 80, bold=True)
+text_won = font.render("You won!", True, RED)
 text_won_corner = text_won.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 40))
-text_lost = font.render("You lost.", True, WHITE)
+text_lost = font.render("You lost.", True, RED)
 text_lost_corner = text_won.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 40))
 
 # Sounds
@@ -86,6 +86,7 @@ for i in range(ROWS):
         # add aliens to the current row group
         #groups_list[i].add(new_alien)
         groups_list[i].append(new_alien)
+
 # ----------------------------------------------------------------------------------------------------------------------
 
 # Game loop
@@ -95,6 +96,9 @@ movement_time = time.time()
 shoot_time = time.time()
 movement_delay = MOVEMENT_DELAY
 i = 0
+life_icon = pygame.image.load(SPACESHIP_PATH).convert_alpha()
+life_icon.set_colorkey(BLACK, pygame.RLEACCEL)
+
 while game_on:
     # Quit the game when X is clicked or Esc pressed to close the window
     for event in pygame.event.get():
@@ -119,7 +123,6 @@ while game_on:
         shots.add(Shot(ALIEN_SHOT_PATH, spaceship.corner))
 
     # Aliens movement and shooting -------------------------------------------------------------------------------------
-    # TODO - alien shots have to destroy player
     # TODO - only the alien with no other aliens in front of him can shoot
     # TODO - spaceship destruction animation
     # TODO - HUD on the bottom of the screen
@@ -176,11 +179,19 @@ while game_on:
     for shot in alien_shots:
         screen.blit(shot.surface, shot.corner)
 
-    # Place scoreboard on the screen
-    screen.blit(scoreboard.score_text, scoreboard.corner)
-
+    # Place score on the screen
+    screen.blit(scoreboard.score_text, scoreboard.score_corner)
+    # Place hi-score on the screen
+    screen.blit(scoreboard.hi_score_text, scoreboard.hi_score_corner)
     # Place remaining lives on the screen
     screen.blit(scoreboard.lives_text, scoreboard.lives_corner)
+    # Place green HUD line on the screen
+    screen.blit(scoreboard.green_line, scoreboard.line_corner)
+
+    # Place life icons on the screen
+    for j in range(1, scoreboard.lives + 1):
+        life_corner = life_icon.get_rect(center=(150 + j * 60, SCREEN_HEIGHT - 35))
+        screen.blit(life_icon, life_corner)
 
     # Check whether there are any bricks left
     # Render End Game text - has to be the last to render, otherwise covered by other surfaces

@@ -8,7 +8,7 @@ class Alien(pygame.sprite.Sprite):
         try:
             self.alien_paths = alien_paths
             self.surface = pygame.image.load(alien_paths[0]).convert_alpha()
-            self.surface.set_colorkey((255, 255, 255), pygame.RLEACCEL)
+            self.surface.set_colorkey(BLACK, pygame.RLEACCEL)
         except FileNotFoundError:
             self.width = SCREEN_WIDTH // 11 - 5
             self.height = SCREEN_HEIGHT // 20

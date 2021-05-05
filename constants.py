@@ -1,7 +1,8 @@
 # Colours
 BLUE = (0, 184, 255)
+BLACK = (255, 255, 255)
 DARK_GREY = (42, 42, 42)
-GREEN = (0, 150, 15)
+GREEN = (0, 255, 0)
 ORANGE = (255, 90, 0)
 RED = (180, 0, 0)
 WHITE = (230, 230, 230)
@@ -40,4 +41,7 @@ SHOT_DELAY = 0.5
 # Collision sounds
 HIT_SOUND_1 = "static/sound/hit1.mp3"
 HIT_SOUND_2 = "static/sound/hit2.mp3"
+
+# HUD line height
+GREEN_LINE_HEIGHT = 2
 
