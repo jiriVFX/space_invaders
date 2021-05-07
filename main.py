@@ -53,13 +53,14 @@ shots = pygame.sprite.Group()
 alien_shots = pygame.sprite.Group()
 
 # Create alien fleet
-fleet = pygame.sprite.Group()
-groups_list = []
+# using lists is bit slower (when removing aliens),
+# but is better for detecting whether there is another alien in front of the current one (necessary for shooting)
+fleet_groups = []
 
 # Create fleet of aliens
 for i in range(ROWS):
     # groups_list.append(pygame.sprite.Group())
-    groups_list.append([])
+    fleet_groups.append([])
     colour = None
     if i == 0:
         alien_path = POINTS_30
@@ -81,11 +82,8 @@ for i in range(ROWS):
         # print(colour)
         # new_alien = Alien((j * SCREEN_WIDTH // 13 + SCREEN_WIDTH // 9), i * (SCREEN_HEIGHT // 15) + 160, alien_path)
         new_alien = Alien((j * 1.5 * ALIEN_WIDTH + SCREEN_WIDTH // 9), i * (2 * ALIEN_HEIGHT) + 160, alien_path)
-        # add all aliens to fleet group
-        fleet.add(new_alien)
-        # add aliens to the current row group
-        #groups_list[i].add(new_alien)
-        groups_list[i].append(new_alien)
+        # add aliens to the current row
+        fleet_groups[i].append(new_alien)
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -113,24 +111,29 @@ while game_on:
     # Collision detection and movement of existing player shots
     for shot in shots:
         shot.move()
-        shot.collision_detect(fleet, scoreboard)
+        shot.collision_detect(fleet_groups, scoreboard)
 
     # Pressed down keys boolean list - 0 for keys not pressed and 1 for keys pressed
     pressed_keys = pygame.key.get_pressed()
 
     # Control spaceship - create shots
     if spaceship.control(pressed_keys):
-        shots.add(Shot(ALIEN_SHOT_PATH, spaceship.corner))
+        shots.add(Shot(position=spaceship.corner))
 
     # Aliens movement and shooting -------------------------------------------------------------------------------------
     # TODO - only the alien with no other aliens in front of him can shoot
     # TODO - spaceship destruction animation
     # TODO - HUD on the bottom of the screen
 
+    # Check for empty rows and remove them
+    for row in fleet_groups:
+        if len(row) == 0:
+            fleet_groups.remove(row)
+
     # Make random alien shoot
     if time.time() - shoot_time > ALIEN_SHOOT_DELAY:
         shoot_time = time.time()
-        random_alien = choice(choice(groups_list))
+        random_alien = choice(choice(fleet_groups))
         alien_shots.add(AlienShot(ALIEN_SHOT_PATH, random_alien.corner))
 
     # Collision detection and movement of existing alien shots
@@ -144,7 +147,7 @@ while game_on:
 
         # move only one row at each time
         # move starting from the last row
-        for alien in groups_list[len(groups_list) - 1 - i]:
+        for alien in fleet_groups[len(fleet_groups) - 1 - i]:
             increase_speed = alien.move()
 
         # increase speed
@@ -152,7 +155,7 @@ while game_on:
             movement_delay /= 1.025
 
         # increment row
-        if i < len(groups_list) - 1:
+        if i < len(fleet_groups) - 1:
             i += 1
         else:
             i = 0
@@ -163,9 +166,10 @@ while game_on:
     screen.blit(game_surface, (0, 0))
 
     # Render all aliens in the fleet
-    for alien in fleet:
-        # print(alien.corner)
-        screen.blit(alien.surface, alien.corner)
+    for row in fleet_groups:
+        for alien in row:
+            # print(alien.corner)
+            screen.blit(alien.surface, alien.corner)
 
     # Place the ship on the screen
     # Places ship in the middle + spaceship corner(rect) position (changes when paddle moves)
@@ -195,7 +199,7 @@ while game_on:
 
     # Check whether there are any bricks left
     # Render End Game text - has to be the last to render, otherwise covered by other surfaces
-    if not fleet:
+    if not fleet_groups:
         # Play winning sound
         winning_sound.play()
         screen.blit(text_won, text_won_corner)

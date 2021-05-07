@@ -13,9 +13,9 @@ class AlienShot(pygame.sprite.Sprite):
         try:
             self.surface = pygame.image.load(shot_path).convert_alpha()
             self.surface.set_colorkey((255, 255, 255), pygame.RLEACCEL)
-        except FileNotFoundError:
-            self.ball_radius = shot_size
-            self.surface = pygame.Surface((self.ball_radius, self.ball_radius))
+        except (FileNotFoundError, TypeError) as exception:
+            self.shot_radius = shot_size
+            self.surface = pygame.Surface((self.shot_radius, self.shot_radius))
             self.surface.fill(shot_color)
         # Top left corner position coordinates
         self.corner = self.surface.get_rect(center=(position[0] + SPACESHIP_WIDTH / 2, position[1]))
@@ -23,7 +23,7 @@ class AlienShot(pygame.sprite.Sprite):
         self.radius = self.corner.width / 2
         self.direction_x = 0
         self.direction_y = 1
-        self.speed = SHOT_SPEED
+        self.speed = ALIEN_SHOT_SPEED
         self.bounce_count = 0
 
     def move(self):

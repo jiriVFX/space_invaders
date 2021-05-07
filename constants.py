@@ -27,14 +27,17 @@ ALIEN_SHOT_PATH = "static/img/alien_shot.gif"
 POINTS_10 = ("static/img/10_points_1.png", "static/img/10_points_2.png")
 POINTS_20 = ("static/img/20_points_1.png", "static/img/20_points_2.png")
 POINTS_30 = ("static/img/30_points_1.png", "static/img/30_points_2.png")
+POINTS_100 = "static/img/30_points_1.png"
+ALIEN_EXPLOSION = "static/img/alien_explosion.png"
 MOVEMENT_DELAY = 0.25
 ALIEN_MOVEMENT = 10
 COLUMNS = 11
 MOVEMENTS_NUM = 4
 ALIEN_SHOOT_DELAY = 1
+ALIEN_SHOT_SPEED = 5
 
 # Shot
-SHOT_SPEED = 5
+SHOT_SPEED = 10
 # Shot delay in seconds
 SHOT_DELAY = 0.5
 

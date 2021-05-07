@@ -8,15 +8,10 @@ class Shot(pygame.sprite.Sprite):
     col_sound = pygame.mixer.Sound(HIT_SOUND_1)
     col_sound_2 = pygame.mixer.Sound(HIT_SOUND_2)
 
-    def __init__(self, shot_path, position, shot_size=20, shot_color=WHITE):
+    def __init__(self, position, shot_width=3, shot_height=20, shot_color=WHITE):
         super().__init__()
-        try:
-            self.surface = pygame.image.load(shot_path).convert_alpha()
-            self.surface.set_colorkey((255, 255, 255), pygame.RLEACCEL)
-        except FileNotFoundError:
-            self.ball_radius = shot_size
-            self.surface = pygame.Surface((self.ball_radius, self.ball_radius))
-            self.surface.fill(shot_color)
+        self.surface = pygame.Surface((shot_width, shot_height))
+        self.surface.fill(shot_color)
         # Top left corner position coordinates
         self.corner = self.surface.get_rect(center=(position[0] + SPACESHIP_WIDTH / 2, position[1]))
         # Make correct collision circle around the ball
@@ -42,20 +37,23 @@ class Shot(pygame.sprite.Sprite):
 
     def fleet_collision(self, fleet_group, scoreboard):
         # TODO - alien destruction animation
-        for alien in fleet_group:
-            if self.corner.colliderect(alien.corner):
-                # The difference between y position of shot and alien is usually < 3 px
-                # destroy alien
-                alien.kill()
-                # Increase score
-                scoreboard.increase()
-                # destroy shot
-                self.kill()
-                # BREAK is necessary to stop two bricks being destroyed at one impact
-                # - otherwise ball continues in the original direction and destroys 3 bricks
-                # - because y position reverses twice when hitting two bricks at the same time
-                # - changes in y negate and ball continues in the original direction
-                break
+        for row in fleet_group:
+            for alien in row:
+                if self.corner.colliderect(alien.corner):
+                    # The difference between y position of shot and alien is usually < 3 px
+                    # destroy alien
+                    alien.kill()
+                    # remove alien from fleet_group
+                    row.remove(alien)
+                    # Increase score
+                    scoreboard.increase()
+                    # destroy shot
+                    self.kill()
+                    # BREAK is necessary to stop two bricks being destroyed at one impact
+                    # - otherwise ball continues in the original direction and destroys 3 bricks
+                    # - because y position reverses twice when hitting two bricks at the same time
+                    # - changes in y negate and ball continues in the original direction
+                    break
 
     def collision_detect(self, fleet_group, scoreboard):
         # Alien fleet collision detection
