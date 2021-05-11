@@ -1,3 +1,5 @@
+import time
+
 import pygame
 from constants import *
 
@@ -40,20 +42,18 @@ class Shot(pygame.sprite.Sprite):
         for row in fleet_group:
             for alien in row:
                 if self.corner.colliderect(alien.corner):
-                    # The difference between y position of shot and alien is usually < 3 px
-                    # destroy alien
-                    alien.kill()
-                    # remove alien from fleet_group
-                    row.remove(alien)
-                    # Increase score
-                    scoreboard.increase()
-                    # destroy shot
-                    self.kill()
-                    # BREAK is necessary to stop two bricks being destroyed at one impact
-                    # - otherwise ball continues in the original direction and destroys 3 bricks
-                    # - because y position reverses twice when hitting two bricks at the same time
-                    # - changes in y negate and ball continues in the original direction
-                    break
+                    # destroy alien if it has not been hit already
+                    if alien.destroy_start_time is None:
+                        alien.init_destruction(row)
+                        # Increase score
+                        scoreboard.increase()
+                        # destroy shot
+                        self.kill()
+                        # BREAK is necessary to stop two bricks being destroyed at one impact
+                        # - otherwise ball continues in the original direction and destroys 3 bricks
+                        # - because y position reverses twice when hitting two bricks at the same time
+                        # - changes in y negate and ball continues in the original direction
+                        break
 
     def collision_detect(self, fleet_group, scoreboard):
         # Alien fleet collision detection

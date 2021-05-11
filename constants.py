@@ -35,6 +35,8 @@ COLUMNS = 11
 MOVEMENTS_NUM = 4
 ALIEN_SHOOT_DELAY = 1
 ALIEN_SHOT_SPEED = 5
+# alien destruction time in milliseconds
+DESTRUCTION_TIME = 500
 
 # Shot
 SHOT_SPEED = 10

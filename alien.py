@@ -24,6 +24,10 @@ class Alien(pygame.sprite.Sprite):
         self.step_down = 0
         # animation iterator
         self.anim_iterator = 0
+        # destruction start time
+        self.destroy_start_time = None
+        # destruction row
+        self.row = []
 
     def animate(self):
         if self.anim_iterator == 0:
@@ -34,29 +38,43 @@ class Alien(pygame.sprite.Sprite):
         self.surface = pygame.image.load(self.alien_paths[self.anim_iterator]).convert_alpha()
 
     def move(self):
-        increase_speed = False
-        # animate
-        self.animate()
-        # 4 movements to one side, then change sides
-        if self.movements == MOVEMENTS_NUM:
-            # Aliens have to move back to original 0 position, then 4 times more
-            self.movements = - MOVEMENTS_NUM
-            self.direction *= -1
-            # each time aliens get to the edge, they have to step down one row
-            self.step_down += ALIEN_HEIGHT
-            # move
-            self.corner.move_ip(self.direction * ALIEN_MOVEMENT, self.step_down)
-            # increase speed
-            increase_speed = True
+        # check whether alien is to be destroyed
+        if self.destroy_start_time and (pygame.time.get_ticks() - self.destroy_start_time >= DESTRUCTION_TIME):
+            self.destroy()
         else:
-            self.corner.move_ip(self.direction * ALIEN_MOVEMENT, self.step_down)
+            increase_speed = False
+            # animate
+            self.animate()
+            # 4 movements to one side, then change sides
+            if self.movements == MOVEMENTS_NUM:
+                # Aliens have to move back to original 0 position, then 4 times more
+                self.movements = - MOVEMENTS_NUM
+                self.direction *= -1
+                # each time aliens get to the edge, they have to step down one row
+                self.step_down += ALIEN_HEIGHT
+                # move
+                self.corner.move_ip(self.direction * ALIEN_MOVEMENT, self.step_down)
+                # increase speed
+                increase_speed = True
+            else:
+                self.corner.move_ip(self.direction * ALIEN_MOVEMENT, self.step_down)
 
-        self.step_down = 0
-        self.movements += 1
+            self.step_down = 0
+            self.movements += 1
 
-        return increase_speed
-    # def move_right(self):
-    #     self.corner.move_ip((-1) * ALIEN_MOVEMENT, 0)
-    #
-    # def move_left(self):
-    #     self.corner.move_ip(ALIEN_MOVEMENT, 0)
+            return increase_speed
+
+    def init_destruction(self, row):
+        # show alien explosion
+        self.surface = pygame.image.load(ALIEN_EXPLOSION).convert_alpha()
+        # get current time in milliseconds
+        self.destroy_start_time = pygame.time.get_ticks()
+        # remember the row
+        self.row = row
+
+    def destroy(self):
+        # remove alien from fleet_group row
+        self.row.remove(self)
+        # destroy alien
+        self.kill()
+
