@@ -3,7 +3,7 @@ from constants import *
 
 
 class Alien(pygame.sprite.Sprite):
-    def __init__(self, position_x, position_y, alien_paths, alien_color=WHITE):
+    def __init__(self, position_x, position_y, row, column, alien_paths, alien_color=WHITE):
         super().__init__()
         try:
             self.alien_paths = alien_paths
@@ -17,6 +17,9 @@ class Alien(pygame.sprite.Sprite):
 
         # Top left corner position coordinates
         self.corner = self.surface.get_rect(center=(position_x, position_y))
+        # coordinates in the fleet
+        self.row = row
+        self.column = column
         # Movements counter
         self.movements = 0
         # Direction
@@ -25,9 +28,9 @@ class Alien(pygame.sprite.Sprite):
         # animation iterator
         self.anim_iterator = 0
         # destruction start time
-        self.destroy_start_time = None
-        # destruction row
-        self.row = []
+        self.destruct_start_time = None
+        # destruction fleet
+        self.fleet_group = []
 
     def animate(self):
         if self.anim_iterator == 0:
@@ -39,9 +42,7 @@ class Alien(pygame.sprite.Sprite):
 
     def move(self):
         # check whether alien is to be destroyed
-        if self.destroy_start_time and (pygame.time.get_ticks() - self.destroy_start_time >= DESTRUCTION_TIME):
-            self.destroy()
-        else:
+        if not self.update_destroyed():
             increase_speed = False
             # animate
             self.animate()
@@ -64,17 +65,28 @@ class Alien(pygame.sprite.Sprite):
 
             return increase_speed
 
-    def init_destruction(self, row):
+    def update_destroyed(self):
+        # check whether alien is to be destroyed
+        if self.destruct_start_time and (pygame.time.get_ticks() - self.destruct_start_time >= DESTRUCTION_TIME):
+            self.destroy()
+            return True
+        return False
+
+    def init_destruction(self, fleet):
         # show alien explosion
         self.surface = pygame.image.load(ALIEN_EXPLOSION).convert_alpha()
         # get current time in milliseconds
-        self.destroy_start_time = pygame.time.get_ticks()
+        self.destruct_start_time = pygame.time.get_ticks()
         # remember the row
-        self.row = row
+        self.fleet_group = fleet
 
     def destroy(self):
-        # remove alien from fleet_group row
-        self.row.remove(self)
+        # calculate position in the fleet
+        position = self.row * COLUMNS + self.column
+        # remove alien - replace with None
+        self.fleet_group[position] = None
+        # reset destruction start time
+        self.destruct_start_time = None
         # destroy alien
         self.kill()
 

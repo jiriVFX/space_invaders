@@ -53,15 +53,13 @@ shots = pygame.sprite.Group()
 alien_shots = pygame.sprite.Group()
 
 # Create alien fleet
-# using lists is bit slower (when removing aliens),
-# but is better for detecting whether there is another alien in front of the current one (necessary for shooting)
-fleet_groups = []
+# fleet_group = pygame.sprite.Group()
+fleet_group = []
+alien_count = 0
 
 # Create fleet of aliens
 for i in range(ROWS):
     # groups_list.append(pygame.sprite.Group())
-    fleet_groups.append([])
-    colour = None
     if i == 0:
         alien_path = POINTS_30
     elif i == 1:
@@ -81,10 +79,11 @@ for i in range(ROWS):
         # y = i * (height of the alien + space between lines) + offset from the top
         # print(colour)
         # new_alien = Alien((j * SCREEN_WIDTH // 13 + SCREEN_WIDTH // 9), i * (SCREEN_HEIGHT // 15) + 160, alien_path)
-        new_alien = Alien((j * 1.5 * ALIEN_WIDTH + SCREEN_WIDTH // 9), i * (2 * ALIEN_HEIGHT) + 160, alien_path)
-        # add aliens to the current row
-        fleet_groups[i].append(new_alien)
-
+        new_alien = Alien((j * 1.5 * ALIEN_WIDTH + SCREEN_WIDTH // 9), i * (2 * ALIEN_HEIGHT) + 160, i, j, alien_path)
+        # add alien to fleet group
+        fleet_group.append(new_alien)
+        # increase alien_count
+        alien_count += 1
 # ----------------------------------------------------------------------------------------------------------------------
 
 # Game loop
@@ -111,8 +110,10 @@ while game_on:
     # Collision detection and movement of existing player shots
     for shot in shots:
         shot.move()
-        shot.collision_detect(fleet_groups, scoreboard)
-
+        hit = shot.collision_detect(fleet_group, scoreboard)
+        # when alien is hit, decrease alien count
+        if hit:
+            alien_count -= 1
     # Pressed down keys boolean list - 0 for keys not pressed and 1 for keys pressed
     pressed_keys = pygame.key.get_pressed()
 
@@ -122,18 +123,19 @@ while game_on:
 
     # Aliens movement and shooting -------------------------------------------------------------------------------------
     # TODO - only the alien with no other aliens in front of him can shoot
-    # TODO - spaceship destruction animation
     # TODO - HUD on the bottom of the screen
 
-    # Check for empty rows and remove them
-    for row in fleet_groups:
-        if len(row) == 0:
-            fleet_groups.remove(row)
+    # # Check for empty rows and remove them
+    # for row in fleet_group:
+    #     if len(row) == 0:
+    #         fleet_group.remove(row)
 
     # Make random alien shoot
     if time.time() - shoot_time > ALIEN_SHOOT_DELAY:
         shoot_time = time.time()
-        random_alien = choice(choice(fleet_groups))
+        random_alien = choice(fleet_group)
+        while random_alien is None:
+            random_alien = choice(fleet_group)
         alien_shots.add(AlienShot(ALIEN_SHOT_PATH, random_alien.corner))
 
     # Collision detection and movement of existing alien shots
@@ -144,21 +146,31 @@ while game_on:
     # move aliens in intervals
     if time.time() - movement_time > movement_delay:
         movement_time = time.time()
+        increase_speed = None
 
         # move only one row at each time
         # move starting from the last row
-        for alien in fleet_groups[len(fleet_groups) - 1 - i]:
-            increase_speed = alien.move()
+        # for alien in fleet_groups[len(fleet_groups) - 1 - i]:
+        #     increase_speed = alien.move()
 
+        for alien in fleet_group:
+            if alien is not None:
+                if alien.row == ROWS - i:
+                    increase_speed = alien.move()
         # increase speed
         if increase_speed:
             movement_delay /= 1.025
 
         # increment row
-        if i < len(fleet_groups) - 1:
+        if i < ROWS:
             i += 1
         else:
             i = 0
+    else:
+        # do not move, but update anyway - for aliens that are being destroyed
+        for alien in fleet_group:
+            if alien is not None:
+                alien.update_destroyed()
 
     # Rendering --------------------------------------------------------------------------------------------------------
 
@@ -166,9 +178,9 @@ while game_on:
     screen.blit(game_surface, (0, 0))
 
     # Render all aliens in the fleet
-    for row in fleet_groups:
-        for alien in row:
-            # print(alien.corner)
+    for alien in fleet_group:
+        # print(alien.corner)
+        if alien is not None:
             screen.blit(alien.surface, alien.corner)
 
     # Place the ship on the screen
@@ -199,7 +211,7 @@ while game_on:
 
     # Check whether there are any bricks left
     # Render End Game text - has to be the last to render, otherwise covered by other surfaces
-    if not fleet_groups:
+    if alien_count == 0:
         # Play winning sound
         winning_sound.play()
         screen.blit(text_won, text_won_corner)

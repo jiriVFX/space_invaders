@@ -38,26 +38,27 @@ class Shot(pygame.sprite.Sprite):
             self.kill()
 
     def fleet_collision(self, fleet_group, scoreboard):
-        # TODO - alien destruction animation
-        for row in fleet_group:
-            for alien in row:
+        for alien in fleet_group:
+            if alien is not None:
                 if self.corner.colliderect(alien.corner):
                     # destroy alien if it has not been hit already
-                    if alien.destroy_start_time is None:
-                        alien.init_destruction(row)
+                    if alien.destruct_start_time is None:
+                        alien.init_destruction(fleet_group)
                         # Increase score
                         scoreboard.increase()
                         # destroy shot
                         self.kill()
-                        # BREAK is necessary to stop two bricks being destroyed at one impact
-                        # - otherwise ball continues in the original direction and destroys 3 bricks
-                        # - because y position reverses twice when hitting two bricks at the same time
-                        # - changes in y negate and ball continues in the original direction
-                        break
+                        # # BREAK is necessary to stop two aliens being destroyed at one impact
+                        # break
+                        return True
+        return False
 
     def collision_detect(self, fleet_group, scoreboard):
+        hit = False
         # Alien fleet collision detection
-        self.fleet_collision(fleet_group, scoreboard)
+        hit = self.fleet_collision(fleet_group, scoreboard)
         # Detect if shot is out of screen
         self.out_of_screen()
+
+        return hit
 

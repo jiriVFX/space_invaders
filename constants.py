@@ -20,6 +20,7 @@ SPACESHIP_PATH = "static/img/spaceship.png"
 LIVES = 3
 
 # Aliens
+COLUMNS = 11
 ROWS = 6
 ALIEN_HEIGHT = 32
 ALIEN_WIDTH = 48
@@ -31,12 +32,11 @@ POINTS_100 = "static/img/30_points_1.png"
 ALIEN_EXPLOSION = "static/img/alien_explosion.png"
 MOVEMENT_DELAY = 0.25
 ALIEN_MOVEMENT = 10
-COLUMNS = 11
 MOVEMENTS_NUM = 4
 ALIEN_SHOOT_DELAY = 1
 ALIEN_SHOT_SPEED = 5
 # alien destruction time in milliseconds
-DESTRUCTION_TIME = 500
+DESTRUCTION_TIME = 250
 
 # Shot
 SHOT_SPEED = 10

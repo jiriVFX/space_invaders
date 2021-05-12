@@ -22,10 +22,6 @@ class Scoreboard(pygame.sprite.Sprite):
         self.green_line = pygame.Surface((SCREEN_WIDTH, GREEN_LINE_HEIGHT))
         self.green_line.fill(GREEN)
         self.line_corner = self.lives_text.get_rect(topleft=(0, SCREEN_HEIGHT - 70))
-        # lives icons
-        # TODO - create as many icons as there are lives
-        # Create lives icons list
-        self.life_icons = []
 
         # for i in range(1, self.lives + 1):
         #     life_icon = pygame.image.load(SPACESHIP_PATH).convert_alpha()
