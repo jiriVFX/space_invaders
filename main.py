@@ -15,7 +15,7 @@ pygame.init()
 
 # Create screen
 screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
-pygame.display.set_caption("Breakout game")
+pygame.display.set_caption("Space Invaders")
 # Set background colour
 screen.fill(WHITE)
 
@@ -122,21 +122,38 @@ while game_on:
         shots.add(Shot(position=spaceship.corner))
 
     # Aliens movement and shooting -------------------------------------------------------------------------------------
-    # TODO - only the alien with no other aliens in front of him can shoot
-    # TODO - HUD on the bottom of the screen
-
-    # # Check for empty rows and remove them
-    # for row in fleet_group:
-    #     if len(row) == 0:
-    #         fleet_group.remove(row)
+    # TODO - create protective walls
+    # TODO - make another type of alien shot (rocket?)
+    # TODO - make the "boss" alien spaceship appear
 
     # Make random alien shoot
     if time.time() - shoot_time > ALIEN_SHOOT_DELAY:
-        shoot_time = time.time()
-        random_alien = choice(fleet_group)
-        while random_alien is None:
+        random_alien = None
+        while True:
+            shoot_time = time.time()
             random_alien = choice(fleet_group)
+            # check whether alien is None
+            if random_alien is None:
+                # force the next iteration
+                continue
+            # calculate alien's position
+            #random_alien_pos = random_alien.row * COLUMNS + random_alien.column
+            # make sure only alien with no other aliens in the rows in front of it can shoot
+            # calculate positions in front of alien
+            # check the same position in the rows in front of alien
+            can_shoot = True
+            for j in range(random_alien.row + 1, ROWS):
+                position = j * COLUMNS + random_alien.column
+                # if there is an alien in front of random_alien, it can't shoot
+                if fleet_group[position] is not None:
+                    can_shoot = False
+                    break
+            # if random_alien is clear to shoot, exit the while loop
+            if can_shoot:
+                break
+
         alien_shots.add(AlienShot(ALIEN_SHOT_PATH, random_alien.corner))
+
 
     # Collision detection and movement of existing alien shots
     for shot in alien_shots:
