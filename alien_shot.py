@@ -1,5 +1,6 @@
 import pygame
 from constants import *
+import random
 
 
 class AlienShot(pygame.sprite.Sprite):
@@ -11,9 +12,11 @@ class AlienShot(pygame.sprite.Sprite):
     def __init__(self, shot_path, position, shot_size=20, shot_color=WHITE):
         super().__init__()
         try:
+            # choose one of two types of alien shots
+            paths = random.choice((ALIEN_SHOT_PATHS, ALIEN_SHOT_2_PATHS, ALIEN_SHOT_3_PATHS))
             self.sprites = []
             # load sprites for animation
-            for path in ALIEN_SHOT_PATHS:
+            for path in paths:
                 self.sprites.append(pygame.image.load(path).convert_alpha())
 
             self.current = 0

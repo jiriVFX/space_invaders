@@ -44,6 +44,14 @@ ALIEN_SHOT_2_PATHS = (
     "static/img/alien_shot_2/alien_shot_2_3.png",
     "static/img/alien_shot_2/alien_shot_2_4.png",
 )
+ALIEN_SHOT_3_PATHS = (
+    "static/img/alien_shot_3/alien_shot_3_1.png",
+    "static/img/alien_shot_3/alien_shot_3_2.png",
+    "static/img/alien_shot_3/alien_shot_3_3.png",
+    "static/img/alien_shot_3/alien_shot_3_4.png",
+    "static/img/alien_shot_3/alien_shot_3_5.png",
+    "static/img/alien_shot_3/alien_shot_3_6.png",
+)
 # speed of animation of the alien shots, lower is faster
 ALIEN_SHOT_UPDATE_SPEED = 8
 POINTS_10 = ("static/img/10_points_1.png", "static/img/10_points_2.png")
