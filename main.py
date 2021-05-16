@@ -6,6 +6,7 @@ from shot import Shot
 from alien_shot import AlienShot
 from scoreboard import Scoreboard
 from wall import Wall
+from helper_functions import *
 import time
 from random import choice
 
@@ -43,109 +44,11 @@ game_surface.fill(DARK_GREY)
 # Create obstacle group
 wall_group = pygame.sprite.Group()
 
+# Create walls, pixel by pixel
+build_wall(wall_group)
+
 # Create spaceship
 spaceship = SpaceShip(SPACESHIP_PATH)
-
-# Create walls
-# for i in range(WALLS):
-#     for j in range(WALL_HEIGHT):
-#         for k in range(WALL_WIDTH):
-#             wall_piece = Wall(((i + 1) * (SCREEN_WIDTH // 5.5)) + k * WALL_PIX_SIZE,
-#                               j * WALL_PIX_SIZE + SCREEN_HEIGHT - 220)
-#             wall_group.add(wall_piece)
-
-# walls
-for w in range(4):
-    # columns
-    for i in range(24):
-        # rows
-        if i < 5:
-            for j in range(22):
-                if (i == 0 and j < 5) or (i == 1 and j < 4) or (i == 2 and j < 3) or (i == 3 and j < 2) or (i == 4 and j < 1):
-                    pass
-                else:
-                    wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                    wall_group.add(wall_piece)
-        elif i == 5:
-            for j in range(20):
-                wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                wall_group.add(wall_piece)
-        elif i == 6:
-            for j in range(19):
-                wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                wall_group.add(wall_piece)
-        elif i == 7:
-            for j in range(18):
-                wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                wall_group.add(wall_piece)
-        elif i == 8:
-            for j in range(17):
-                wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                wall_group.add(wall_piece)
-        elif 8 < i < 15:
-            for j in range(16):
-                wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                wall_group.add(wall_piece)
-        elif i == 15:
-            for j in range(17):
-                wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                wall_group.add(wall_piece)
-        elif i == 16:
-            for j in range(18):
-                wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                wall_group.add(wall_piece)
-        elif i == 17:
-            for j in range(19):
-                wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                wall_group.add(wall_piece)
-        elif i == 18:
-            for j in range(20):
-                wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                wall_group.add(wall_piece)
-        elif i == 19:
-            for j in range(22):
-                if j < 1:
-                    pass
-                else:
-                    wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                    wall_group.add(wall_piece)
-        elif i == 20:
-            for j in range(22):
-                if j < 2:
-                    pass
-                else:
-                    wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                    wall_group.add(wall_piece)
-        elif i == 21:
-            for j in range(22):
-                if j < 3:
-                    pass
-                else:
-                    wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                    wall_group.add(wall_piece)
-        elif i == 22:
-            for j in range(22):
-                if j < 4:
-                    pass
-                else:
-                    wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                    wall_group.add(wall_piece)
-        elif i == 23:
-            for j in range(22):
-                if j < 5:
-                    pass
-                else:
-                    wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                    wall_group.add(wall_piece)
-
-# basic rectangular walls finished
-# for i in range(WALLS):
-#     # create wall roofs
-#     for j in range(5):
-#         for k in range(WALL_WIDTH - ((1 + j) * WALL_PIX_SIZE)):
-#             wall_piece = Wall(((i + 1) * (SCREEN_WIDTH // 5.5)) + (k + j) * WALL_PIX_SIZE,
-#                               j * WALL_PIX_SIZE + SCREEN_HEIGHT - (220 + WALL_HEIGHT + 4))
-#             wall_group.add(wall_piece)
 
 # Create shot group
 shots = pygame.sprite.Group()
@@ -154,37 +57,12 @@ shots = pygame.sprite.Group()
 alien_shots = pygame.sprite.Group()
 
 # Create alien fleet
-# fleet_group = pygame.sprite.Group()
 fleet_group = []
 alien_count = 0
 
 # Create fleet of aliens
-for i in range(ROWS):
-    # groups_list.append(pygame.sprite.Group())
-    if i == 0:
-        alien_path = POINTS_30
-    elif i == 1:
-        alien_path = POINTS_30
-    elif i == 2:
-        alien_path = POINTS_20
-    elif i == 3:
-        alien_path = POINTS_20
-    elif i == 4:
-        alien_path = POINTS_10
-    else:
-        alien_path = POINTS_10
-    # Create one row of aliens
-    for j in range(COLUMNS):
-        # Each brick's starting position is
-        # x = (j * width of the alien + half the size of the alien + offset from the left)
-        # y = i * (height of the alien + space between lines) + offset from the top
-        # print(colour)
-        # new_alien = Alien((j * SCREEN_WIDTH // 13 + SCREEN_WIDTH // 9), i * (SCREEN_HEIGHT // 15) + 160, alien_path)
-        new_alien = Alien((j * 1.5 * ALIEN_WIDTH + SCREEN_WIDTH // 9), i * (2 * ALIEN_HEIGHT) + 160, i, j, alien_path)
-        # add alien to fleet group
-        fleet_group.append(new_alien)
-        # increase alien_count
-        alien_count += 1
+alien_count = create_alien_fleet(fleet_group)
+
 # ----------------------------------------------------------------------------------------------------------------------
 
 # Game loop
