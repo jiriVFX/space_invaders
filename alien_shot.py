@@ -40,21 +40,15 @@ class AlienShot(pygame.sprite.Sprite):
         if SCREEN_HEIGHT - 100 > self.corner.bottom < 0:
             self.kill()
 
-    def target_collision(self, target_group, scoreboard):
-        for target in target_group:
+    def wall_collision(self, wall_group, scoreboard):
+        for target in wall_group:
             if self.corner.colliderect(target.corner):
-                # The difference between y position of shot and alien is usually < 3 px
                 # destroy alien
                 target.kill()
                 # Increase score
                 scoreboard.increase()
                 # destroy shot
                 self.kill()
-                # BREAK is necessary to stop two bricks being destroyed at one impact
-                # - otherwise ball continues in the original direction and destroys 3 bricks
-                # - because y position reverses twice when hitting two bricks at the same time
-                # - changes in y negate and ball continues in the original direction
-                break
 
     def spaceship_collision(self, spaceship, scoreboard):
         if self.corner.colliderect(spaceship.corner):
@@ -69,14 +63,14 @@ class AlienShot(pygame.sprite.Sprite):
         # return False if spaceship was not hit
         return False
 
-    def collision_detect(self, obstacle_group, spaceship, scoreboard):
+    def collision_detect(self, wall_group, spaceship, scoreboard):
         """Handles collision detection methods. Returns True when spaceship was hit, otherwise False.
-        :type obstacle_group: pygame.sprite.Group
+        :type wall_group: pygame.sprite.Group
         :type spaceship: pygame.sprite.Sprite
         :type scoreboard: scoreboard.Scoreboard
         :rtype: bool"""
         # Shield obstacles fleet collision detection
-        self.target_collision(obstacle_group, scoreboard)
+        self.wall_collision(wall_group, scoreboard)
         # Detect if shot is out of screen
         self.out_of_screen()
         # Spaceship collision detection

@@ -5,6 +5,7 @@ from alien import Alien
 from shot import Shot
 from alien_shot import AlienShot
 from scoreboard import Scoreboard
+from wall import Wall
 import time
 from random import choice
 
@@ -39,12 +40,112 @@ game_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
 game_surface.fill(DARK_GREY)
 # rect = game_space.get_rect()
 
+# Create obstacle group
+wall_group = pygame.sprite.Group()
+
 # Create spaceship
 spaceship = SpaceShip(SPACESHIP_PATH)
 
-# Create spaceship and obstacle group
-obstacle_group = pygame.sprite.Group()
-obstacle_group.add(spaceship)
+# Create walls
+# for i in range(WALLS):
+#     for j in range(WALL_HEIGHT):
+#         for k in range(WALL_WIDTH):
+#             wall_piece = Wall(((i + 1) * (SCREEN_WIDTH // 5.5)) + k * WALL_PIX_SIZE,
+#                               j * WALL_PIX_SIZE + SCREEN_HEIGHT - 220)
+#             wall_group.add(wall_piece)
+
+# walls
+for w in range(4):
+    # columns
+    for i in range(24):
+        # rows
+        if i < 5:
+            for j in range(22):
+                if (i == 0 and j < 5) or (i == 1 and j < 4) or (i == 2 and j < 3) or (i == 3 and j < 2) or (i == 4 and j < 1):
+                    pass
+                else:
+                    wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
+                    wall_group.add(wall_piece)
+        elif i == 5:
+            for j in range(20):
+                wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
+                wall_group.add(wall_piece)
+        elif i == 6:
+            for j in range(19):
+                wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
+                wall_group.add(wall_piece)
+        elif i == 7:
+            for j in range(18):
+                wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
+                wall_group.add(wall_piece)
+        elif i == 8:
+            for j in range(17):
+                wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
+                wall_group.add(wall_piece)
+        elif 8 < i < 15:
+            for j in range(16):
+                wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
+                wall_group.add(wall_piece)
+        elif i == 15:
+            for j in range(17):
+                wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
+                wall_group.add(wall_piece)
+        elif i == 16:
+            for j in range(18):
+                wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
+                wall_group.add(wall_piece)
+        elif i == 17:
+            for j in range(19):
+                wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
+                wall_group.add(wall_piece)
+        elif i == 18:
+            for j in range(20):
+                wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
+                wall_group.add(wall_piece)
+        elif i == 19:
+            for j in range(22):
+                if j < 1:
+                    pass
+                else:
+                    wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
+                    wall_group.add(wall_piece)
+        elif i == 20:
+            for j in range(22):
+                if j < 2:
+                    pass
+                else:
+                    wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
+                    wall_group.add(wall_piece)
+        elif i == 21:
+            for j in range(22):
+                if j < 3:
+                    pass
+                else:
+                    wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
+                    wall_group.add(wall_piece)
+        elif i == 22:
+            for j in range(22):
+                if j < 4:
+                    pass
+                else:
+                    wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
+                    wall_group.add(wall_piece)
+        elif i == 23:
+            for j in range(22):
+                if j < 5:
+                    pass
+                else:
+                    wall_piece = Wall((w * 175) + (SCREEN_WIDTH // 6 + i * WALL_PIX_SIZE), (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
+                    wall_group.add(wall_piece)
+
+# basic rectangular walls finished
+# for i in range(WALLS):
+#     # create wall roofs
+#     for j in range(5):
+#         for k in range(WALL_WIDTH - ((1 + j) * WALL_PIX_SIZE)):
+#             wall_piece = Wall(((i + 1) * (SCREEN_WIDTH // 5.5)) + (k + j) * WALL_PIX_SIZE,
+#                               j * WALL_PIX_SIZE + SCREEN_HEIGHT - (220 + WALL_HEIGHT + 4))
+#             wall_group.add(wall_piece)
 
 # Create shot group
 shots = pygame.sprite.Group()
@@ -110,7 +211,7 @@ while game_on:
     # Collision detection and movement of existing player shots
     for shot in shots:
         shot.move()
-        hit = shot.collision_detect(fleet_group, scoreboard)
+        hit = shot.collision_detect(fleet_group, wall_group, scoreboard)
         # when alien is hit, decrease alien count
         if hit:
             alien_count -= 1
@@ -122,8 +223,8 @@ while game_on:
         shots.add(Shot(position=spaceship.corner))
 
     # Aliens movement and shooting -------------------------------------------------------------------------------------
-    # TODO - create protective walls
     # TODO - make another type of alien shot (rocket?)
+    # TODO - make alien shots animated
     # TODO - make the "boss" alien spaceship appear
 
     # Make random alien shoot
@@ -158,7 +259,7 @@ while game_on:
     # Collision detection and movement of existing alien shots
     for shot in alien_shots:
         shot.move()
-        shot.collision_detect(obstacle_group, spaceship, scoreboard)
+        shot.collision_detect(wall_group, spaceship, scoreboard)
 
     # move aliens in intervals
     if time.time() - movement_time > movement_delay:
@@ -203,6 +304,10 @@ while game_on:
     # Place the ship on the screen
     # Places ship in the middle + spaceship corner(rect) position (changes when paddle moves)
     screen.blit(spaceship.surface, spaceship.corner)
+
+    # Place the wall on the screen
+    for wall_piece in wall_group:
+        screen.blit(wall_piece.surface, wall_piece.corner)
 
     # Place player shots on the screen
     for shot in shots:

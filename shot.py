@@ -53,12 +53,21 @@ class Shot(pygame.sprite.Sprite):
                         return True
         return False
 
-    def collision_detect(self, fleet_group, scoreboard):
+    def wall_collision(self, wall_group):
+        for wall_piece in wall_group:
+            if self.corner.colliderect(wall_piece.corner):
+                # destroy the wall_piece
+                wall_piece.kill()
+                # destroy shot
+                self.kill()
+
+    def collision_detect(self, fleet_group, wall_group, scoreboard):
         hit = False
         # Alien fleet collision detection
         hit = self.fleet_collision(fleet_group, scoreboard)
+        # Wall collision detection
+        self.wall_collision(wall_group)
         # Detect if shot is out of screen
         self.out_of_screen()
 
         return hit
-
