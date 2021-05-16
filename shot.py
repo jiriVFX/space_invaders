@@ -16,12 +16,9 @@ class Shot(pygame.sprite.Sprite):
         self.surface.fill(shot_color)
         # Top left corner position coordinates
         self.corner = self.surface.get_rect(center=(position[0] + SPACESHIP_WIDTH / 2, position[1]))
-        # Make correct collision circle around the ball
-        self.radius = self.corner.width / 2
         self.direction_x = 0
         self.direction_y = -1
         self.speed = SHOT_SPEED
-        self.bounce_count = 0
 
     def move(self):
         self.corner.move_ip(self.direction_x * self.speed, self.direction_y * self.speed)

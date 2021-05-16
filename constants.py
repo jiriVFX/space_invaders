@@ -24,13 +24,28 @@ WALLS = 4
 WALL_WIDTH = 24
 WALL_HEIGHT = 22
 WALL_PIX_SIZE = 4
+WALL_OFFSET = 200
+WALL_OFFSET_DIV = 8
 
 # Aliens
 COLUMNS = 11
 ROWS = 6
 ALIEN_HEIGHT = 32
 ALIEN_WIDTH = 48
-ALIEN_SHOT_PATH = "static/img/alien_shot.gif"
+ALIEN_SHOT_PATHS = (
+    "static/img/alien_shot/alien_shot_1.png",
+    "static/img/alien_shot/alien_shot_2.png",
+    "static/img/alien_shot/alien_shot_3.png",
+    "static/img/alien_shot/alien_shot_4.png",
+)
+ALIEN_SHOT_2_PATHS = (
+    "static/img/alien_shot_2/alien_shot_2_1.png",
+    "static/img/alien_shot_2/alien_shot_2_2.png",
+    "static/img/alien_shot_2/alien_shot_2_3.png",
+    "static/img/alien_shot_2/alien_shot_2_4.png",
+)
+# speed of animation of the alien shots, lower is faster
+ALIEN_SHOT_UPDATE_SPEED = 8
 POINTS_10 = ("static/img/10_points_1.png", "static/img/10_points_2.png")
 POINTS_20 = ("static/img/20_points_1.png", "static/img/20_points_2.png")
 POINTS_30 = ("static/img/30_points_1.png", "static/img/30_points_2.png")

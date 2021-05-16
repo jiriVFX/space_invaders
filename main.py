@@ -116,7 +116,7 @@ while game_on:
                 # force the next iteration
                 continue
             # calculate alien's position
-            #random_alien_pos = random_alien.row * COLUMNS + random_alien.column
+            # random_alien_pos = random_alien.row * COLUMNS + random_alien.column
             # make sure only alien with no other aliens in the rows in front of it can shoot
             # calculate positions in front of alien
             # check the same position in the rows in front of alien
@@ -131,8 +131,7 @@ while game_on:
             if can_shoot:
                 break
 
-        alien_shots.add(AlienShot(ALIEN_SHOT_PATH, random_alien.corner))
-
+        alien_shots.add(AlienShot(ALIEN_SHOT_PATHS, random_alien.corner))
 
     # Collision detection and movement of existing alien shots
     for shot in alien_shots:
