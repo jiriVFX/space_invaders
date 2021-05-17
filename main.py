@@ -89,7 +89,7 @@ while game_on:
     # Collision detection and movement of existing player shots
     for shot in shots:
         shot.move()
-        hit = shot.collision_detect(fleet_group, wall_group, scoreboard)
+        hit = shot.collision_detect(fleet_group, wall_group, alien_shots, scoreboard)
         # when alien is hit, decrease alien count
         if hit:
             alien_count -= 1
@@ -101,8 +101,8 @@ while game_on:
         shots.add(Shot(position=spaceship.corner))
 
     # Aliens movement and shooting -------------------------------------------------------------------------------------
-    # TODO - make another type of alien shot (rocket?)
-    # TODO - make alien shots animated
+    # TODO - make alien shots destroyable
+    # TODO - aliens have to damage walls on contact
     # TODO - make the "boss" alien spaceship appear
 
     # Make random alien shoot

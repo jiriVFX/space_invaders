@@ -31,7 +31,7 @@ class Shot(pygame.sprite.Sprite):
 
     def out_of_screen(self):
         # If shot gets out of screen area
-        if SCREEN_HEIGHT - 100 > self.corner.bottom < 0:
+        if self.corner.bottom <= 0:
             self.kill()
 
     def fleet_collision(self, fleet_group, scoreboard):
@@ -58,12 +58,24 @@ class Shot(pygame.sprite.Sprite):
                 # destroy shot
                 self.kill()
 
-    def collision_detect(self, fleet_group, wall_group, scoreboard):
+    def alien_shot_collision(self, alien_shots):
+        for alien_shot in alien_shots:
+            if self.corner.colliderect(alien_shot.corner):
+                # destroy alien shot
+                alien_shot.kill()
+                # destroy player shot
+                self.kill()
+
+    def collision_detect(self, fleet_group, wall_group, alien_shots, scoreboard):
         hit = False
         # Alien fleet collision detection
         hit = self.fleet_collision(fleet_group, scoreboard)
         # Wall collision detection
         self.wall_collision(wall_group)
+        # Wall collision detection
+        self.wall_collision(wall_group)
+        # Alien shots collision detection
+        self.alien_shot_collision(alien_shots)
         # Detect if shot is out of screen
         self.out_of_screen()
 

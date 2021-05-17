@@ -58,7 +58,8 @@ class AlienShot(pygame.sprite.Sprite):
 
     def out_of_screen(self):
         # If shot gets out of screen area
-        if SCREEN_HEIGHT - 100 > self.corner.bottom < 0:
+        if (SCREEN_HEIGHT - 70) <= self.corner.bottom:
+            print("Crossed bottom line.")
             self.kill()
 
     def wall_collision(self, wall_group):
@@ -97,4 +98,3 @@ class AlienShot(pygame.sprite.Sprite):
             return True
 
         return False
-
