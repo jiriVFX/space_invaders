@@ -27,10 +27,10 @@ scoreboard = Scoreboard()
 # Font
 pygame.font.init()
 font = pygame.font.SysFont("Consolas", 80, bold=True)
-text_won = font.render("You won!", True, RED)
-text_won_corner = text_won.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 40))
-text_lost = font.render("You lost.", True, RED)
-text_lost_corner = text_won.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 40))
+text_won = font.render("YOU WON!", True, RED)
+text_won_corner = text_won.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 300))
+text_lost = font.render("GAME OVER", True, RED)
+text_lost_corner = text_won.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 300))
 
 # Sounds
 collision_sound = pygame.mixer.Sound("static/sound/hit1.mp3")
@@ -102,6 +102,7 @@ while game_on:
 
     # Aliens movement and shooting -------------------------------------------------------------------------------------
     # TODO - make alien shots destroyable
+    # TODO - make shot explosion animation on impact
     # TODO - aliens have to damage walls on contact
     # TODO - make the "boss" alien spaceship appear
 
