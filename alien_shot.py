@@ -32,6 +32,8 @@ class AlienShot(pygame.sprite.Sprite):
         self.direction_y = 1
         self.speed = ALIEN_SHOT_SPEED
         self.update_count = 0
+        # destruction start time
+        self.destruct_start_time = None
 
     def move(self):
         self.update()
@@ -59,16 +61,39 @@ class AlienShot(pygame.sprite.Sprite):
     def out_of_screen(self):
         # If shot gets out of screen area
         if (SCREEN_HEIGHT - 70) <= self.corner.bottom:
-            print("Crossed bottom line.")
-            self.kill()
+            if self.destruct_start_time is None:
+                # initiate shot destruction
+                self.init_destruction()
+
+    def init_destruction(self):
+        # show alien shot explosion
+        self.surface = pygame.image.load(ALIEN_SHOT_EXPLOSION).convert_alpha()
+        # get current time in milliseconds
+        self.destruct_start_time = pygame.time.get_ticks()
+
+    def destroy(self):
+        # reset destruction start time
+        self.destruct_start_time = None
+        # destroy shot
+        self.kill()
+
+    def update_destroyed(self):
+        # check whether alien shot is to be destroyed
+        if self.destruct_start_time and (pygame.time.get_ticks() - self.destruct_start_time >= DESTRUCTION_TIME):
+            self.destroy()
+            return True
+        return False
 
     def wall_collision(self, wall_group):
         for target in wall_group:
             if self.corner.colliderect(target.corner):
-                # destroy alien
-                target.kill()
-                # destroy shot
-                self.kill()
+                # destroy shot only if it has not been hit already
+                if self.destruct_start_time is None:
+                    self.init_destruction()
+                    # destroy wall
+                    target.kill()
+                    # initiate shot destruction
+                    self.init_destruction()
 
     def spaceship_collision(self, spaceship, scoreboard):
         if self.corner.colliderect(spaceship.corner):

@@ -19,6 +19,8 @@ class Shot(pygame.sprite.Sprite):
         self.direction_x = 0
         self.direction_y = -1
         self.speed = SHOT_SPEED
+        # destruction start time
+        self.destruct_start_time = None
 
     def move(self):
         self.corner.move_ip(self.direction_x * self.speed, self.direction_y * self.speed)
@@ -31,8 +33,29 @@ class Shot(pygame.sprite.Sprite):
 
     def out_of_screen(self):
         # If shot gets out of screen area
-        if self.corner.bottom <= 0:
-            self.kill()
+        if self.corner.top <= 0:
+            # destroy shot only if it has not been hit already
+            if self.destruct_start_time is None:
+                self.init_destruction()
+
+    def init_destruction(self):
+        # show player shot explosion
+        self.surface = pygame.image.load(PLAYER_SHOT_EXPLOSION).convert_alpha()
+        # get current time in milliseconds
+        self.destruct_start_time = pygame.time.get_ticks()
+
+    def destroy(self):
+        # reset destruction start time
+        self.destruct_start_time = None
+        # destroy shot
+        self.kill()
+
+    def update_destroyed(self):
+        # check whether player shot is to be destroyed
+        if self.destruct_start_time and (pygame.time.get_ticks() - self.destruct_start_time >= DESTRUCTION_TIME):
+            self.destroy()
+            return True
+        return False
 
     def fleet_collision(self, fleet_group, scoreboard):
         for alien in fleet_group:
@@ -55,16 +78,18 @@ class Shot(pygame.sprite.Sprite):
             if self.corner.colliderect(wall_piece.corner):
                 # destroy the wall_piece
                 wall_piece.kill()
-                # destroy shot
-                self.kill()
+                # destroy shot only if it has not been hit already
+                if self.destruct_start_time is None:
+                    self.init_destruction()
 
     def alien_shot_collision(self, alien_shots):
         for alien_shot in alien_shots:
             if self.corner.colliderect(alien_shot.corner):
                 # destroy alien shot
                 alien_shot.kill()
-                # destroy player shot
-                self.kill()
+                # destroy shot only if it has not been hit already
+                if self.destruct_start_time is None:
+                    self.init_destruction()
 
     def collision_detect(self, fleet_group, wall_group, alien_shots, scoreboard):
         hit = False

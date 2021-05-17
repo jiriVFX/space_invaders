@@ -17,6 +17,7 @@ BORDER = 5
 SPACESHIP_WIDTH = 44
 SPACESHIP_HEIGHT = 10
 SPACESHIP_PATH = "static/img/spaceship.png"
+PLAYER_SHOT_EXPLOSION = "static/img/player_shot_explosion.png"
 LIVES = 3
 
 # Walls
@@ -59,6 +60,7 @@ POINTS_20 = ("static/img/20_points_1.png", "static/img/20_points_2.png")
 POINTS_30 = ("static/img/30_points_1.png", "static/img/30_points_2.png")
 POINTS_100 = "static/img/30_points_1.png"
 ALIEN_EXPLOSION = "static/img/alien_explosion.png"
+ALIEN_SHOT_EXPLOSION = "static/img/alien_shot_explosion.png"
 MOVEMENT_DELAY = 0.25
 ALIEN_MOVEMENT = 10
 MOVEMENTS_NUM = 4

@@ -88,11 +88,15 @@ while game_on:
 
     # Collision detection and movement of existing player shots
     for shot in shots:
-        shot.move()
-        hit = shot.collision_detect(fleet_group, wall_group, alien_shots, scoreboard)
-        # when alien is hit, decrease alien count
-        if hit:
-            alien_count -= 1
+        if shot.destruct_start_time is None:
+            shot.move()
+            hit = shot.collision_detect(fleet_group, wall_group, alien_shots, scoreboard)
+            # when alien is hit, decrease alien count
+            if hit:
+                alien_count -= 1
+        else:
+            shot.update_destroyed()
+
     # Pressed down keys boolean list - 0 for keys not pressed and 1 for keys pressed
     pressed_keys = pygame.key.get_pressed()
 
@@ -135,9 +139,12 @@ while game_on:
         alien_shots.add(AlienShot(ALIEN_SHOT_PATHS, random_alien.corner))
 
     # Collision detection and movement of existing alien shots
-    for shot in alien_shots:
-        shot.move()
-        shot.collision_detect(wall_group, spaceship, scoreboard)
+    for alien_shot in alien_shots:
+        if alien_shot.destruct_start_time is None:
+            alien_shot.move()
+            alien_shot.collision_detect(wall_group, spaceship, scoreboard)
+        else:
+            alien_shot.update_destroyed()
 
     # move aliens in intervals
     if time.time() - movement_time > movement_delay:
