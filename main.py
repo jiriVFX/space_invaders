@@ -105,10 +105,9 @@ while game_on:
         shots.add(Shot(position=spaceship.corner))
 
     # Aliens movement and shooting -------------------------------------------------------------------------------------
-    # TODO - make alien shots destroyable
-    # TODO - make shot explosion animation on impact
-    # TODO - aliens have to damage walls on contact
+    # TODO - Alien shots have to destroy more wall pixels at impact
     # TODO - make the "boss" alien spaceship appear
+    # TODO - Add sounds
 
     # Make random alien shoot
     if time.time() - shoot_time > ALIEN_SHOOT_DELAY:
@@ -160,6 +159,8 @@ while game_on:
             if alien is not None:
                 if alien.row == ROWS - i:
                     increase_speed = alien.move()
+                    # alien and wall collision detection
+                    alien.collision_detection(wall_group)
         # increase speed
         if increase_speed:
             movement_delay /= 1.025
