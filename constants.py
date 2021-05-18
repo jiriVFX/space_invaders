@@ -66,6 +66,8 @@ ALIEN_MOVEMENT = 10
 MOVEMENTS_NUM = 4
 ALIEN_SHOOT_DELAY = 1
 ALIEN_SHOT_SPEED = 5
+# shot penetration - how many pieces of wall shot destroys before its own destruction
+ALIEN_SHOT_PENETRATION = 5
 # alien destruction time in milliseconds
 DESTRUCTION_TIME = 250
 
