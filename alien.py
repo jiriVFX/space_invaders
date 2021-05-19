@@ -90,11 +90,12 @@ class Alien(pygame.sprite.Sprite):
         # destroy alien
         self.kill()
 
-    def wall_collision(self, wall_group):
-        for wall_piece in wall_group:
-            if self.corner.colliderect(wall_piece.corner):
-                # destroy wall_piece on collision with alien
-                wall_piece.kill()
+    def wall_collision(self, wall_group_list):
+        for wall_group in wall_group_list:
+            for wall_piece in wall_group:
+                if self.corner.colliderect(wall_piece.corner):
+                    # destroy wall_piece on collision with alien
+                    wall_piece.kill()
 
-    def collision_detection(self, wall_group):
-        self.wall_collision(wall_group)
+    def collision_detection(self, wall_group_list):
+        self.wall_collision(wall_group_list)

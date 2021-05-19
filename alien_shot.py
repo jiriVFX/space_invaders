@@ -86,22 +86,23 @@ class AlienShot(pygame.sprite.Sprite):
             return True
         return False
 
-    def wall_collision(self, wall_group):
-        for wall_piece in wall_group:
-            if self.corner.colliderect(wall_piece.corner):
-                # destroy shot only if it has not been hit already
-                # and only if it destroyed ALIEN_SHOT_PENETRATION amount of wall pieces
-                if self.destruct_start_time is None and self.penetration_counter == ALIEN_SHOT_PENETRATION:
-                    self.init_destruction()
-                    # destroy wall
-                    wall_piece.destroy(wall_group)
-                    # initiate shot destruction
-                    self.init_destruction()
-                    # reset penetration counter
-                    self.penetration_counter = 0
-                else:
-                    wall_piece.kill()
-                    self.penetration_counter += 1
+    def wall_collision(self, wall_group_list):
+        for wall_group in wall_group_list:
+            for wall_piece in wall_group:
+                if self.corner.colliderect(wall_piece.corner):
+                    # destroy shot only if it has not been hit already
+                    # and only if it destroyed ALIEN_SHOT_PENETRATION amount of wall pieces
+                    if self.destruct_start_time is None and self.penetration_counter == ALIEN_SHOT_PENETRATION:
+                        self.init_destruction()
+                        # destroy wall
+                        wall_piece.destroy(wall_group)
+                        # initiate shot destruction
+                        self.init_destruction()
+                        # reset penetration counter
+                        self.penetration_counter = 0
+                    else:
+                        wall_piece.kill()
+                        self.penetration_counter += 1
 
     def spaceship_collision(self, spaceship, scoreboard):
         if self.corner.colliderect(spaceship.corner):
@@ -116,14 +117,14 @@ class AlienShot(pygame.sprite.Sprite):
         # return False if spaceship was not hit
         return False
 
-    def collision_detect(self, wall_group, spaceship, scoreboard):
+    def collision_detect(self, wall_group_list, spaceship, scoreboard):
         """Handles collision detection methods. Returns True when spaceship was hit, otherwise False.
-        :type wall_group: pygame.sprite.Group
+        :type wall_group_list: pygame.sprite.Group
         :type spaceship: pygame.sprite.Sprite
         :type scoreboard: scoreboard.Scoreboard
         :rtype: bool"""
         # Shield obstacles fleet collision detection
-        self.wall_collision(wall_group)
+        self.wall_collision(wall_group_list)
         # Detect if shot is out of screen
         self.out_of_screen()
         # Spaceship collision detection

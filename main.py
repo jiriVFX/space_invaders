@@ -41,11 +41,15 @@ game_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
 game_surface.fill(DARK_GREY)
 # rect = game_space.get_rect()
 
-# Create obstacle group
-wall_group = pygame.sprite.Group()
+# Create wall groups
+#wall_group = pygame.sprite.Group()
+wall_group_list = []
+
+for group in range(WALLS):
+    wall_group_list.append(pygame.sprite.Group())
 
 # Create walls, pixel by pixel
-build_wall(wall_group)
+build_wall(wall_group_list)
 
 # Create spaceship
 spaceship = SpaceShip(SPACESHIP_PATH)
@@ -90,7 +94,7 @@ while game_on:
     for shot in shots:
         if shot.destruct_start_time is None:
             shot.move()
-            hit = shot.collision_detect(fleet_group, wall_group, alien_shots, scoreboard)
+            hit = shot.collision_detect(fleet_group, wall_group_list, alien_shots, scoreboard)
             # when alien is hit, decrease alien count
             if hit:
                 alien_count -= 1
@@ -105,7 +109,7 @@ while game_on:
         shots.add(Shot(position=spaceship.corner))
 
     # Aliens movement and shooting -------------------------------------------------------------------------------------
-    # TODO - Alien shots have to destroy more wall pixels at impact
+    # TODO - player ship destruction animation and downtime
     # TODO - make the "boss" alien spaceship appear
     # TODO - Add sounds
 
@@ -141,7 +145,7 @@ while game_on:
     for alien_shot in alien_shots:
         if alien_shot.destruct_start_time is None:
             alien_shot.move()
-            alien_shot.collision_detect(wall_group, spaceship, scoreboard)
+            alien_shot.collision_detect(wall_group_list, spaceship, scoreboard)
         else:
             alien_shot.update_destroyed()
 
@@ -160,7 +164,7 @@ while game_on:
                 if alien.row == ROWS - i:
                     increase_speed = alien.move()
                     # alien and wall collision detection
-                    alien.collision_detection(wall_group)
+                    alien.collision_detection(wall_group_list)
         # increase speed
         if increase_speed:
             movement_delay /= 1.025
@@ -192,8 +196,9 @@ while game_on:
     screen.blit(spaceship.surface, spaceship.corner)
 
     # Place the wall on the screen
-    for wall_piece in wall_group:
-        screen.blit(wall_piece.surface, wall_piece.corner)
+    for wall_group in wall_group_list:
+        for wall_piece in wall_group:
+            screen.blit(wall_piece.surface, wall_piece.corner)
 
     # Place player shots on the screen
     for shot in shots:

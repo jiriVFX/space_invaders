@@ -3,10 +3,10 @@ from wall import Wall
 from alien import Alien
 
 
-def build_wall(wall_group):
+def build_wall(wall_group_list):
     """
     Builds protective barrier walls with Wall class objects.
-    :param wall_group: pygame.sprite.Group()
+    :param wall_group_list: pygame.sprite.Group()
     :return:
     """
     for w in range(4):
@@ -21,52 +21,52 @@ def build_wall(wall_group):
                     else:
                         wall_piece = Wall((w * WALL_OFFSET) + (SCREEN_WIDTH // WALL_OFFSET_DIV + i * WALL_PIX_SIZE),
                                           (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                        wall_group.add(wall_piece)
+                        wall_group_list[w].add(wall_piece)
             elif i == 5:
                 for j in range(20):
                     wall_piece = Wall((w * WALL_OFFSET) + (SCREEN_WIDTH // WALL_OFFSET_DIV + i * WALL_PIX_SIZE),
                                       (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                    wall_group.add(wall_piece)
+                    wall_group_list[w].add(wall_piece)
             elif i == 6:
                 for j in range(19):
                     wall_piece = Wall((w * WALL_OFFSET) + (SCREEN_WIDTH // WALL_OFFSET_DIV + i * WALL_PIX_SIZE),
                                       (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                    wall_group.add(wall_piece)
+                    wall_group_list[w].add(wall_piece)
             elif i == 7:
                 for j in range(18):
                     wall_piece = Wall((w * WALL_OFFSET) + (SCREEN_WIDTH // WALL_OFFSET_DIV + i * WALL_PIX_SIZE),
                                       (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                    wall_group.add(wall_piece)
+                    wall_group_list[w].add(wall_piece)
             elif i == 8:
                 for j in range(17):
                     wall_piece = Wall((w * WALL_OFFSET) + (SCREEN_WIDTH // WALL_OFFSET_DIV + i * WALL_PIX_SIZE),
                                       (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                    wall_group.add(wall_piece)
+                    wall_group_list[w].add(wall_piece)
             elif 8 < i < 15:
                 for j in range(16):
                     wall_piece = Wall((w * WALL_OFFSET) + (SCREEN_WIDTH // WALL_OFFSET_DIV + i * WALL_PIX_SIZE),
                                       (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                    wall_group.add(wall_piece)
+                    wall_group_list[w].add(wall_piece)
             elif i == 15:
                 for j in range(17):
                     wall_piece = Wall((w * WALL_OFFSET) + (SCREEN_WIDTH // WALL_OFFSET_DIV + i * WALL_PIX_SIZE),
                                       (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                    wall_group.add(wall_piece)
+                    wall_group_list[w].add(wall_piece)
             elif i == 16:
                 for j in range(18):
                     wall_piece = Wall((w * WALL_OFFSET) + (SCREEN_WIDTH // WALL_OFFSET_DIV + i * WALL_PIX_SIZE),
                                       (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                    wall_group.add(wall_piece)
+                    wall_group_list[w].add(wall_piece)
             elif i == 17:
                 for j in range(19):
                     wall_piece = Wall((w * WALL_OFFSET) + (SCREEN_WIDTH // WALL_OFFSET_DIV + i * WALL_PIX_SIZE),
                                       (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                    wall_group.add(wall_piece)
+                    wall_group_list[w].add(wall_piece)
             elif i == 18:
                 for j in range(20):
                     wall_piece = Wall((w * WALL_OFFSET) + (SCREEN_WIDTH // WALL_OFFSET_DIV + i * WALL_PIX_SIZE),
                                       (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                    wall_group.add(wall_piece)
+                    wall_group_list[w].add(wall_piece)
             elif i == 19:
                 for j in range(22):
                     if j < 1:
@@ -74,7 +74,7 @@ def build_wall(wall_group):
                     else:
                         wall_piece = Wall((w * WALL_OFFSET) + (SCREEN_WIDTH // WALL_OFFSET_DIV + i * WALL_PIX_SIZE),
                                           (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                        wall_group.add(wall_piece)
+                        wall_group_list[w].add(wall_piece)
             elif i == 20:
                 for j in range(22):
                     if j < 2:
@@ -82,7 +82,7 @@ def build_wall(wall_group):
                     else:
                         wall_piece = Wall((w * WALL_OFFSET) + (SCREEN_WIDTH // WALL_OFFSET_DIV + i * WALL_PIX_SIZE),
                                           (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                        wall_group.add(wall_piece)
+                        wall_group_list[w].add(wall_piece)
             elif i == 21:
                 for j in range(22):
                     if j < 3:
@@ -90,7 +90,7 @@ def build_wall(wall_group):
                     else:
                         wall_piece = Wall((w * WALL_OFFSET) + (SCREEN_WIDTH // WALL_OFFSET_DIV + i * WALL_PIX_SIZE),
                                           (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                        wall_group.add(wall_piece)
+                        wall_group_list[w].add(wall_piece)
             elif i == 22:
                 for j in range(22):
                     if j < 4:
@@ -98,7 +98,7 @@ def build_wall(wall_group):
                     else:
                         wall_piece = Wall((w * WALL_OFFSET) + (SCREEN_WIDTH // WALL_OFFSET_DIV + i * WALL_PIX_SIZE),
                                           (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                        wall_group.add(wall_piece)
+                        wall_group_list[w].add(wall_piece)
             elif i == 23:
                 for j in range(22):
                     if j < 5:
@@ -106,7 +106,7 @@ def build_wall(wall_group):
                     else:
                         wall_piece = Wall((w * WALL_OFFSET) + (SCREEN_WIDTH // WALL_OFFSET_DIV + i * WALL_PIX_SIZE),
                                           (1 + j * WALL_PIX_SIZE) + SCREEN_HEIGHT - 250)
-                        wall_group.add(wall_piece)
+                        wall_group_list[w].add(wall_piece)
 
 
 def create_alien_fleet(fleet_group):

@@ -20,7 +20,6 @@ class Wall(pygame.sprite.Sprite):
         :param wall_group: pygame.sprite.Group()
         :return:
         """
-        # TODO - optimize - going through all the wall pixels every time is inefficient
         for wall_piece in wall_group:
             if abs(wall_piece.corner[0] - self.corner[0]) < 10 and abs(wall_piece.corner[1] - self.corner[1]) < 15:
                 if random.randint(0, 1) == 1:
