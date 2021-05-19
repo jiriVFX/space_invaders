@@ -120,23 +120,29 @@ def create_alien_fleet(fleet_group):
     for i in range(ROWS):
         if i == 0:
             alien_path = POINTS_30
+            points = ALIEN_30_POINTS
         elif i == 1:
             alien_path = POINTS_30
+            points = ALIEN_30_POINTS
         elif i == 2:
             alien_path = POINTS_20
+            points = ALIEN_20_POINTS
         elif i == 3:
             alien_path = POINTS_20
+            points = ALIEN_20_POINTS
         elif i == 4:
             alien_path = POINTS_10
+            points = ALIEN_10_POINTS
         else:
             alien_path = POINTS_10
+            points = 10
         # Create one row of aliens
         for j in range(COLUMNS):
             # Each brick's starting position is
             # x = (j * width of the alien + half the size of the alien + offset from the left)
             # y = i * (height of the alien + space between lines) + offset from the top
             new_alien = Alien((j * 1.5 * ALIEN_WIDTH + SCREEN_WIDTH // 9), i * (2 * ALIEN_HEIGHT) + 160, i, j,
-                              alien_path)
+                              alien_path, points)
             # add alien to fleet group
             fleet_group.append(new_alien)
             # increase alien_count

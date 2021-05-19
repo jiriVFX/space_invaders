@@ -19,12 +19,12 @@ class SpaceShip(pygame.sprite.Sprite):
         self.corner = self.surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 120))
         self.speed = 7
         self.direction = 0
-
         # Time of the last shot
         self.last_shot = 0
-
         # Lives
         self.lives = LIVES
+        # destruction start time
+        self.destruct_start_time = None
 
     def control(self, pressed_keys):
         """Controls spaceship movement and shooting.

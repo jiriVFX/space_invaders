@@ -32,8 +32,8 @@ class Scoreboard(pygame.sprite.Sprite):
         self.score_text = self.font.render(f"SCORE: {self.score}", True, WHITE)
         self.lives_text = self.font.render(f"LIVES: {self.lives}", True, WHITE)
 
-    def increase(self):
-        self.score += 1
+    def increase(self, alien):
+        self.score += alien.points
         self.update_score()
 
     def decrease(self):

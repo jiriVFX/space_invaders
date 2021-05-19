@@ -19,6 +19,8 @@ SPACESHIP_HEIGHT = 10
 SPACESHIP_PATH = "static/img/spaceship.png"
 PLAYER_SHOT_EXPLOSION = "static/img/player_shot_explosion.png"
 LIVES = 3
+# spaceship destruction time in milliseconds
+SPACESHIP_DESTRUCTION_TIME = 500
 
 # Walls
 WALLS = 4
@@ -59,6 +61,10 @@ POINTS_10 = ("static/img/10_points_1.png", "static/img/10_points_2.png")
 POINTS_20 = ("static/img/20_points_1.png", "static/img/20_points_2.png")
 POINTS_30 = ("static/img/30_points_1.png", "static/img/30_points_2.png")
 POINTS_100 = "static/img/30_points_1.png"
+ALIEN_10_POINTS = 10
+ALIEN_20_POINTS = 20
+ALIEN_30_POINTS = 30
+ALIENS_BOSS_POINTS = 100
 ALIEN_EXPLOSION = "static/img/alien_explosion.png"
 ALIEN_SHOT_EXPLOSION = "static/img/alien_shot_explosion.png"
 MOVEMENT_DELAY = 0.25

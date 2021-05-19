@@ -3,7 +3,7 @@ from constants import *
 
 
 class Alien(pygame.sprite.Sprite):
-    def __init__(self, position_x, position_y, row, column, alien_paths, alien_color=WHITE):
+    def __init__(self, position_x, position_y, row, column, alien_paths, points, alien_color=WHITE):
         super().__init__()
         try:
             self.alien_paths = alien_paths
@@ -29,6 +29,8 @@ class Alien(pygame.sprite.Sprite):
         self.anim_iterator = 0
         # destruction start time
         self.destruct_start_time = None
+        # points received for alien destruction
+        self.points = points
         # destruction fleet
         self.fleet_group = []
 

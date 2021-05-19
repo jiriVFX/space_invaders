@@ -65,7 +65,7 @@ class Shot(pygame.sprite.Sprite):
                     if alien.destruct_start_time is None:
                         alien.init_destruction(fleet_group)
                         # Increase score
-                        scoreboard.increase()
+                        scoreboard.increase(alien)
                         # destroy shot
                         self.kill()
                         # # BREAK is necessary to stop two aliens being destroyed at one impact
