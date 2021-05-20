@@ -114,7 +114,6 @@ while game_on:
         spaceship.update_destroyed()
 
     # Aliens movement and shooting -------------------------------------------------------------------------------------
-    # TODO - player ship destruction animation and downtime
     # TODO - aliens have move in wider lines, if all aliens on either side have been destroyed
     # TODO - make the "boss" alien spaceship appear
     # TODO - Add sounds

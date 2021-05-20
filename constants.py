@@ -1,16 +1,13 @@
 # Colours
-BLUE = (0, 184, 255)
 BLACK = (255, 255, 255)
 DARK_GREY = (42, 42, 42)
 GREEN = (0, 255, 0)
-ORANGE = (255, 90, 0)
 RED = (180, 0, 0)
 WHITE = (230, 230, 230)
-YELLOW = (255, 210, 0)
 
 # Screen
 SCREEN_WIDTH = 920
-SCREEN_HEIGHT = 1000
+SCREEN_HEIGHT = 1010
 BORDER = 5
 
 # Spaceship
@@ -22,7 +19,7 @@ SPACESHIP_EXPLOSION_1 = "static/img/spaceship_explosion_1.png"
 SPACESHIP_EXPLOSION_2 = "static/img/spaceship_explosion_2.png"
 LIVES = 3
 # spaceship destruction time in milliseconds
-SPACESHIP_DESTRUCTION_TIME = 800
+SPACESHIP_DESTRUCTION_TIME = 900
 # spaceship explosion time in milliseconds
 SPACESHIP_EXPLOSION_TIME = 50
 
@@ -59,6 +56,9 @@ ALIEN_SHOT_3_PATHS = (
     "static/img/alien_shot_3/alien_shot_3_5.png",
     "static/img/alien_shot_3/alien_shot_3_6.png",
 )
+
+# distance of the first alien row from the top of the screen
+ALIEN_TOP_OFFSET = 120
 # speed of animation of the alien shots, lower is faster
 ALIEN_SHOT_UPDATE_SPEED = 8
 POINTS_10 = ("static/img/10_points_1.png", "static/img/10_points_2.png")

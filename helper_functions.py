@@ -141,8 +141,8 @@ def create_alien_fleet(fleet_group):
             # Each brick's starting position is
             # x = (j * width of the alien + half the size of the alien + offset from the left)
             # y = i * (height of the alien + space between lines) + offset from the top
-            new_alien = Alien((j * 1.5 * ALIEN_WIDTH + SCREEN_WIDTH // 9), i * (2 * ALIEN_HEIGHT) + 160, i, j,
-                              alien_path, points)
+            new_alien = Alien((j * 1.5 * ALIEN_WIDTH + SCREEN_WIDTH // 9), i * (2 * ALIEN_HEIGHT) + ALIEN_TOP_OFFSET,
+                              i, j, alien_path, points)
             # add alien to fleet group
             fleet_group.append(new_alien)
             # increase alien_count
