@@ -105,15 +105,17 @@ class AlienShot(pygame.sprite.Sprite):
                         self.penetration_counter += 1
 
     def spaceship_collision(self, spaceship, scoreboard):
-        if self.corner.colliderect(spaceship.corner):
-            # Remove life from scoreboard
-            scoreboard.remove_life()
-            # Remove life from spaceship
-            spaceship.remove_life()
-            # destroy shot
-            self.kill()
-            # return True as spaceship was hit
-            return True
+        if self.corner.colliderect(spaceship.corner) and spaceship.destruct_start_time is None:
+            if self.destruct_start_time is None:
+                self.init_destruction()
+                # initiate shot destruction
+                self.init_destruction()
+                # Remove life from scoreboard
+                scoreboard.remove_life()
+                # Remove life from spaceship
+                spaceship.remove_life()
+                # return True as spaceship was hit
+                return True
         # return False if spaceship was not hit
         return False
 

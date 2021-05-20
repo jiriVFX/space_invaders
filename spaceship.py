@@ -25,6 +25,10 @@ class SpaceShip(pygame.sprite.Sprite):
         self.lives = LIVES
         # destruction start time
         self.destruct_start_time = None
+        # explosion sprite
+        self.explosion = 1
+        # last explosion sprite change time
+        self.explosion_time = None
 
     def control(self, pressed_keys):
         """Controls spaceship movement and shooting.
@@ -50,9 +54,40 @@ class SpaceShip(pygame.sprite.Sprite):
         if self.corner.right > SCREEN_WIDTH:
             self.corner.right = SCREEN_WIDTH
 
-        if shoot:
-            print(shoot)
         return shoot
 
+    def update_destroyed(self):
+        # check whether spaceship is to be destroyed
+        if self.destruct_start_time and (
+                pygame.time.get_ticks() - self.destruct_start_time >= SPACESHIP_DESTRUCTION_TIME):
+            self.new_life()
+            return True
+        elif pygame.time.get_ticks() - self.explosion_time >= SPACESHIP_EXPLOSION_TIME:
+            # change explosion sprites to animate
+            if self.explosion == 1:
+                self.surface = pygame.image.load(SPACESHIP_EXPLOSION_2).convert_alpha()
+                self.explosion = 2
+                self.explosion_time = pygame.time.get_ticks()
+            else:
+                self.surface = pygame.image.load(SPACESHIP_EXPLOSION_1).convert_alpha()
+                self.explosion = 1
+                self.explosion_time = pygame.time.get_ticks()
+        return False
+
+    def new_life(self):
+        # display spaceship sprite
+        self.surface = pygame.image.load(SPACESHIP_PATH).convert_alpha()
+        self.explosion_time = None
+        self.destruct_start_time = None
+
+    def init_destruction(self):
+        # set explosion and destruction times in milliseconds
+        # explosion time is necessary for changing explosion sprites in update_destroyed
+        self.explosion_time = pygame.time.get_ticks()
+        self.destruct_start_time = pygame.time.get_ticks()
+        # show spaceship explosion
+        self.surface = pygame.image.load(SPACESHIP_EXPLOSION_1).convert_alpha()
+
     def remove_life(self):
+        self.init_destruction()
         self.lives -= 1

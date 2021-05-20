@@ -108,6 +108,10 @@ while game_on:
     if spaceship.control(pressed_keys):
         shots.add(Shot(position=spaceship.corner))
 
+    # Update destroyed spaceship
+    if spaceship.destruct_start_time is not None:
+        spaceship.update_destroyed()
+
     # Aliens movement and shooting -------------------------------------------------------------------------------------
     # TODO - player ship destruction animation and downtime
     # TODO - make the "boss" alien spaceship appear
