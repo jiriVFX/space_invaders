@@ -22,7 +22,7 @@ SPACESHIP_EXPLOSION_1 = "static/img/spaceship_explosion_1.png"
 SPACESHIP_EXPLOSION_2 = "static/img/spaceship_explosion_2.png"
 LIVES = 3
 # spaceship destruction time in milliseconds
-SPACESHIP_DESTRUCTION_TIME = 500
+SPACESHIP_DESTRUCTION_TIME = 800
 # spaceship explosion time in milliseconds
 SPACESHIP_EXPLOSION_TIME = 50
 

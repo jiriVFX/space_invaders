@@ -200,7 +200,8 @@ while game_on:
 
     # Place the ship on the screen
     # Places ship in the middle + spaceship corner(rect) position (changes when paddle moves)
-    screen.blit(spaceship.surface, spaceship.corner)
+    if spaceship.surface is not None:
+        screen.blit(spaceship.surface, spaceship.corner)
 
     # Place the wall on the screen
     for wall_group in wall_group_list:

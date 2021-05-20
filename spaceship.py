@@ -62,6 +62,10 @@ class SpaceShip(pygame.sprite.Sprite):
                 pygame.time.get_ticks() - self.destruct_start_time >= SPACESHIP_DESTRUCTION_TIME):
             self.new_life()
             return True
+        # remove surface just before bringing new spaceship to life
+        elif self.destruct_start_time and (
+                pygame.time.get_ticks() - self.destruct_start_time >= SPACESHIP_DESTRUCTION_TIME - 400):
+            self.surface = None
         elif pygame.time.get_ticks() - self.explosion_time >= SPACESHIP_EXPLOSION_TIME:
             # change explosion sprites to animate
             if self.explosion == 1:
