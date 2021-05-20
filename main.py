@@ -78,6 +78,7 @@ movement_delay = MOVEMENT_DELAY
 i = 0
 life_icon = pygame.image.load(SPACESHIP_PATH).convert_alpha()
 life_icon.set_colorkey(BLACK, pygame.RLEACCEL)
+out_of_screen = False
 
 while game_on:
     # Quit the game when X is clicked or Esc pressed to close the window
@@ -114,6 +115,7 @@ while game_on:
 
     # Aliens movement and shooting -------------------------------------------------------------------------------------
     # TODO - player ship destruction animation and downtime
+    # TODO - aliens have move in wider lines, if all aliens on either side have been destroyed
     # TODO - make the "boss" alien spaceship appear
     # TODO - Add sounds
 
@@ -149,7 +151,7 @@ while game_on:
     for alien_shot in alien_shots:
         if alien_shot.destruct_start_time is None:
             alien_shot.move()
-            alien_shot.collision_detect(wall_group_list, spaceship, scoreboard)
+            alien_shot.collision_detect(wall_group_list, scoreboard.green_line, spaceship, scoreboard)
         else:
             alien_shot.update_destroyed()
 
@@ -169,6 +171,8 @@ while game_on:
                     increase_speed = alien.move()
                     # alien and wall collision detection
                     alien.collision_detection(wall_group_list)
+                    # check whether alien crossed the bottom part of the screen
+                    out_of_screen = alien.out_of_screen()
         # increase speed
         if increase_speed:
             movement_delay /= 1.025
@@ -191,7 +195,6 @@ while game_on:
 
     # Render all aliens in the fleet
     for alien in fleet_group:
-        # print(alien.corner)
         if alien is not None:
             screen.blit(alien.surface, alien.corner)
 
@@ -219,7 +222,9 @@ while game_on:
     # Place remaining lives on the screen
     screen.blit(scoreboard.lives_text, scoreboard.lives_corner)
     # Place green HUD line on the screen
-    screen.blit(scoreboard.green_line, scoreboard.line_corner)
+    for pixel in scoreboard.green_line:
+        if pixel is not None:
+            screen.blit(pixel["pixel"], pixel["corner"])
 
     # Place life icons on the screen
     for j in range(1, scoreboard.lives + 1):
@@ -238,8 +243,9 @@ while game_on:
         game_on = False
 
     # Check whether player has any lives left
+    # Check whether aliens crossed the bottom of the screen
     # Render End Game text - has to be the last to render, otherwise covered by other surfaces
-    if scoreboard.lives == 0:
+    if scoreboard.lives == 0 or out_of_screen:
         # Play losing sound
         winning_sound.play()
         screen.blit(text_lost, text_lost_corner)

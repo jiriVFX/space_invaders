@@ -99,5 +99,11 @@ class Alien(pygame.sprite.Sprite):
                     # destroy wall_piece on collision with alien
                     wall_piece.kill()
 
+    def out_of_screen(self):
+        # If alien gets out of screen (reaches the bottom green HUD line)
+        if self.corner.bottom >= SCREEN_HEIGHT - 70:
+            return True
+        return False
+
     def collision_detection(self, wall_group_list):
         self.wall_collision(wall_group_list)

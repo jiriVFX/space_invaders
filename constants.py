@@ -91,5 +91,5 @@ HIT_SOUND_1 = "static/sound/hit1.mp3"
 HIT_SOUND_2 = "static/sound/hit2.mp3"
 
 # HUD line height
-GREEN_LINE_HEIGHT = 2
+GREEN_LINE_SIZE = 4
 

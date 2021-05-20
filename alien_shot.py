@@ -62,7 +62,7 @@ class AlienShot(pygame.sprite.Sprite):
 
     def out_of_screen(self):
         # If shot gets out of screen area
-        if (SCREEN_HEIGHT - 70) <= self.corner.bottom:
+        if SCREEN_HEIGHT <= self.corner.bottom:
             if self.destruct_start_time is None:
                 # initiate shot destruction
                 self.init_destruction()
@@ -119,9 +119,19 @@ class AlienShot(pygame.sprite.Sprite):
         # return False if spaceship was not hit
         return False
 
-    def collision_detect(self, wall_group_list, spaceship, scoreboard):
+    def line_collision(self, green_line):
+        for i in range(len(green_line)):
+            if green_line[i] is not None:
+                if self.corner.colliderect(green_line[i]["corner"]) and self.destruct_start_time is None:
+                    # initiate shot destruction
+                    self.init_destruction()
+                    # destroy pixel and the one next to it
+                    green_line[i] = None
+
+    def collision_detect(self, wall_group_list, green_line, spaceship, scoreboard):
         """Handles collision detection methods. Returns True when spaceship was hit, otherwise False.
         :type wall_group_list: pygame.sprite.Group
+        :type green_line: list[dict]
         :type spaceship: pygame.sprite.Sprite
         :type scoreboard: scoreboard.Scoreboard
         :rtype: bool"""
@@ -129,6 +139,8 @@ class AlienShot(pygame.sprite.Sprite):
         self.wall_collision(wall_group_list)
         # Detect if shot is out of screen
         self.out_of_screen()
+        # Detect collision with bottom HUD line
+        self.line_collision(green_line)
         # Spaceship collision detection
         if spaceship is not None and self.spaceship_collision(spaceship, scoreboard):
             return True
