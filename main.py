@@ -79,6 +79,9 @@ i = 0
 life_icon = pygame.image.load(SPACESHIP_PATH).convert_alpha()
 life_icon.set_colorkey(BLACK, pygame.RLEACCEL)
 out_of_screen = False
+alien_rows = [False for _ in range(ROWS)]
+turned_counter = 0
+out_of_bounds = True
 
 while game_on:
     # Quit the game when X is clicked or Esc pressed to close the window
@@ -159,19 +162,69 @@ while game_on:
         movement_time = time.time()
         increase_speed = None
 
-        # move only one row at each time
-        # move starting from the last row
-        # for alien in fleet_groups[len(fleet_groups) - 1 - i]:
-        #     increase_speed = alien.move()
+        # recalculate alien movement speed based on number of aliens on each side
+        # find first position on the right and on the left
+        # max_left = None
+        # max_right = None
+        # for alien in fleet_group:
+        #     if alien is not None:
+        #         if max_left is None or max_left > alien.column:
+        #             max_left = alien.column
+        #         if max_right is None or max_right < alien.column:
+        #             max_right = alien.column
 
+        # # calculate number of empty columns
+        # missing_columns = COLUMNS - ((max_right - max_left) + 1)
+        # # Number of movements to each side increases with each missing column
+        # movements_num = MOVEMENTS_NUM + (MOVEMENTS_NUM * missing_columns)
+
+        #print(missing_columns)
+        #print(movements_num)
+
+        # find out what rows have crossed the boundaries
+        if turned_counter == 0:
+            for alien in fleet_group:
+                if alien is not None and (alien.corner.left <= 40 or alien.corner.right >= SCREEN_WIDTH - 40):
+                    for j in range(ROWS):
+                        if alien.row == j:
+                            alien_rows[j] = True
+
+            # Check whether any row has not crossed the boundaries yet
+            out_of_bounds = True
+            for row in alien_rows:
+                if row is False:
+                    out_of_bounds = False
+                    break
+            print(alien_rows)
+            print(out_of_bounds)
+
+        # move only one row each time
         for alien in fleet_group:
             if alien is not None:
+                # move starting from the last row
                 if alien.row == ROWS - i:
+                    # if all the rows crossed boundaries, turn aliens around and step down
+                    if out_of_bounds and turned_counter <= ROWS:
+                        alien.direction *= -1
+                        alien.step_down()
+
                     increase_speed = alien.move()
+
                     # alien and wall collision detection
                     alien.collision_detection(wall_group_list)
                     # check whether alien crossed the bottom part of the screen
                     out_of_screen = alien.out_of_screen()
+
+        # keep track of number of turned around rows
+        if out_of_bounds and turned_counter <= ROWS:
+            turned_counter += 1
+            print(f"turned_counter = {turned_counter}")
+        else:
+            # reset counter and alien_rows when all the rows turned around
+            turned_counter = 0
+            alien_rows = [False for _ in range(ROWS)]
+            print("Counter reset")
+
         # increase speed
         if increase_speed:
             movement_delay /= 1.025

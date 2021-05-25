@@ -22,9 +22,13 @@ class Alien(pygame.sprite.Sprite):
         self.column = column
         # Movements counter
         self.movements = 0
+        # Number of movements
+        self.movements_num = MOVEMENTS_NUM
+        # Alien movement speed
+        self.alien_movement = ALIEN_MOVEMENT
         # Direction
         self.direction = 1
-        self.step_down = 0
+        self.step_down_amount = 0
         # animation iterator
         self.anim_iterator = 0
         # destruction start time
@@ -33,6 +37,8 @@ class Alien(pygame.sprite.Sprite):
         self.points = points
         # destruction fleet
         self.fleet_group = []
+        # # next iteration movement increase
+        # self.movements_num_increase = None
 
     def animate(self):
         if self.anim_iterator == 0:
@@ -42,30 +48,67 @@ class Alien(pygame.sprite.Sprite):
         # change image path to create animation effect
         self.surface = pygame.image.load(self.alien_paths[self.anim_iterator]).convert_alpha()
 
+    def calculate_speed(self):
+        # movement speed
+        self.alien_movement
+        # Number of movements to each side
+        self.movements_num
+
+    # def increase_movements(self, increase_by):
+    #     self.movements_num_increase = increase_by
+
     def move(self):
         # check whether alien is to be destroyed
         if not self.update_destroyed():
             increase_speed = False
             # animate
             self.animate()
-            # 4 movements to one side, then change sides
-            if self.movements == MOVEMENTS_NUM:
-                # Aliens have to move back to original 0 position, then 4 times more
-                self.movements = - MOVEMENTS_NUM
-                self.direction *= -1
-                # each time aliens get to the edge, they have to step down one row
-                self.step_down += ALIEN_HEIGHT
-                # move
-                self.corner.move_ip(self.direction * ALIEN_MOVEMENT, self.step_down)
-                # increase speed
-                increase_speed = True
-            else:
-                self.corner.move_ip(self.direction * ALIEN_MOVEMENT, self.step_down)
-
-            self.step_down = 0
-            self.movements += 1
+            # move
+            self.corner.move_ip(self.direction * self.alien_movement, self.step_down_amount)
 
             return increase_speed
+
+    def step_down(self):
+        print("Everything is ok")
+        # check whether alien is to be destroyed
+        if not self.update_destroyed():
+            # increase step_down_amount coordinates
+            self.step_down_amount += ALIEN_HEIGHT
+            # step down
+            self.corner.move_ip(self.direction * self.alien_movement, self.step_down_amount)
+            self.step_down_amount = 0
+
+    # def move(self):
+    #     self.calculate_speed()
+    #     # check whether alien is to be destroyed
+    #     if not self.update_destroyed():
+    #         increase_speed = False
+    #         # animate
+    #         self.animate()
+    #
+    #         # 4 movements to one side, then change sides
+    #         if self.movements == self.movements_num:
+    #             # Aliens have to move back to original 0 position, then 4 times more
+    #             self.movements = - self.movements_num
+    #             self.direction *= -1
+    #             # each time aliens get to the edge, they have to step down one row
+    #             self.step_down += ALIEN_HEIGHT
+    #             # move
+    #             self.corner.move_ip(self.direction * self.alien_movement, self.step_down)
+    #             # increase speed
+    #             increase_speed = True
+    #
+    #             # # check whether number of movements should increase
+    #             # if self.movements_num_increase is not None:
+    #             #     self.movements_num = self.movements_num_increase
+    #             #     self.movements_num_increase = None
+    #         else:
+    #             self.corner.move_ip(self.direction * self.alien_movement, self.step_down)
+    #
+    #         self.step_down = 0
+    #         self.movements += 1
+    #
+    #         return increase_speed
 
     def update_destroyed(self):
         # check whether alien is to be destroyed
