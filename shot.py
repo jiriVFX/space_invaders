@@ -33,12 +33,14 @@ class Shot(pygame.sprite.Sprite):
 
     def out_of_screen(self):
         # If shot gets out of screen area
-        if self.corner.top <= 0:
+        if self.corner.top <= SHOT_EXPLOSION_WIDTH // 2:
             # destroy shot only if it has not been hit already
             if self.destruct_start_time is None:
                 self.init_destruction()
 
     def init_destruction(self):
+        # center the player shot explosion sprite
+        self.corner = self.surface.get_rect(center=(self.corner[0] - SHOT_EXPLOSION_WIDTH // 2, self.corner[1]))
         # show player shot explosion
         self.surface = pygame.image.load(PLAYER_SHOT_EXPLOSION).convert_alpha()
         # get current time in milliseconds

@@ -15,6 +15,7 @@ SPACESHIP_WIDTH = 44
 SPACESHIP_HEIGHT = 10
 SPACESHIP_PATH = "static/img/spaceship.png"
 PLAYER_SHOT_EXPLOSION = "static/img/player_shot_explosion.png"
+SHOT_EXPLOSION_WIDTH = 32
 SPACESHIP_EXPLOSION_1 = "static/img/spaceship_explosion_1.png"
 SPACESHIP_EXPLOSION_2 = "static/img/spaceship_explosion_2.png"
 LIVES = 3

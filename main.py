@@ -178,14 +178,11 @@ while game_on:
                                 break
                     break
 
-            print(out_of_bounds)
-
         # move only one row each time
         for alien in fleet_group:
             if alien is not None:
                 # move starting from the last row
                 if alien.row == ROWS - i:
-                    print(alien.row)
                     # if all aliens in the column crossed boundaries, turn aliens around and step down
                     if out_of_bounds and turned_counter <= ROWS:
                         alien.direction *= -1
@@ -201,7 +198,6 @@ while game_on:
         # print(out_of_bounds)
         if out_of_bounds and turned_counter <= ROWS:
             turned_counter += 1
-            print(turned_counter)
         else:
             # reset counter and alien_rows when all the rows turned around
             turned_counter = 0
