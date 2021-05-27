@@ -62,14 +62,14 @@ class AlienShot(pygame.sprite.Sprite):
 
     def out_of_screen(self):
         # If shot gets out of screen area
-        if SCREEN_HEIGHT <= self.corner.bottom:
+        if SCREEN_HEIGHT + ALIEN_SHOT_EXPLOSION_HEIGHT // 2 <= self.corner.bottom:
             if self.destruct_start_time is None:
                 # initiate shot destruction
-                self.init_destruction()
+                self.init_destruction(explosion_sprite=ALIEN_SHOT_EXPLOSION_GREEN)
 
-    def init_destruction(self):
+    def init_destruction(self, explosion_sprite=ALIEN_SHOT_EXPLOSION):
         # show alien shot explosion
-        self.surface = pygame.image.load(ALIEN_SHOT_EXPLOSION).convert_alpha()
+        self.surface = pygame.image.load(explosion_sprite).convert_alpha()
         # get current time in milliseconds
         self.destruct_start_time = pygame.time.get_ticks()
 
@@ -97,7 +97,7 @@ class AlienShot(pygame.sprite.Sprite):
                         # destroy wall
                         wall_piece.destroy(wall_group)
                         # initiate shot destruction
-                        self.init_destruction()
+                        self.init_destruction(explosion_sprite=ALIEN_SHOT_EXPLOSION_GREEN)
                         # reset penetration counter
                         self.penetration_counter = 0
                     else:
@@ -124,7 +124,7 @@ class AlienShot(pygame.sprite.Sprite):
             if green_line[i] is not None:
                 if self.corner.colliderect(green_line[i]["corner"]) and self.destruct_start_time is None:
                     # initiate shot destruction
-                    self.init_destruction()
+                    self.init_destruction(explosion_sprite=ALIEN_SHOT_EXPLOSION_GREEN)
                     # destroy pixel and the one next to it
                     green_line[i] = None
 
