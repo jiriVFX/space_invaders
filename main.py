@@ -13,7 +13,7 @@ from random import choice
 # Initialize pygame
 pygame.init()
 
-# ----------------------------------------------------------------------------------------------------------------------
+# ======================================================================================================================
 
 # Create screen
 screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
@@ -67,21 +67,21 @@ alien_count = 0
 # Create fleet of aliens
 alien_count = create_alien_fleet(fleet_group)
 
-# ----------------------------------------------------------------------------------------------------------------------
+# ======================================================================================================================
 
 # Game loop
 clock = pygame.time.Clock()
 game_on = True
 movement_time = time.time()
 shoot_time = time.time()
-movement_delay = MOVEMENT_DELAY
+movement_delay = 0.1
 i = 0
 life_icon = pygame.image.load(SPACESHIP_PATH).convert_alpha()
 life_icon.set_colorkey(BLACK, pygame.RLEACCEL)
 out_of_screen = False
 alien_rows = [False for _ in range(ROWS)]
 turned_counter = 0
-out_of_bounds = True
+out_of_bounds = False
 
 while game_on:
     # Quit the game when X is clicked or Esc pressed to close the window
@@ -92,7 +92,7 @@ while game_on:
             if event.key == pygame.K_ESCAPE:
                 game_on = False
 
-    # Player Shot collision detection and spaceship movement -----------------------------------------------------------
+    # Player Shot collision detection and spaceship movement ===========================================================
 
     # Collision detection and movement of existing player shots
     for shot in shots:
@@ -116,10 +116,10 @@ while game_on:
     if spaceship.destruct_start_time is not None:
         spaceship.update_destroyed()
 
-    # Aliens movement and shooting -------------------------------------------------------------------------------------
-    # TODO - aliens have move in wider lines, if all aliens on either side have been destroyed
+    # Aliens movement and shooting =====================================================================================
     # TODO - make the "boss" alien spaceship appear
     # TODO - Add sounds
+    # TODO - center player shot explosion sprite
 
     # Make random alien shoot
     if time.time() - shoot_time > ALIEN_SHOOT_DELAY:
@@ -149,7 +149,7 @@ while game_on:
 
         alien_shots.add(AlienShot(ALIEN_SHOT_PATHS, random_alien.corner))
 
-    # Collision detection and movement of existing alien shots
+    # Collision detection and movement of existing alien shots ---------------------------------------------------------
     for alien_shot in alien_shots:
         if alien_shot.destruct_start_time is None:
             alien_shot.move()
@@ -157,45 +157,27 @@ while game_on:
         else:
             alien_shot.update_destroyed()
 
-    # move aliens in intervals
+    # move aliens in intervals -----------------------------------------------------------------------------------------
     if time.time() - movement_time > movement_delay:
         movement_time = time.time()
-        increase_speed = None
 
-        # recalculate alien movement speed based on number of aliens on each side
-        # find first position on the right and on the left
-        # max_left = None
-        # max_right = None
-        # for alien in fleet_group:
-        #     if alien is not None:
-        #         if max_left is None or max_left > alien.column:
-        #             max_left = alien.column
-        #         if max_right is None or max_right < alien.column:
-        #             max_right = alien.column
-
-        # # calculate number of empty columns
-        # missing_columns = COLUMNS - ((max_right - max_left) + 1)
-        # # Number of movements to each side increases with each missing column
-        # movements_num = MOVEMENTS_NUM + (MOVEMENTS_NUM * missing_columns)
-
-        #print(missing_columns)
-        #print(movements_num)
-
-        # find out what rows have crossed the boundaries
+        # find out if any column has crossed the boundaries
         if turned_counter == 0:
+            out_of_bounds = False
             for alien in fleet_group:
+                # check whether any alien crossed the boundaries
                 if alien is not None and (alien.corner.left <= 40 or alien.corner.right >= SCREEN_WIDTH - 40):
-                    for j in range(ROWS):
-                        if alien.row == j:
-                            alien_rows[j] = True
-
-            # Check whether any row has not crossed the boundaries yet
-            out_of_bounds = True
-            for row in alien_rows:
-                if row is False:
-                    out_of_bounds = False
+                    column_crossed = alien.column
+                    out_of_bounds = True
+                    # find all aliens in the same column and check if they crossed the boundaries too
+                    # not very efficient, but the only working solution from those tested so far
+                    for another_alien in fleet_group:
+                        if another_alien is not None and another_alien.column == column_crossed:
+                            if another_alien.corner.left > 40 and another_alien.corner.right < SCREEN_WIDTH - 40:
+                                out_of_bounds = False
+                                break
                     break
-            print(alien_rows)
+
             print(out_of_bounds)
 
         # move only one row each time
@@ -203,33 +185,63 @@ while game_on:
             if alien is not None:
                 # move starting from the last row
                 if alien.row == ROWS - i:
-                    # if all the rows crossed boundaries, turn aliens around and step down
+                    print(alien.row)
+                    # if all aliens in the column crossed boundaries, turn aliens around and step down
                     if out_of_bounds and turned_counter <= ROWS:
                         alien.direction *= -1
                         alien.step_down()
-
-                    increase_speed = alien.move()
-
+                        # print("Turning around")
+                    alien.move()
                     # alien and wall collision detection
                     alien.collision_detection(wall_group_list)
                     # check whether alien crossed the bottom part of the screen
                     out_of_screen = alien.out_of_screen()
 
         # keep track of number of turned around rows
+        # print(out_of_bounds)
         if out_of_bounds and turned_counter <= ROWS:
             turned_counter += 1
-            print(f"turned_counter = {turned_counter}")
+            print(turned_counter)
         else:
             # reset counter and alien_rows when all the rows turned around
             turned_counter = 0
-            alien_rows = [False for _ in range(ROWS)]
-            print("Counter reset")
 
-        # increase speed
-        if increase_speed:
-            movement_delay /= 1.025
+        # increase speed based on number of missing side columns -------------------------------------------------------
+        existing_columns = [0 for _ in range(COLUMNS)]
+        for alien in fleet_group:
+            # record missing columns
+            for j in range(COLUMNS):
+                if alien is not None and alien.column == j:
+                    existing_columns[j] = 1
 
-        # increment row
+        missing_columns = 0
+        start = 0
+        # iterate from the start until finding column (1)
+        while start != len(existing_columns) - 1:
+            if existing_columns[start] == 0:
+                missing_columns += 1
+            else:
+                break
+            start += 1
+
+        # prevent from iterating if whole list was already iterated over
+        if start != len(existing_columns) - 1:
+            end = len(existing_columns) - 1
+            # iterate from the end until finding column (1)
+            while end != 0:
+                if existing_columns[end] == 0:
+                    missing_columns += 1
+                else:
+                    break
+                end -= 1
+
+        # recalculate speed --------------------------------------------------------------------------------------------
+        # movement_delay = MOVEMENT_DELAY - (missing_columns * (MOVEMENT_DELAY / (COLUMNS - 1)))
+        # if movement_delay <= 0:
+        #     movement_delay = 0.01
+        # print(movement_delay)
+
+        # increment row ------------------------------------------------------------------------------------------------
         if i < ROWS:
             i += 1
         else:
@@ -240,7 +252,7 @@ while game_on:
             if alien is not None:
                 alien.update_destroyed()
 
-    # Rendering --------------------------------------------------------------------------------------------------------
+    # Rendering ========================================================================================================
 
     # Place the gaming area on the screen
     screen.blit(game_surface, (0, 0))
