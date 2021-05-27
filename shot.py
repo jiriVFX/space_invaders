@@ -36,13 +36,13 @@ class Shot(pygame.sprite.Sprite):
         if self.corner.top <= SHOT_EXPLOSION_WIDTH // 2:
             # destroy shot only if it has not been hit already
             if self.destruct_start_time is None:
-                self.init_destruction()
+                self.init_destruction(explosion_sprite=PLAYER_SHOT_EXPLOSION_RED)
 
-    def init_destruction(self):
+    def init_destruction(self, explosion_sprite=PLAYER_SHOT_EXPLOSION):
         # center the player shot explosion sprite
         self.corner = self.surface.get_rect(center=(self.corner[0] - SHOT_EXPLOSION_WIDTH // 2, self.corner[1]))
         # show player shot explosion
-        self.surface = pygame.image.load(PLAYER_SHOT_EXPLOSION).convert_alpha()
+        self.surface = pygame.image.load(explosion_sprite).convert_alpha()
         # get current time in milliseconds
         self.destruct_start_time = pygame.time.get_ticks()
 
