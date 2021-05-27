@@ -24,6 +24,8 @@ LIVES = 3
 SPACESHIP_DESTRUCTION_TIME = 900
 # spaceship explosion time in milliseconds
 SPACESHIP_EXPLOSION_TIME = 50
+# player shot penetration - how many pieces of wall shot destroys before its own destruction
+PLAYER_SHOT_PENETRATION = 4
 
 # Walls
 WALLS = 4
@@ -75,13 +77,13 @@ ALIEN_EXPLOSION = "static/img/alien_explosion.png"
 ALIEN_SHOT_EXPLOSION = "static/img/alien_shot_explosion.png"
 ALIEN_SHOT_EXPLOSION_GREEN = "static/img/alien_shot_explosion_green.png"
 ALIEN_SHOT_EXPLOSION_HEIGHT = 32
-MOVEMENT_DELAY = 0.25
+MOVEMENT_DELAY = 0.20
 ALIEN_MOVEMENT = 10
 MOVEMENTS_NUM = 4
 ALIEN_SHOOT_DELAY = 1
 ALIEN_SHOT_SPEED = 5
 # shot penetration - how many pieces of wall shot destroys before its own destruction
-ALIEN_SHOT_PENETRATION = 5
+ALIEN_SHOT_PENETRATION = 6
 # alien destruction time in milliseconds
 DESTRUCTION_TIME = 250
 

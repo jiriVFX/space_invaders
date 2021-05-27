@@ -232,10 +232,10 @@ while game_on:
                 end -= 1
 
         # recalculate speed --------------------------------------------------------------------------------------------
-        # movement_delay = MOVEMENT_DELAY - (missing_columns * (MOVEMENT_DELAY / (COLUMNS - 1)))
-        # if movement_delay <= 0:
-        #     movement_delay = 0.01
-        # print(movement_delay)
+        movement_delay = MOVEMENT_DELAY - (missing_columns * (MOVEMENT_DELAY / (COLUMNS - 1)))
+        if movement_delay <= 0:
+            movement_delay = 0.000000001
+        print(movement_delay)
 
         # increment row ------------------------------------------------------------------------------------------------
         if i < ROWS:

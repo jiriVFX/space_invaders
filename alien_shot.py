@@ -93,7 +93,6 @@ class AlienShot(pygame.sprite.Sprite):
                     # destroy shot only if it has not been hit already
                     # and only if it destroyed ALIEN_SHOT_PENETRATION amount of wall pieces
                     if self.destruct_start_time is None and self.penetration_counter == ALIEN_SHOT_PENETRATION:
-                        self.init_destruction()
                         # destroy wall
                         wall_piece.destroy(wall_group)
                         # initiate shot destruction

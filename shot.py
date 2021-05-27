@@ -21,6 +21,8 @@ class Shot(pygame.sprite.Sprite):
         self.speed = SHOT_SPEED
         # destruction start time
         self.destruct_start_time = None
+        # how deep in the wall the shot gets before its destruction
+        self.penetration_counter = 0
 
     def move(self):
         self.corner.move_ip(self.direction_x * self.speed, self.direction_y * self.speed)
@@ -79,11 +81,18 @@ class Shot(pygame.sprite.Sprite):
         for wall_group in wall_group_list:
             for wall_piece in wall_group:
                 if self.corner.colliderect(wall_piece.corner):
-                    # destroy the wall_piece
-                    wall_piece.kill()
                     # destroy shot only if it has not been hit already
-                    if self.destruct_start_time is None:
-                        self.init_destruction()
+                    # and only if it destroyed ALIEN_SHOT_PENETRATION amount of wall pieces
+                    if self.destruct_start_time is None and self.penetration_counter == PLAYER_SHOT_PENETRATION:
+                        # destroy wall
+                        wall_piece.destroy(wall_group)
+                        # initiate shot destruction
+                        self.init_destruction(explosion_sprite=ALIEN_SHOT_EXPLOSION_GREEN)
+                        # reset penetration counter
+                        self.penetration_counter = 0
+                    else:
+                        wall_piece.kill()
+                        self.penetration_counter += 1
 
     def alien_shot_collision(self, alien_shots):
         for alien_shot in alien_shots:
