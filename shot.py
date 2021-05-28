@@ -1,5 +1,3 @@
-import time
-
 import pygame
 from constants import *
 
@@ -103,7 +101,19 @@ class Shot(pygame.sprite.Sprite):
                 if self.destruct_start_time is None:
                     self.init_destruction()
 
-    def collision_detect(self, fleet_group, wall_group_list, alien_shots, scoreboard):
+    def boss_collision(self, boss_group, scoreboard):
+        for boss in boss_group:
+            if boss is not None:
+                if self.corner.colliderect(boss.corner):
+                    # destroy boss if it has not been hit already
+                    if boss.destruct_start_time is None:
+                        boss.init_destruction()
+                        # Increase score
+                        scoreboard.increase(boss)
+                        # destroy shot
+                        self.kill()
+
+    def collision_detect(self, fleet_group, wall_group_list, alien_shots, boss_group, scoreboard):
         hit = False
         # Alien fleet collision detection
         hit = self.fleet_collision(fleet_group, scoreboard)
@@ -111,6 +121,8 @@ class Shot(pygame.sprite.Sprite):
         self.wall_collision(wall_group_list)
         # Alien shots collision detection
         self.alien_shot_collision(alien_shots)
+        # Boss shots collision detection
+        self.boss_collision(boss_group, scoreboard)
         # Detect if shot is out of screen
         self.out_of_screen()
 

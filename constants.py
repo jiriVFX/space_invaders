@@ -8,7 +8,6 @@ WHITE = (230, 230, 230)
 # Screen
 SCREEN_WIDTH = 920
 SCREEN_HEIGHT = 1010
-BORDER = 5
 
 # Spaceship
 SPACESHIP_WIDTH = 44
@@ -40,6 +39,8 @@ COLUMNS = 11
 ROWS = 6
 ALIEN_HEIGHT = 32
 ALIEN_WIDTH = 48
+ALIEN_BOSS_WIDTH = 60
+ALIEN_BOSS_Y_POS = 100
 ALIEN_SHOT_PATHS = (
     "static/img/alien_shot/alien_shot_1.png",
     "static/img/alien_shot/alien_shot_2.png",
@@ -68,7 +69,7 @@ ALIEN_SHOT_UPDATE_SPEED = 8
 POINTS_10 = ("static/img/10_points_1.png", "static/img/10_points_2.png")
 POINTS_20 = ("static/img/20_points_1.png", "static/img/20_points_2.png")
 POINTS_30 = ("static/img/30_points_1.png", "static/img/30_points_2.png")
-POINTS_100 = "static/img/30_points_1.png"
+POINTS_100 = "static/img/100_points_1.png"
 ALIEN_10_POINTS = 10
 ALIEN_20_POINTS = 20
 ALIEN_30_POINTS = 30
@@ -79,7 +80,8 @@ ALIEN_SHOT_EXPLOSION_GREEN = "static/img/alien_shot_explosion_green.png"
 ALIEN_SHOT_EXPLOSION_HEIGHT = 32
 MOVEMENT_DELAY = 0.20
 ALIEN_MOVEMENT = 10
-MOVEMENTS_NUM = 4
+BOSS_MOVEMENT = 2
+BOSS_APPEARANCE_DELAY = 25
 ALIEN_SHOOT_DELAY = 1
 ALIEN_SHOT_SPEED = 5
 # shot penetration - how many pieces of wall shot destroys before its own destruction

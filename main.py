@@ -1,3 +1,5 @@
+import random
+
 import pygame
 from constants import *
 from spaceship import SpaceShip
@@ -6,6 +8,7 @@ from shot import Shot
 from alien_shot import AlienShot
 from scoreboard import Scoreboard
 from wall import Wall
+from boss import Boss
 from helper_functions import *
 import time
 from random import choice
@@ -70,14 +73,18 @@ alien_count = 0
 # Create fleet of aliens
 alien_count = create_alien_fleet(fleet_group)
 
+# Create boss - boss is randomly created during gameplay
+boss_group = pygame.sprite.Group()
+
 # ======================================================================================================================
 
 # Game loop
 clock = pygame.time.Clock()
 game_on = True
 movement_time = time.time()
+boss_time = time.time()
 shoot_time = time.time()
-movement_delay = 0.1
+movement_delay = MOVEMENT_DELAY
 i = 0
 life_icon = pygame.image.load(SPACESHIP_PATH).convert_alpha()
 life_icon.set_colorkey(BLACK, pygame.RLEACCEL)
@@ -101,7 +108,7 @@ while game_on:
     for shot in shots:
         if shot.destruct_start_time is None:
             shot.move()
-            hit = shot.collision_detect(fleet_group, wall_group_list, alien_shots, scoreboard)
+            hit = shot.collision_detect(fleet_group, wall_group_list, alien_shots, boss_group, scoreboard)
             # when alien is hit, decrease alien count
             if hit:
                 alien_count -= 1
@@ -122,7 +129,6 @@ while game_on:
     # Aliens movement and shooting =====================================================================================
     # TODO - make the "boss" alien spaceship appear
     # TODO - Add sounds
-    # TODO - center player shot explosion sprite
 
     # Make random alien shoot
     if time.time() - shoot_time > ALIEN_SHOOT_DELAY:
@@ -250,6 +256,25 @@ while game_on:
             if alien is not None:
                 alien.update_destroyed()
 
+    # Creation, movement and out of screen detection of alien boss -----------------------------------------------------
+
+    if time.time() - boss_time > BOSS_APPEARANCE_DELAY:
+        boss_time = time.time()
+        # create a boss if BOSS_APPEARANCE_DELAY has passed
+        boss_group.add(Boss())
+        # 50% chance of boss creation
+        # random_num = random.randint(0, 1)
+        # if random_num == 0:
+        #     boss = Boss()
+    for boss in boss_group:
+        if boss is not None:
+            if boss.destruct_start_time is None:
+                boss.move()
+                boss.out_of_screen()
+            else:
+                print(boss.destruct_start_time)
+                boss.update_destroyed()
+
     # Rendering ========================================================================================================
 
     # Place the gaming area on the screen
@@ -262,6 +287,11 @@ while game_on:
     for alien in fleet_group:
         if alien is not None:
             screen.blit(alien.surface, alien.corner)
+
+    # Place Boss on the screen
+    for boss in boss_group:
+        if boss is not None:
+            screen.blit(boss.surface, boss.corner)
 
     # Place the ship on the screen
     # Places ship in the middle + spaceship corner(rect) position (changes when paddle moves)

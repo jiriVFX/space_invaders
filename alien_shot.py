@@ -21,7 +21,7 @@ class AlienShot(pygame.sprite.Sprite):
 
             self.current = 0
             self.surface = self.sprites[self.current]
-            self.surface.set_colorkey((255, 255, 255), pygame.RLEACCEL)
+            self.surface.set_colorkey(BLACK, pygame.RLEACCEL)
         except (FileNotFoundError, TypeError) as exception:
             self.shot_radius = shot_size
             self.surface = pygame.Surface((self.shot_radius, self.shot_radius))
@@ -50,6 +50,7 @@ class AlienShot(pygame.sprite.Sprite):
                 self.current = 0
             # change the sprite
             self.surface = self.sprites[self.current]
+            self.surface.set_colorkey(BLACK, pygame.RLEACCEL)
             # reset update counter
             self.update_count = 0
         self.update_count += 1
