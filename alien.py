@@ -20,10 +20,6 @@ class Alien(pygame.sprite.Sprite):
         # coordinates in the fleet
         self.row = row
         self.column = column
-        # Movements counter
-        self.movements = 0
-        # Number of movements
-        self.movements_num = MOVEMENTS_NUM
         # Alien movement speed
         self.alien_movement = ALIEN_MOVEMENT
         # Direction
@@ -37,8 +33,6 @@ class Alien(pygame.sprite.Sprite):
         self.points = points
         # destruction fleet
         self.fleet_group = []
-        # # next iteration movement increase
-        # self.movements_num_increase = None
 
     def animate(self):
         if self.anim_iterator == 0:
@@ -47,15 +41,6 @@ class Alien(pygame.sprite.Sprite):
             self.anim_iterator = 0
         # change image path to create animation effect
         self.surface = pygame.image.load(self.alien_paths[self.anim_iterator]).convert_alpha()
-
-    def calculate_speed(self):
-        # movement speed
-        self.alien_movement
-        # Number of movements to each side
-        self.movements_num
-
-    # def increase_movements(self, increase_by):
-    #     self.movements_num_increase = increase_by
 
     def move(self):
         # check whether alien is to be destroyed

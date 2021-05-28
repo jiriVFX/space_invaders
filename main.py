@@ -43,7 +43,7 @@ game_surface.fill(DARK_GREY)
 # Signature
 signature = pygame.image.load("static/img/signature.png").convert_alpha()
 signature.set_colorkey(BLACK, pygame.RLEACCEL)
-signature_corner = signature.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+signature_corner = signature.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 200))
 
 # Create wall groups
 wall_group_list = []
@@ -238,7 +238,6 @@ while game_on:
         movement_delay = MOVEMENT_DELAY - (missing_columns * (MOVEMENT_DELAY / (COLUMNS - 1)))
         if movement_delay <= 0:
             movement_delay = 0.000000001
-        print(movement_delay)
 
         # increment row ------------------------------------------------------------------------------------------------
         if i < ROWS:
