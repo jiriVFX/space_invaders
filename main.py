@@ -39,10 +39,13 @@ winning_sound = pygame.mixer.Sound("static/sound/chime.mp3")
 # Gaming area surface
 game_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
 game_surface.fill(DARK_GREY)
-# rect = game_space.get_rect()
+
+# Signature
+signature = pygame.image.load("static/img/signature.png").convert_alpha()
+signature.set_colorkey(BLACK, pygame.RLEACCEL)
+signature_corner = signature.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
 
 # Create wall groups
-#wall_group = pygame.sprite.Group()
 wall_group_list = []
 
 for group in range(WALLS):
@@ -252,6 +255,9 @@ while game_on:
 
     # Place the gaming area on the screen
     screen.blit(game_surface, (0, 0))
+
+    # Place signature on the screen
+    screen.blit(signature, signature_corner)
 
     # Render all aliens in the fleet
     for alien in fleet_group:
