@@ -61,5 +61,5 @@ class Boss(pygame.sprite.Sprite):
 
     def out_of_screen(self):
         # If alien gets out of screen (reaches the bottom green HUD line)
-        if self.corner.right <= 0 or self.corner.right >= SCREEN_WIDTH:
+        if self.corner.right <= 0 or self.corner.left >= SCREEN_WIDTH:
             self.kill()
