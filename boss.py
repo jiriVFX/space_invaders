@@ -42,14 +42,20 @@ class Boss(pygame.sprite.Sprite):
 
     def update_destroyed(self):
         # check whether alien is to be destroyed
-        if self.destruct_start_time and (pygame.time.get_ticks() - self.destruct_start_time >= DESTRUCTION_TIME):
+        if self.destruct_start_time and (pygame.time.get_ticks() - self.destruct_start_time >= BOSS_DESTRUCTION_TIME):
             self.destroy()
             return True
+        elif self.destruct_start_time and (pygame.time.get_ticks() - self.destruct_start_time >= BOSS_DESTRUCTION_TIME // 3):
+            # change the explosion sprite during destruction
+            self.surface = pygame.image.load(ALIEN_BOSS_EXPLOSIONS[1]).convert_alpha()
+            self.surface.set_colorkey(BLACK, pygame.RLEACCEL)
+
         return False
 
     def init_destruction(self):
         # show alien explosion
-        self.surface = pygame.image.load(ALIEN_EXPLOSION).convert_alpha()
+        self.surface = pygame.image.load(ALIEN_BOSS_EXPLOSIONS[0]).convert_alpha()
+        self.surface.set_colorkey(BLACK, pygame.RLEACCEL)
         # get current time in milliseconds
         self.destruct_start_time = pygame.time.get_ticks()
 

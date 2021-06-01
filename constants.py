@@ -75,6 +75,7 @@ ALIEN_20_POINTS = 20
 ALIEN_30_POINTS = 30
 ALIENS_BOSS_POINTS = 100
 ALIEN_EXPLOSION = "static/img/alien_explosion.png"
+ALIEN_BOSS_EXPLOSIONS = ("static/img/alien_boss_explosion_1.png", "static/img/alien_boss_explosion_2.png")
 ALIEN_SHOT_EXPLOSION = "static/img/alien_shot_explosion.png"
 ALIEN_SHOT_EXPLOSION_GREEN = "static/img/alien_shot_explosion_green.png"
 ALIEN_SHOT_EXPLOSION_HEIGHT = 32
@@ -88,16 +89,16 @@ ALIEN_SHOT_SPEED = 5
 ALIEN_SHOT_PENETRATION = 6
 # alien destruction time in milliseconds
 DESTRUCTION_TIME = 250
+BOSS_DESTRUCTION_TIME = 1200
 
 # Shot
 SHOT_SPEED = 10
 # Shot delay in seconds
 SHOT_DELAY = 0.5
 
-# Collision sounds
-HIT_SOUND_1 = "static/sound/hit1.mp3"
-HIT_SOUND_2 = "static/sound/hit2.mp3"
-
 # HUD line height
 GREEN_LINE_SIZE = 4
 
+# Sounds
+HIT_SOUND_1 = "static/sound/hit1.mp3"
+HIT_SOUND_2 = "static/sound/hit2.mp3"
