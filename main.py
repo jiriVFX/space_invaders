@@ -36,8 +36,10 @@ text_lost = font.render("GAME OVER", True, RED)
 text_lost_corner = text_won.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 300))
 
 # Sounds
-collision_sound = pygame.mixer.Sound("static/sound/hit1.mp3")
-winning_sound = pygame.mixer.Sound("static/sound/chime.mp3")
+game_over_sound = pygame.mixer.Sound("static/sound/space_tunnel.mp3")
+alien_move_sounds = (pygame.mixer.Sound(ALIEN_MOVEMENT_SOUND_1), pygame.mixer.Sound(ALIEN_MOVEMENT_SOUND_2),
+                     pygame.mixer.Sound(ALIEN_MOVEMENT_SOUND_3), pygame.mixer.Sound(ALIEN_MOVEMENT_SOUND_3))
+
 
 # Gaming area surface
 game_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -81,10 +83,13 @@ boss_group = pygame.sprite.Group()
 # Game loop
 clock = pygame.time.Clock()
 game_on = True
-movement_time = time.time()
 boss_time = time.time()
+movement_time = time.time()
+movement_sound_time = time.time()
 shoot_time = time.time()
 movement_delay = MOVEMENT_DELAY
+movement_sound_delay = movement_delay + MOVEMENT_SOUND_DELAY
+movement_sound_counter = 0
 i = 0
 life_icon = pygame.image.load(SPACESHIP_PATH).convert_alpha()
 life_icon.set_colorkey(BLACK, pygame.RLEACCEL)
@@ -127,8 +132,8 @@ while game_on:
         spaceship.update_destroyed()
 
     # Aliens movement and shooting =====================================================================================
-    # TODO - make the "boss" alien spaceship appear
     # TODO - Add sounds
+    # TODO - save high-score
 
     # Make random alien shoot
     if time.time() - shoot_time > ALIEN_SHOOT_DELAY:
@@ -165,6 +170,21 @@ while game_on:
             alien_shot.collision_detect(wall_group_list, scoreboard.green_line, spaceship, scoreboard)
         else:
             alien_shot.update_destroyed()
+
+    # play alien movement sounds in intervals --------------------------------------------------------------------------
+
+    # sounds in the original game are not played synchronously with the movement
+    # so we have to make a separate timer to play movement sounds
+
+    if time.time() - movement_sound_time > movement_sound_delay:
+        movement_sound_time = time.time()
+        # play alien movement sound
+        alien_move_sounds[movement_sound_counter].play()
+        # increment or reset sound counter
+        if movement_sound_counter < 3:
+            movement_sound_counter += 1
+        else:
+            movement_sound_counter = 0
 
     # move aliens in intervals -----------------------------------------------------------------------------------------
     if time.time() - movement_time > movement_delay:
@@ -242,6 +262,7 @@ while game_on:
 
         # recalculate speed --------------------------------------------------------------------------------------------
         movement_delay = MOVEMENT_DELAY - (missing_columns * (MOVEMENT_DELAY / (COLUMNS - 1)))
+        movement_sound_delay = MOVEMENT_SOUND_DELAY - (missing_columns * (MOVEMENT_SOUND_DELAY / (COLUMNS - 1)))
         if movement_delay <= 0:
             movement_delay = 0.000000001
 
@@ -272,7 +293,6 @@ while game_on:
                 boss.move()
                 boss.out_of_screen()
             else:
-                print(boss.destruct_start_time)
                 boss.update_destroyed()
 
     # Rendering ========================================================================================================
@@ -331,23 +351,23 @@ while game_on:
     # Render End Game text - has to be the last to render, otherwise covered by other surfaces
     if alien_count == 0:
         # Play winning sound
-        winning_sound.play()
+        game_over_sound.play()
         screen.blit(text_won, text_won_corner)
         pygame.display.update()
         # Wait for x milliseconds until closing the game
-        pygame.time.delay(3000)
+        pygame.time.delay(END_SCREEN_TIME)
         game_on = False
 
     # Check whether player has any lives left
     # Check whether aliens crossed the bottom of the screen
     # Render End Game text - has to be the last to render, otherwise covered by other surfaces
     if scoreboard.lives == 0 or out_of_screen:
-        # Play losing sound
-        winning_sound.play()
+        # Play game over sound
+        game_over_sound.play()
         screen.blit(text_lost, text_lost_corner)
         pygame.display.update()
         # Wait for x milliseconds until closing the game
-        pygame.time.delay(3000)
+        pygame.time.delay(END_SCREEN_TIME)
         game_on = False
 
     # Refresh display

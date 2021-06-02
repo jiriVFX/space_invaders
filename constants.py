@@ -100,5 +100,16 @@ SHOT_DELAY = 0.5
 GREEN_LINE_SIZE = 4
 
 # Sounds
-HIT_SOUND_1 = "static/sound/hit1.mp3"
-HIT_SOUND_2 = "static/sound/hit2.mp3"
+MOVEMENT_SOUND_DELAY = 0.5
+ALIEN_EXPLOSION_SOUND = "static/sound/alien_explosion.wav"
+ALIEN_MOVEMENT_SOUND_1 = "static/sound/alien_movement_1.wav"
+ALIEN_MOVEMENT_SOUND_2 = "static/sound/alien_movement_2.wav"
+ALIEN_MOVEMENT_SOUND_3 = "static/sound/alien_movement_3.wav"
+ALIEN_MOVEMENT_SOUND_4 = "static/sound/alien_movement_4.wav"
+BOSS_SOUND = "static/sound/boss.wav"
+BOSS_EXPLOSION_SOUND = "static/sound/boss_explosion.wav"
+SHOOT_SOUND = "static/sound/shoot.wav"
+PLAYER_EXPLOSION_SOUND = "static/sound/player_explosion.wav"
+
+# end screen time
+END_SCREEN_TIME = 10000

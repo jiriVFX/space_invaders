@@ -5,8 +5,8 @@ from constants import *
 class Shot(pygame.sprite.Sprite):
     # Initialize the sound module
     pygame.mixer.init()
-    col_sound = pygame.mixer.Sound(HIT_SOUND_1)
-    col_sound_2 = pygame.mixer.Sound(HIT_SOUND_2)
+    alien_explosion_sound = pygame.mixer.Sound(ALIEN_EXPLOSION_SOUND)
+    boss_explosion_sound = pygame.mixer.Sound(BOSS_EXPLOSION_SOUND)
 
     def __init__(self, position, shot_width=3, shot_height=20, shot_color=WHITE):
         super().__init__()
@@ -25,11 +25,11 @@ class Shot(pygame.sprite.Sprite):
     def move(self):
         self.corner.move_ip(self.direction_x * self.speed, self.direction_y * self.speed)
 
-    def hit_sound(self):
-        self.col_sound.play()
+    def alien_hit_sound(self):
+        self.alien_explosion_sound.play()
 
-    def hit_sound_2(self):
-        self.col_sound_2.play()
+    def boss_hit_sound(self):
+        self.boss_explosion_sound.play()
 
     def out_of_screen(self):
         # If shot gets out of screen area
@@ -66,6 +66,8 @@ class Shot(pygame.sprite.Sprite):
                     # destroy alien if it has not been hit already
                     if alien.destruct_start_time is None:
                         alien.init_destruction(fleet_group)
+                        # play explosion sound
+                        self.alien_hit_sound()
                         # Increase score
                         scoreboard.increase(alien)
                         # destroy shot
@@ -108,6 +110,8 @@ class Shot(pygame.sprite.Sprite):
                     # destroy boss if it has not been hit already
                     if boss.destruct_start_time is None:
                         boss.init_destruction()
+                        # play explosion sound
+                        self.boss_hit_sound()
                         # Increase score
                         scoreboard.increase(boss)
                         # destroy shot

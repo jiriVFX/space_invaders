@@ -6,8 +6,7 @@ import random
 class AlienShot(pygame.sprite.Sprite):
     # Initialize the sound module
     pygame.mixer.init()
-    col_sound = pygame.mixer.Sound(HIT_SOUND_1)
-    col_sound_2 = pygame.mixer.Sound(HIT_SOUND_2)
+    player_explosion_sound = pygame.mixer.Sound(PLAYER_EXPLOSION_SOUND)
 
     def __init__(self, shot_path, position, shot_size=20, shot_color=WHITE):
         super().__init__()
@@ -55,11 +54,8 @@ class AlienShot(pygame.sprite.Sprite):
             self.update_count = 0
         self.update_count += 1
 
-    def hit_sound(self):
-        self.col_sound.play()
-
-    def hit_sound_2(self):
-        self.col_sound_2.play()
+    def player_hit_sound(self):
+        self.player_explosion_sound.play()
 
     def out_of_screen(self):
         # If shot gets out of screen area
@@ -107,9 +103,10 @@ class AlienShot(pygame.sprite.Sprite):
     def spaceship_collision(self, spaceship, scoreboard):
         if self.corner.colliderect(spaceship.corner) and spaceship.destruct_start_time is None:
             if self.destruct_start_time is None:
-                self.init_destruction()
                 # initiate shot destruction
                 self.init_destruction()
+                # play explosion sound
+                self.player_hit_sound()
                 # Remove life from scoreboard
                 scoreboard.remove_life()
                 # Remove life from spaceship
