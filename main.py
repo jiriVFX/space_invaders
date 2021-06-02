@@ -38,7 +38,7 @@ text_lost_corner = text_won.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT /
 # Sounds
 game_over_sound = pygame.mixer.Sound("static/sound/space_tunnel.mp3")
 alien_move_sounds = (pygame.mixer.Sound(ALIEN_MOVEMENT_SOUND_1), pygame.mixer.Sound(ALIEN_MOVEMENT_SOUND_2),
-                     pygame.mixer.Sound(ALIEN_MOVEMENT_SOUND_3), pygame.mixer.Sound(ALIEN_MOVEMENT_SOUND_3))
+                     pygame.mixer.Sound(ALIEN_MOVEMENT_SOUND_3), pygame.mixer.Sound(ALIEN_MOVEMENT_SOUND_4))
 
 
 # Gaming area surface
@@ -262,8 +262,11 @@ while game_on:
 
         # recalculate speed --------------------------------------------------------------------------------------------
         movement_delay = MOVEMENT_DELAY - (missing_columns * (MOVEMENT_DELAY / (COLUMNS - 1)))
-        movement_sound_delay = MOVEMENT_SOUND_DELAY - (missing_columns * (MOVEMENT_SOUND_DELAY / (COLUMNS - 1)))
+        movement_sound_delay = MOVEMENT_SOUND_DELAY - (missing_columns * (MOVEMENT_SOUND_DELAY / 1.1 / (COLUMNS - 1)))
+        print(movement_sound_delay)
         if movement_delay <= 0:
+            movement_delay = 0.000000001
+        if movement_sound_delay <= 0:
             movement_delay = 0.000000001
 
         # increment row ------------------------------------------------------------------------------------------------

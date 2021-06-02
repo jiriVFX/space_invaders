@@ -100,7 +100,7 @@ SHOT_DELAY = 0.5
 GREEN_LINE_SIZE = 4
 
 # Sounds
-MOVEMENT_SOUND_DELAY = 0.5
+MOVEMENT_SOUND_DELAY = 0.75
 ALIEN_EXPLOSION_SOUND = "static/sound/alien_explosion.wav"
 ALIEN_MOVEMENT_SOUND_1 = "static/sound/alien_movement_1.wav"
 ALIEN_MOVEMENT_SOUND_2 = "static/sound/alien_movement_2.wav"
