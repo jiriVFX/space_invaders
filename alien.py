@@ -3,6 +3,10 @@ from constants import *
 
 
 class Alien(pygame.sprite.Sprite):
+    # Initialize the sound module
+    pygame.mixer.init()
+    alien_explosion_sound = pygame.mixer.Sound(ALIEN_EXPLOSION_SOUND)
+
     def __init__(self, position_x, position_y, row, column, alien_paths, points, alien_color=WHITE):
         super().__init__()
         try:
@@ -42,6 +46,9 @@ class Alien(pygame.sprite.Sprite):
         # change image path to create animation effect
         self.surface = pygame.image.load(self.alien_paths[self.anim_iterator]).convert_alpha()
 
+    def hit_sound(self):
+        self.alien_explosion_sound.play()
+
     def move(self):
         # check whether alien is to be destroyed
         if not self.update_destroyed():
@@ -73,6 +80,8 @@ class Alien(pygame.sprite.Sprite):
         self.destruct_start_time = pygame.time.get_ticks()
         # remember the row
         self.fleet_group = fleet
+        # play explosion sound
+        self.hit_sound()
 
     def destroy(self):
         # calculate position in the fleet

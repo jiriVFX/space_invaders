@@ -39,6 +39,8 @@ text_lost_corner = text_won.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT /
 game_over_sound = pygame.mixer.Sound("static/sound/space_tunnel.mp3")
 alien_move_sounds = (pygame.mixer.Sound(ALIEN_MOVEMENT_SOUND_1), pygame.mixer.Sound(ALIEN_MOVEMENT_SOUND_2),
                      pygame.mixer.Sound(ALIEN_MOVEMENT_SOUND_3), pygame.mixer.Sound(ALIEN_MOVEMENT_SOUND_4))
+# pygame.mixer.music.load("static/sound/space_tunnel.mp3")
+# pygame.mixer.music.play(loops=-1)
 
 
 # Gaming area surface

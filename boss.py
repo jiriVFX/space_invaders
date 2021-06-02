@@ -4,6 +4,12 @@ import random
 
 
 class Boss(pygame.sprite.Sprite):
+    # Initialize the sound module
+    pygame.mixer.init()
+    boss_explosion_sound = pygame.mixer.Sound(BOSS_EXPLOSION_SOUND)
+    boss_sound = pygame.mixer.Sound(BOSS_SOUND)
+    # pygame.mixer.music.load(BOSS_SOUND)
+
     def __init__(self, position_y=ALIEN_BOSS_Y_POS, alien_color=RED):
         super().__init__()
         try:
@@ -33,12 +39,19 @@ class Boss(pygame.sprite.Sprite):
         self.destruct_start_time = None
         # points received for alien destruction
         self.points = ALIENS_BOSS_POINTS
+        # play the boss sound
+        pygame.mixer.music.play(loops=-1)
 
     def move(self):
         # check whether alien is to be destroyed
         if not self.update_destroyed():
             # move
             self.corner.move_ip(self.direction * self.alien_movement, self.step_down_amount)
+            # play boss sound
+            self.boss_sound.play()
+
+    def hit_sound(self):
+        self.boss_explosion_sound.play()
 
     def update_destroyed(self):
         # check whether alien is to be destroyed
@@ -53,11 +66,15 @@ class Boss(pygame.sprite.Sprite):
         return False
 
     def init_destruction(self):
+        # stop the boss sound
+        pygame.mixer.music.stop()
         # show alien explosion
         self.surface = pygame.image.load(ALIEN_BOSS_EXPLOSIONS[0]).convert_alpha()
         self.surface.set_colorkey(BLACK, pygame.RLEACCEL)
         # get current time in milliseconds
         self.destruct_start_time = pygame.time.get_ticks()
+        # play explosion sound
+        self.hit_sound()
 
     def destroy(self):
         # reset destruction start time
@@ -68,4 +85,6 @@ class Boss(pygame.sprite.Sprite):
     def out_of_screen(self):
         # If alien gets out of screen (reaches the bottom green HUD line)
         if self.corner.right <= 0 or self.corner.left >= SCREEN_WIDTH:
+            # stop the boss sound
+            pygame.mixer.music.stop()
             self.kill()

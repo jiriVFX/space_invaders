@@ -17,7 +17,7 @@ class SpaceShip(pygame.sprite.Sprite):
 
         # Top left corner position coordinates - position = (center=(X, Y))
         self.corner = self.surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 120))
-        self.speed = 7
+        self.speed = SPACESHIP_MOVEMENT_SPEED
         self.direction = 0
         # Time of the last shot
         self.last_shot = 0

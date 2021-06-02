@@ -5,8 +5,7 @@ from constants import *
 class Shot(pygame.sprite.Sprite):
     # Initialize the sound module
     pygame.mixer.init()
-    alien_explosion_sound = pygame.mixer.Sound(ALIEN_EXPLOSION_SOUND)
-    boss_explosion_sound = pygame.mixer.Sound(BOSS_EXPLOSION_SOUND)
+    shoot_sound = pygame.mixer.Sound(SHOOT_SOUND)
 
     def __init__(self, position, shot_width=3, shot_height=20, shot_color=WHITE):
         super().__init__()
@@ -21,21 +20,26 @@ class Shot(pygame.sprite.Sprite):
         self.destruct_start_time = None
         # how deep in the wall the shot gets before its destruction
         self.penetration_counter = 0
+        # play the shoot sound
+        self.player_shoot_sound()
 
     def move(self):
         self.corner.move_ip(self.direction_x * self.speed, self.direction_y * self.speed)
 
-    def alien_hit_sound(self):
-        self.alien_explosion_sound.play()
+    def player_shoot_sound(self):
+        self.shoot_sound.play()
 
-    def boss_hit_sound(self):
-        self.boss_explosion_sound.play()
+    def player_shoot_sound_stop(self):
+        self.shoot_sound.stop()
 
     def out_of_screen(self):
         # If shot gets out of screen area
         if self.corner.top <= SHOT_EXPLOSION_WIDTH // 2:
             # destroy shot only if it has not been hit already
             if self.destruct_start_time is None:
+                # stop playing the shoot sound
+                self.player_shoot_sound_stop()
+                # initialize destruction
                 self.init_destruction(explosion_sprite=PLAYER_SHOT_EXPLOSION_RED)
 
     def init_destruction(self, explosion_sprite=PLAYER_SHOT_EXPLOSION):
@@ -65,9 +69,10 @@ class Shot(pygame.sprite.Sprite):
                 if self.corner.colliderect(alien.corner):
                     # destroy alien if it has not been hit already
                     if alien.destruct_start_time is None:
+                        # stop playing the shoot sound
+                        self.player_shoot_sound_stop()
+                        # initialize alien destruction
                         alien.init_destruction(fleet_group)
-                        # play explosion sound
-                        self.alien_hit_sound()
                         # Increase score
                         scoreboard.increase(alien)
                         # destroy shot
@@ -84,6 +89,8 @@ class Shot(pygame.sprite.Sprite):
                     # destroy shot only if it has not been hit already
                     # and only if it destroyed ALIEN_SHOT_PENETRATION amount of wall pieces
                     if self.destruct_start_time is None and self.penetration_counter == PLAYER_SHOT_PENETRATION:
+                        # stop playing the shoot sound (has to be first)
+                        self.player_shoot_sound_stop()
                         # destroy wall
                         wall_piece.destroy(wall_group)
                         # initiate shot destruction
@@ -99,6 +106,8 @@ class Shot(pygame.sprite.Sprite):
             if self.corner.colliderect(alien_shot.corner):
                 # destroy alien shot
                 alien_shot.kill()
+                # stop playing the shoot sound (has to be first)
+                self.player_shoot_sound_stop()
                 # destroy shot only if it has not been hit already
                 if self.destruct_start_time is None:
                     self.init_destruction()
@@ -109,9 +118,10 @@ class Shot(pygame.sprite.Sprite):
                 if self.corner.colliderect(boss.corner):
                     # destroy boss if it has not been hit already
                     if boss.destruct_start_time is None:
+                        # stop playing the shoot sound (has to be first)
+                        self.player_shoot_sound_stop()
+                        # initialize boss destruction
                         boss.init_destruction()
-                        # play explosion sound
-                        self.boss_hit_sound()
                         # Increase score
                         scoreboard.increase(boss)
                         # destroy shot
