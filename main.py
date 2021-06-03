@@ -52,6 +52,20 @@ signature = pygame.image.load("static/img/signature.png").convert_alpha()
 signature.set_colorkey(BLACK, pygame.RLEACCEL)
 signature_corner = signature.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 200))
 
+# Game over text
+game_over = []
+
+for i in range(len(GAME_OVER)):
+    char = pygame.image.load(GAME_OVER[i]).convert_alpha()
+    char.set_colorkey(BLACK, pygame.RLEACCEL)
+    if i < 4:
+        char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - 126 + (i * GAME_OVER_SPACE),
+                                            SCREEN_HEIGHT / 2 - 300))
+    else:
+        char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - 126 + (i * GAME_OVER_SPACE) + 8,
+                                            SCREEN_HEIGHT / 2 - 300))
+    game_over.append([char, char_corner])
+
 # Create wall groups
 wall_group_list = []
 
@@ -134,7 +148,6 @@ while game_on:
         spaceship.update_destroyed()
 
     # Aliens movement and shooting =====================================================================================
-    # TODO - Add sounds
     # TODO - save high-score
 
     # Make random alien shoot
@@ -369,7 +382,9 @@ while game_on:
     if scoreboard.lives == 0 or out_of_screen:
         # Play game over sound
         game_over_sound.play()
-        screen.blit(text_lost, text_lost_corner)
+        # write game over text
+        for i in range(len(game_over)):
+            screen.blit(game_over[i][0], game_over[i][1])
         pygame.display.update()
         # Wait for x milliseconds until closing the game
         pygame.time.delay(END_SCREEN_TIME)

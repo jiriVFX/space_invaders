@@ -100,6 +100,12 @@ BOSS_DESTRUCTION_TIME = 1200
 # HUD line height
 GREEN_LINE_SIZE = 4
 
+# game over text
+GAME_OVER = ("static/img/game_over/g.png", "static/img/game_over/a.png", "static/img/game_over/m.png",
+             "static/img/game_over/e.png", "static/img/game_over/o.png", "static/img/game_over/v.png",
+             "static/img/game_over/e.png", "static/img/game_over/r.png")
+GAME_OVER_SPACE = 29
+
 # Sounds
 MOVEMENT_SOUND_DELAY = 0.75
 ALIEN_EXPLOSION_SOUND = "static/sound/alien_explosion.wav"
