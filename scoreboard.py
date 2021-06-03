@@ -27,7 +27,7 @@ class Scoreboard(pygame.sprite.Sprite):
 
     def build_hud_line(self):
         """Builds a green line from separate pygame.Surface objects on the bottom of the screen."""
-        for i in range(SCREEN_WIDTH//GREEN_LINE_SIZE):
+        for i in range(SCREEN_WIDTH//GREEN_LINE_SIZE + 1):
             pixel = pygame.Surface((GREEN_LINE_SIZE, GREEN_LINE_SIZE))
             pixel.fill(GREEN)
             corner = pixel.get_rect(center=(i * GREEN_LINE_SIZE, SCREEN_HEIGHT - 70))
