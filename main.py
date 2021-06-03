@@ -59,10 +59,10 @@ for i in range(len(GAME_OVER)):
     char = pygame.image.load(GAME_OVER[i]).convert_alpha()
     char.set_colorkey(BLACK, pygame.RLEACCEL)
     if i < 4:
-        char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - 126 + (i * GAME_OVER_SPACE),
+        char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - HALF_TEXT_SIZE + (i * LETTER_SPACING),
                                             SCREEN_HEIGHT / 2 - 300))
     else:
-        char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - 126 + (i * GAME_OVER_SPACE) + 8,
+        char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - HALF_TEXT_SIZE + (i * LETTER_SPACING) + WORD_SPACE,
                                             SCREEN_HEIGHT / 2 - 300))
     game_over.append([char, char_corner])
 
@@ -113,6 +113,9 @@ out_of_screen = False
 alien_rows = [False for _ in range(ROWS)]
 turned_counter = 0
 out_of_bounds = False
+last_char_time = None
+# end text iterator
+end_iter = 0
 
 while game_on:
     # Quit the game when X is clicked or Esc pressed to close the window
@@ -382,10 +385,15 @@ while game_on:
     if scoreboard.lives == 0 or out_of_screen:
         # Play game over sound
         game_over_sound.play()
+
         # write game over text
-        for i in range(len(game_over)):
-            screen.blit(game_over[i][0], game_over[i][1])
-        pygame.display.update()
+        while end_iter < len(game_over):
+            if last_char_time is None or pygame.time.get_ticks() - last_char_time > CHAR_INTERVAL:
+                last_char_time = pygame.time.get_ticks()
+                screen.blit(game_over[end_iter][0], game_over[end_iter][1])
+                end_iter += 1
+            # update to show the rendered text
+            pygame.display.update()
         # Wait for x milliseconds until closing the game
         pygame.time.delay(END_SCREEN_TIME)
         game_on = False

@@ -104,7 +104,11 @@ GREEN_LINE_SIZE = 4
 GAME_OVER = ("static/img/game_over/g.png", "static/img/game_over/a.png", "static/img/game_over/m.png",
              "static/img/game_over/e.png", "static/img/game_over/o.png", "static/img/game_over/v.png",
              "static/img/game_over/e.png", "static/img/game_over/r.png")
-GAME_OVER_SPACE = 29
+# space between letter corner (rects)
+LETTER_SPACING = 29
+HALF_TEXT_SIZE = 115
+WORD_SPACE = 28
+CHAR_INTERVAL = 100
 
 # Sounds
 MOVEMENT_SOUND_DELAY = 0.75
@@ -119,4 +123,4 @@ SHOOT_SOUND = "static/sound/shoot.wav"
 PLAYER_EXPLOSION_SOUND = "static/sound/player_explosion.wav"
 
 # end screen time
-END_SCREEN_TIME = 10000
+END_SCREEN_TIME = 5000
