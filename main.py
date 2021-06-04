@@ -403,7 +403,6 @@ while game_on:
 
     # Set refresh rate to 60 times per second (60Hz/FPS)
     clock.tick(60)
-    # print(clock.get_fps())
 
 # Write high score
 if scoreboard.score > scoreboard.hi_score:

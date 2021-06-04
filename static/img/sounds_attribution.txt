@@ -1,4 +1,0 @@
-https://www.classicgaming.cc/classics/space-invaders/sounds
-
-Shoot sound does not repeat, I made a repeatable sound, but it soundded too annoying and was disrupting othe sounds from playing.
-Playing repeatedly sound disturbs the other sound, I got around that by using mixer music module instead for sounds I need to play in a loop.

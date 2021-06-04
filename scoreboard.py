@@ -8,7 +8,7 @@ class Scoreboard(pygame.sprite.Sprite):
         super().__init__()
         self.hi_score = 0
         # load hi-score
-        self.load_high_score()
+        self.load_hi_score()
         self.score = 0
         self.lives = LIVES
         self.font = pygame.font.SysFont("Consolas", 25, bold=False)
@@ -28,23 +28,23 @@ class Scoreboard(pygame.sprite.Sprite):
         # self.green_line.fill(GREEN)
         # self.line_corner = self.lives_text.get_rect(topleft=(0, SCREEN_HEIGHT - 70))
 
-    def load_high_score(self):
+    def load_hi_score(self):
         try:
-            with open(HISCORE_PATH, "r") as file:
+            with open(HI_SCORE_PATH, "r") as file:
                 data = json.load(file)
             self.hi_score = data["hi-score"]
             print(data["hi-score"])
         except FileNotFoundError:
             print("No previous hi-score found.")
 
-    def write_high_score(self):
+    def write_hi_score(self):
         # update hi_score first
         self.update_hiscore()
         # write new hiscore
         data = {
             "hi-score": self.hi_score
         }
-        with open(HISCORE_PATH, "w") as file:
+        with open(HI_SCORE_PATH, "w") as file:
             json.dump(data, file)
 
     def update_hiscore(self):

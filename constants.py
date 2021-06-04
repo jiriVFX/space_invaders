@@ -6,7 +6,7 @@ RED = (180, 0, 0)
 WHITE = (230, 230, 230)
 
 # High score file path
-HISCORE_PATH = "high_score.json"
+HI_SCORE_PATH = "high_score.json"
 
 # Screen
 SCREEN_WIDTH = 920
