@@ -5,6 +5,9 @@ GREEN = (0, 255, 0)
 RED = (180, 0, 0)
 WHITE = (230, 230, 230)
 
+# High score file path
+HISCORE_PATH = "high_score.json"
+
 # Screen
 SCREEN_WIDTH = 920
 SCREEN_HEIGHT = 1010

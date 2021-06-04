@@ -7,8 +7,8 @@ class Boss(pygame.sprite.Sprite):
     # Initialize the sound module
     pygame.mixer.init()
     boss_explosion_sound = pygame.mixer.Sound(BOSS_EXPLOSION_SOUND)
-    boss_sound = pygame.mixer.Sound(BOSS_SOUND)
-    # pygame.mixer.music.load(BOSS_SOUND)
+    # boss_sound = pygame.mixer.Sound(BOSS_SOUND)
+    pygame.mixer.music.load(BOSS_SOUND)
 
     def __init__(self, position_y=ALIEN_BOSS_Y_POS, alien_color=RED):
         super().__init__()
@@ -48,7 +48,7 @@ class Boss(pygame.sprite.Sprite):
             # move
             self.corner.move_ip(self.direction * self.alien_movement, self.step_down_amount)
             # play boss sound
-            self.boss_sound.play()
+            # self.boss_sound.play()
 
     def hit_sound(self):
         self.boss_explosion_sound.play()

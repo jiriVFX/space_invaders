@@ -405,6 +405,9 @@ while game_on:
     clock.tick(60)
     # print(clock.get_fps())
 
+# Write high score
+if scoreboard.score > scoreboard.hi_score:
+    scoreboard.write_high_score()
 # Quit all the sounds and the game
 pygame.mixer.quit()
 pygame.quit()
