@@ -406,7 +406,7 @@ while game_on:
 
 # Write high score
 if scoreboard.score > scoreboard.hi_score:
-    scoreboard.write_high_score()
+    scoreboard.write_hi_score()
 # Quit all the sounds and the game
 pygame.mixer.quit()
 pygame.quit()

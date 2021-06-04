@@ -17,7 +17,7 @@ class Scoreboard(pygame.sprite.Sprite):
         self.score_corner = self.score_text.get_rect(topleft=(40, 40))
         # hi-score text
         self.hi_score_text = self.font.render(f"HI-SCORE: {self.hi_score}", True, WHITE)
-        self.hi_score_corner = self.score_text.get_rect(topright=(SCREEN_WIDTH - 80, 40))
+        self.hi_score_corner = self.score_text.get_rect(topright=(SCREEN_WIDTH - 120, 40))
         # lives text
         self.lives_text = self.font.render(f"LIVES: {self.lives}", True, WHITE)
         self.lives_corner = self.lives_text.get_rect(topleft=(40, SCREEN_HEIGHT - 45))
@@ -46,6 +46,7 @@ class Scoreboard(pygame.sprite.Sprite):
         }
         with open(HI_SCORE_PATH, "w") as file:
             json.dump(data, file)
+        print("New hi-score saved.")
 
     def update_hiscore(self):
         if self.score > self.hi_score:
