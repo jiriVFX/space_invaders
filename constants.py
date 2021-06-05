@@ -12,6 +12,9 @@ HI_SCORE_PATH = "high_score.json"
 SCREEN_WIDTH = 920
 SCREEN_HEIGHT = 1010
 
+# game window icon
+WINDOW_ICON = "static/img/icon.png"
+
 # Spaceship
 SPACESHIP_WIDTH = 44
 SPACESHIP_HEIGHT = 10

@@ -1,5 +1,3 @@
-import random
-
 import pygame
 from constants import *
 from spaceship import SpaceShip
@@ -27,13 +25,21 @@ screen.fill(WHITE)
 # Scoreboard
 scoreboard = Scoreboard()
 
+# Load window icon
+icon = pygame.image.load(WINDOW_ICON)
+pygame.display.set_icon(icon)
+
 # Font
 pygame.font.init()
-font = pygame.font.SysFont("Consolas", 80, bold=True)
+font = pygame.font.SysFont("Consolas", 50, bold=True)
 text_won = font.render("YOU WON!", True, RED)
 text_won_corner = text_won.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 300))
-text_lost = font.render("GAME OVER", True, RED)
-text_lost_corner = text_won.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 300))
+# text_lost = font.render("GAME OVER", True, RED)
+# text_lost_corner = text_won.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 300))
+text_new_hiscore = font.render("NEW HI-SCORE!", True, RED)
+text_new_hiscore_corner = text_new_hiscore.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 200))
+text_hiscore = font.render(f"{scoreboard.hi_score} POINTS!", True, RED)
+text_hiscore_corner = text_hiscore.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 120))
 
 # Sounds
 game_over_sound = pygame.mixer.Sound("static/sound/space_tunnel.mp3")
@@ -151,7 +157,6 @@ while game_on:
         spaceship.update_destroyed()
 
     # Aliens movement and shooting =====================================================================================
-    # TODO - save high-score
 
     # Make random alien shoot
     if time.time() - shoot_time > ALIEN_SHOOT_DELAY:
@@ -281,7 +286,7 @@ while game_on:
         # recalculate speed --------------------------------------------------------------------------------------------
         movement_delay = MOVEMENT_DELAY - (missing_columns * (MOVEMENT_DELAY / (COLUMNS - 1)))
         movement_sound_delay = MOVEMENT_SOUND_DELAY - (missing_columns * (MOVEMENT_SOUND_DELAY / 1.1 / (COLUMNS - 1)))
-        print(movement_sound_delay)
+
         if movement_delay <= 0:
             movement_delay = 0.000000001
         if movement_sound_delay <= 0:
@@ -373,7 +378,7 @@ while game_on:
     if alien_count == 0:
         # Play winning sound
         game_over_sound.play()
-        screen.blit(text_won, text_won_corner)
+        # screen.blit(text_won, text_won_corner)
         pygame.display.update()
         # Wait for x milliseconds until closing the game
         pygame.time.delay(END_SCREEN_TIME)
@@ -394,6 +399,14 @@ while game_on:
                 end_iter += 1
             # update to show the rendered text
             pygame.display.update()
+
+        if scoreboard.score > scoreboard.hi_score:
+            scoreboard.update_hiscore()
+            # Place hi-score on the screen
+            screen.blit(text_new_hiscore, text_new_hiscore_corner)
+            screen.blit(text_hiscore, text_hiscore_corner)
+            # update to show the rendered text
+            pygame.display.update()
         # Wait for x milliseconds until closing the game
         pygame.time.delay(END_SCREEN_TIME)
         game_on = False
@@ -407,6 +420,7 @@ while game_on:
 # Write high score
 if scoreboard.score > scoreboard.hi_score:
     scoreboard.write_hi_score()
+
 # Quit all the sounds and the game
 pygame.mixer.quit()
 pygame.quit()
