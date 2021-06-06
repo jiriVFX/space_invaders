@@ -24,7 +24,7 @@ PLAYER_SHOT_EXPLOSION_RED = "static/img/player_shot_explosion_red.png"
 SHOT_EXPLOSION_WIDTH = 32
 SPACESHIP_EXPLOSION_1 = "static/img/spaceship_explosion_1.png"
 SPACESHIP_EXPLOSION_2 = "static/img/spaceship_explosion_2.png"
-LIVES = 3
+LIVES = 1
 # spaceship movement speed
 SPACESHIP_MOVEMENT_SPEED = 5
 # spaceship destruction time in milliseconds
@@ -110,6 +110,11 @@ GREEN_LINE_SIZE = 4
 GAME_OVER = ("static/img/game_over/g.png", "static/img/game_over/a.png", "static/img/game_over/m.png",
              "static/img/game_over/e.png", "static/img/game_over/o.png", "static/img/game_over/v.png",
              "static/img/game_over/e.png", "static/img/game_over/r.png")
+# hi-score text
+HI_SCORE = ("static/img/game_over/n.png", "static/img/game_over/e.png", "static/img/game_over/w.png",
+            "static/img/game_over/h.png", "static/img/game_over/i.png", "static/img/game_over/dash.png",
+            "static/img/game_over/s.png", "static/img/game_over/c.png", "static/img/game_over/o.png",
+            "static/img/game_over/r.png", "static/img/game_over/e.png")
 # space between letter corner (rects)
 LETTER_SPACING = 29
 HALF_TEXT_SIZE = 115

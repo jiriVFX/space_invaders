@@ -36,8 +36,8 @@ text_won = font.render("YOU WON!", True, RED)
 text_won_corner = text_won.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 300))
 # text_lost = font.render("GAME OVER", True, RED)
 # text_lost_corner = text_won.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 300))
-text_new_hiscore = font.render("NEW HI-SCORE!", True, RED)
-text_new_hiscore_corner = text_new_hiscore.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 200))
+# text_new_hiscore = font.render("NEW HI-SCORE!", True, RED)
+# text_new_hiscore_corner = text_new_hiscore.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 200))
 text_hiscore = font.render(f"{scoreboard.hi_score} POINTS!", True, RED)
 text_hiscore_corner = text_hiscore.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 120))
 
@@ -71,6 +71,20 @@ for i in range(len(GAME_OVER)):
         char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - HALF_TEXT_SIZE + (i * LETTER_SPACING) + WORD_SPACE,
                                             SCREEN_HEIGHT / 2 - 300))
     game_over.append([char, char_corner])
+
+# New hi-score text
+hi_score = []
+
+for i in range(len(HI_SCORE)):
+    char = pygame.image.load(HI_SCORE[i]).convert_alpha()
+    char.set_colorkey(BLACK, pygame.RLEACCEL)
+    if i < 3:
+        char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - HALF_TEXT_SIZE + (i * LETTER_SPACING),
+                                            SCREEN_HEIGHT / 2 - 200))
+    else:
+        char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - HALF_TEXT_SIZE + (i * LETTER_SPACING) + WORD_SPACE,
+                                            SCREEN_HEIGHT / 2 - 200))
+    hi_score.append([char, char_corner])
 
 # Create wall groups
 wall_group_list = []
@@ -122,6 +136,8 @@ out_of_bounds = False
 last_char_time = None
 # end text iterator
 end_iter = 0
+# new hi-score text iterator
+hi_score_iter = 0
 
 while game_on:
     # Quit the game when X is clicked or Esc pressed to close the window
@@ -403,7 +419,16 @@ while game_on:
         if scoreboard.score > scoreboard.hi_score:
             scoreboard.update_hiscore()
             # Place hi-score on the screen
-            screen.blit(text_new_hiscore, text_new_hiscore_corner)
+            # screen.blit(text_new_hiscore, text_new_hiscore_corner)
+            # write new hi-score text
+            while hi_score_iter < len(hi_score):
+                if last_char_time is None or pygame.time.get_ticks() - last_char_time > CHAR_INTERVAL:
+                    last_char_time = pygame.time.get_ticks()
+                    screen.blit(hi_score[hi_score_iter][0], hi_score[hi_score_iter][1])
+                    hi_score_iter += 1
+                # update to show the rendered text
+                pygame.display.update()
+
             screen.blit(text_hiscore, text_hiscore_corner)
             # update to show the rendered text
             pygame.display.update()
