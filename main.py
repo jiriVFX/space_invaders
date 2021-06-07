@@ -409,7 +409,6 @@ while game_on:
             if scoreboard.score > scoreboard.hi_score:
                 scoreboard.write_hi_score()
             # Place hi-score on the screen
-            # screen.blit(text_new_hiscore, text_new_hiscore_corner)
             # write new hi-score text
             while hi_score_iter < len(hi_score):
                 if last_char_time is None or pygame.time.get_ticks() - last_char_time > CHAR_INTERVAL:
