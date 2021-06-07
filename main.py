@@ -29,7 +29,7 @@ pygame.display.set_icon(icon)
 
 # Font
 pygame.font.init()
-font = pygame.font.SysFont("Consolas", 50, bold=True)
+font = pygame.font.SysFont("Consolas", 40, bold=True)
 text_won = font.render("YOU WON!", True, RED)
 text_won_corner = text_won.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 300))
 text_hiscore = font.render(f"{scoreboard.hi_score} POINTS!", True, RED)
@@ -59,10 +59,10 @@ for i in range(len(GAME_OVER)):
     char = pygame.image.load(GAME_OVER[i]).convert_alpha()
     char.set_colorkey(BLACK, pygame.RLEACCEL)
     if i < 4:
-        char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - HALF_TEXT_SIZE + (i * LETTER_SPACING),
+        char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - HALF_GAMEOVER_SIZE + (i * LETTER_SPACING),
                                             SCREEN_HEIGHT / 2 - 300))
     else:
-        char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - HALF_TEXT_SIZE + (i * LETTER_SPACING) + WORD_SPACE,
+        char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - HALF_GAMEOVER_SIZE + (i * LETTER_SPACING) + WORD_SPACE,
                                             SCREEN_HEIGHT / 2 - 300))
     game_over.append([char, char_corner])
 

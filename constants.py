@@ -117,7 +117,7 @@ HI_SCORE = ("static/img/game_over/n.png", "static/img/game_over/e.png", "static/
             "static/img/game_over/r.png", "static/img/game_over/e.png")
 # space between letter corner (rects)
 LETTER_SPACING = 29
-HALF_TEXT_SIZE = 115
+HALF_GAMEOVER_SIZE = 115
 HALF_HISCORE_SIZE = 160
 WORD_SPACE = 28
 CHAR_INTERVAL = 100
