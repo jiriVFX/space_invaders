@@ -1,0 +1,5 @@
+Write about the struggles when recreating the original 1978 Space Invaders
+- moving the fleet line by line, while using pygame.groups instead of lists for efficiency
+- different types of shots
+- creating wall from separate "pixel" objects
+- destroying walls with alien shots

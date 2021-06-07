@@ -1,11 +1,9 @@
 import pygame
 from constants import *
 from spaceship import SpaceShip
-from alien import Alien
 from shot import Shot
 from alien_shot import AlienShot
 from scoreboard import Scoreboard
-from wall import Wall
 from boss import Boss
 from helper_functions import *
 import time
@@ -34,10 +32,6 @@ pygame.font.init()
 font = pygame.font.SysFont("Consolas", 50, bold=True)
 text_won = font.render("YOU WON!", True, RED)
 text_won_corner = text_won.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 300))
-# text_lost = font.render("GAME OVER", True, RED)
-# text_lost_corner = text_won.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 300))
-# text_new_hiscore = font.render("NEW HI-SCORE!", True, RED)
-# text_new_hiscore_corner = text_new_hiscore.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 200))
 text_hiscore = font.render(f"{scoreboard.hi_score} POINTS!", True, RED)
 text_hiscore_corner = text_hiscore.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 120))
 
@@ -79,10 +73,10 @@ for i in range(len(HI_SCORE)):
     char = pygame.image.load(HI_SCORE[i]).convert_alpha()
     char.set_colorkey(BLACK, pygame.RLEACCEL)
     if i < 3:
-        char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - HALF_TEXT_SIZE + (i * LETTER_SPACING),
+        char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - HALF_HISCORE_SIZE + (i * LETTER_SPACING),
                                             SCREEN_HEIGHT / 2 - 200))
     else:
-        char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - HALF_TEXT_SIZE + (i * LETTER_SPACING) + WORD_SPACE,
+        char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - HALF_HISCORE_SIZE + (i * LETTER_SPACING) + WORD_SPACE,
                                             SCREEN_HEIGHT / 2 - 200))
     hi_score.append([char, char_corner])
 
@@ -417,7 +411,9 @@ while game_on:
             pygame.display.update()
 
         if scoreboard.score > scoreboard.hi_score:
-            scoreboard.update_hiscore()
+            # Write high score
+            if scoreboard.score > scoreboard.hi_score:
+                scoreboard.write_hi_score()
             # Place hi-score on the screen
             # screen.blit(text_new_hiscore, text_new_hiscore_corner)
             # write new hi-score text
@@ -427,6 +423,7 @@ while game_on:
                     screen.blit(hi_score[hi_score_iter][0], hi_score[hi_score_iter][1])
                     hi_score_iter += 1
                 # update to show the rendered text
+                text_hiscore = font.render(f"{scoreboard.hi_score} POINTS!", True, RED)
                 pygame.display.update()
 
             screen.blit(text_hiscore, text_hiscore_corner)
@@ -441,10 +438,6 @@ while game_on:
 
     # Set refresh rate to 60 times per second (60Hz/FPS)
     clock.tick(60)
-
-# Write high score
-if scoreboard.score > scoreboard.hi_score:
-    scoreboard.write_hi_score()
 
 # Quit all the sounds and the game
 pygame.mixer.quit()
