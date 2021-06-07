@@ -394,6 +394,7 @@ while game_on:
         pygame.time.delay(END_SCREEN_TIME)
         game_on = False
 
+    # Render end screen text -------------------------------------------------------------------------------------------
     # Check whether player has any lives left
     # Check whether aliens crossed the bottom of the screen
     # Render End Game text - has to be the last to render, otherwise covered by other surfaces
@@ -405,19 +406,9 @@ while game_on:
         write_game_over(end_iter, game_over, last_char_time, screen)
 
         if scoreboard.score > scoreboard.hi_score:
-            # Write high score
-            if scoreboard.score > scoreboard.hi_score:
-                scoreboard.write_hi_score()
             # Write new hi-score text
-            while hi_score_iter < len(hi_score):
-                if last_char_time is None or pygame.time.get_ticks() - last_char_time > CHAR_INTERVAL:
-                    last_char_time = pygame.time.get_ticks()
-                    screen.blit(hi_score[hi_score_iter][0], hi_score[hi_score_iter][1])
-                    hi_score_iter += 1
-                # update to show the rendered text
-                text_hiscore = font.render(f"{scoreboard.hi_score} POINTS!", True, RED)
-                pygame.display.update()
-
+            write_new_hiscore(scoreboard, hi_score, hi_score_iter, last_char_time, text_hiscore, font, screen)
+            # place text on the screen
             screen.blit(text_hiscore, text_hiscore_corner)
             # update to show the rendered text
             pygame.display.update()
@@ -431,6 +422,6 @@ while game_on:
     # Set refresh rate to 60 times per second (60Hz/FPS)
     clock.tick(60)
 
-# Quit all the sounds and the game
+# Quit all the sounds and the game =====================================================================================
 pygame.mixer.quit()
 pygame.quit()

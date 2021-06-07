@@ -153,6 +153,14 @@ def create_alien_fleet(fleet_group):
 
 
 def write_game_over(end_iter, game_over, last_char_time, screen):
+    """
+    Renders game over text on the screen.
+    :param end_iter: int
+    :param game_over: list[pygame.image]
+    :param last_char_time: int
+    :param screen: pygame.display
+    :return:
+    """
     # write game over text
     while end_iter < len(game_over):
         if last_char_time is None or pygame.time.get_ticks() - last_char_time > CHAR_INTERVAL:
@@ -160,4 +168,30 @@ def write_game_over(end_iter, game_over, last_char_time, screen):
             screen.blit(game_over[end_iter][0], game_over[end_iter][1])
             end_iter += 1
         # update to show the rendered text
+        pygame.display.update()
+
+
+def write_new_hiscore(scoreboard, hi_score, hi_score_iter, last_char_time, text_hiscore, font, screen):
+    """
+    Renders new hi-score text on the screen.
+    :param scoreboard: scoreboard.Scoreboard
+    :param hi_score: list[pygame.image]
+    :param hi_score_iter: int
+    :param last_char_time: int
+    :param text_hiscore: font.render
+    :param font: pygame.font.SysFont
+    :param screen:
+    :return:
+    """
+    # Write high score
+    if scoreboard.score > scoreboard.hi_score:
+        scoreboard.write_hi_score()
+    # Write new hi-score text
+    while hi_score_iter < len(hi_score):
+        if last_char_time is None or pygame.time.get_ticks() - last_char_time > CHAR_INTERVAL:
+            last_char_time = pygame.time.get_ticks()
+            screen.blit(hi_score[hi_score_iter][0], hi_score[hi_score_iter][1])
+            hi_score_iter += 1
+        # update to show the rendered text
+        text_hiscore = font.render(f"{scoreboard.hi_score} POINTS!", True, RED)
         pygame.display.update()
