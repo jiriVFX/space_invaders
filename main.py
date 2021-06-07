@@ -401,15 +401,14 @@ while game_on:
         # Play game over sound
         game_over_sound.play()
 
-        # write game over text
+        # Write game over text
         write_game_over(end_iter, game_over, last_char_time, screen)
 
         if scoreboard.score > scoreboard.hi_score:
             # Write high score
             if scoreboard.score > scoreboard.hi_score:
                 scoreboard.write_hi_score()
-            # Place hi-score on the screen
-            # write new hi-score text
+            # Write new hi-score text
             while hi_score_iter < len(hi_score):
                 if last_char_time is None or pygame.time.get_ticks() - last_char_time > CHAR_INTERVAL:
                     last_char_time = pygame.time.get_ticks()
