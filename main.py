@@ -402,13 +402,7 @@ while game_on:
         game_over_sound.play()
 
         # write game over text
-        while end_iter < len(game_over):
-            if last_char_time is None or pygame.time.get_ticks() - last_char_time > CHAR_INTERVAL:
-                last_char_time = pygame.time.get_ticks()
-                screen.blit(game_over[end_iter][0], game_over[end_iter][1])
-                end_iter += 1
-            # update to show the rendered text
-            pygame.display.update()
+        write_game_over(end_iter, game_over, last_char_time, screen)
 
         if scoreboard.score > scoreboard.hi_score:
             # Write high score

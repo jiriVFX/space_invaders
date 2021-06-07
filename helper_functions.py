@@ -1,3 +1,4 @@
+import pygame
 from constants import *
 from wall import Wall
 from alien import Alien
@@ -149,3 +150,14 @@ def create_alien_fleet(fleet_group):
             alien_count += 1
 
     return alien_count
+
+
+def write_game_over(end_iter, game_over, last_char_time, screen):
+    # write game over text
+    while end_iter < len(game_over):
+        if last_char_time is None or pygame.time.get_ticks() - last_char_time > CHAR_INTERVAL:
+            last_char_time = pygame.time.get_ticks()
+            screen.blit(game_over[end_iter][0], game_over[end_iter][1])
+            end_iter += 1
+        # update to show the rendered text
+        pygame.display.update()
