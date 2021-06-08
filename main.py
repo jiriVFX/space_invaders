@@ -30,8 +30,6 @@ pygame.display.set_icon(icon)
 # Font
 pygame.font.init()
 font = pygame.font.SysFont("Consolas", 40, bold=True)
-text_won = font.render("YOU WON!", True, RED)
-text_won_corner = text_won.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 300))
 text_hiscore = font.render(f"{scoreboard.hi_score} POINTS!", True, RED)
 text_hiscore_corner = text_hiscore.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT / 2 - 120))
 
@@ -39,9 +37,6 @@ text_hiscore_corner = text_hiscore.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_H
 game_over_sound = pygame.mixer.Sound("static/sound/space_tunnel.mp3")
 alien_move_sounds = (pygame.mixer.Sound(ALIEN_MOVEMENT_SOUND_1), pygame.mixer.Sound(ALIEN_MOVEMENT_SOUND_2),
                      pygame.mixer.Sound(ALIEN_MOVEMENT_SOUND_3), pygame.mixer.Sound(ALIEN_MOVEMENT_SOUND_4))
-# pygame.mixer.music.load("static/sound/space_tunnel.mp3")
-# pygame.mixer.music.play(loops=-1)
-
 
 # Gaming area surface
 game_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -53,32 +48,10 @@ signature.set_colorkey(BLACK, pygame.RLEACCEL)
 signature_corner = signature.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 200))
 
 # Game over text
-game_over = []
+game_over = create_game_over_text()
 
-for i in range(len(GAME_OVER)):
-    char = pygame.image.load(GAME_OVER[i]).convert_alpha()
-    char.set_colorkey(BLACK, pygame.RLEACCEL)
-    if i < 4:
-        char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - HALF_GAMEOVER_SIZE + (i * LETTER_SPACING),
-                                            SCREEN_HEIGHT / 2 - 300))
-    else:
-        char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - HALF_GAMEOVER_SIZE + (i * LETTER_SPACING) + WORD_SPACE,
-                                            SCREEN_HEIGHT / 2 - 300))
-    game_over.append([char, char_corner])
-
-# New hi-score text
-hi_score = []
-
-for i in range(len(HI_SCORE)):
-    char = pygame.image.load(HI_SCORE[i]).convert_alpha()
-    char.set_colorkey(BLACK, pygame.RLEACCEL)
-    if i < 3:
-        char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - HALF_HISCORE_SIZE + (i * LETTER_SPACING),
-                                            SCREEN_HEIGHT / 2 - 200))
-    else:
-        char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - HALF_HISCORE_SIZE + (i * LETTER_SPACING) + WORD_SPACE,
-                                            SCREEN_HEIGHT / 2 - 200))
-    hi_score.append([char, char_corner])
+# Create New hi-score text
+hi_score = create_hiscore_text()
 
 # Create wall groups
 wall_group_list = []
@@ -205,16 +178,14 @@ while game_on:
             alien_shot.update_destroyed()
 
     # play alien movement sounds in intervals --------------------------------------------------------------------------
-
     # sounds in the original game are not played synchronously with the movement
     # so we have to make a separate timer to play movement sounds
-
     if time.time() - movement_sound_time > movement_sound_delay:
         movement_sound_time = time.time()
         # play alien movement sound
         alien_move_sounds[movement_sound_counter].play()
         # increment or reset sound counter
-        if movement_sound_counter < 3:
+        if movement_sound_counter < len(alien_move_sounds) - 1:
             movement_sound_counter += 1
         else:
             movement_sound_counter = 0
@@ -314,7 +285,6 @@ while game_on:
                 alien.update_destroyed()
 
     # Creation, movement and out of screen detection of alien boss -----------------------------------------------------
-
     if time.time() - boss_time > BOSS_APPEARANCE_DELAY:
         boss_time = time.time()
         # create a boss if BOSS_APPEARANCE_DELAY has passed
@@ -350,7 +320,7 @@ while game_on:
             screen.blit(boss.surface, boss.corner)
 
     # Place the ship on the screen
-    # Places ship in the middle + spaceship corner(rect) position (changes when paddle moves)
+    # Places spaceship in the middle + spaceship corner(rect) position (changes when spaceship moves)
     if spaceship.surface is not None:
         screen.blit(spaceship.surface, spaceship.corner)
 
@@ -408,6 +378,8 @@ while game_on:
         if scoreboard.score > scoreboard.hi_score:
             # Write new hi-score text
             write_new_hiscore(scoreboard, hi_score, hi_score_iter, last_char_time, text_hiscore, font, screen)
+            # update to show the rendered text
+            text_hiscore = font.render(f"{scoreboard.hi_score} POINTS!", True, RED)
             # place text on the screen
             screen.blit(text_hiscore, text_hiscore_corner)
             # update to show the rendered text

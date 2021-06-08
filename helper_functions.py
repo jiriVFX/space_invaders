@@ -152,6 +152,26 @@ def create_alien_fleet(fleet_group):
     return alien_count
 
 
+def create_game_over_text():
+    """
+    Builds and returns a list of lists with GAME OVER chars and their rectangles (positions)
+    :return: list[[pygame.image, pygame.image.get_rect]]
+    """
+    game_over = []
+    for i in range(len(GAME_OVER)):
+        char = pygame.image.load(GAME_OVER[i]).convert_alpha()
+        char.set_colorkey(BLACK, pygame.RLEACCEL)
+        if i < 4:
+            char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - HALF_GAMEOVER_SIZE + (i * LETTER_SPACING),
+                                                SCREEN_HEIGHT / 2 - 300))
+        else:
+            char_corner = char.get_rect(
+                center=((SCREEN_WIDTH / 2) - HALF_GAMEOVER_SIZE + (i * LETTER_SPACING) + WORD_SPACE,
+                        SCREEN_HEIGHT / 2 - 300))
+        game_over.append([char, char_corner])
+    return game_over
+
+
 def write_game_over(end_iter, game_over, last_char_time, screen):
     """
     Renders game over text on the screen.
@@ -171,6 +191,27 @@ def write_game_over(end_iter, game_over, last_char_time, screen):
         pygame.display.update()
 
 
+def create_hiscore_text():
+    """
+    Builds and returns a list of lists with NEW HI-SCORE chars and their rectangles (positions)
+    :return: list[[pygame.image, pygame.image.get_rect]]
+    """
+    hi_score = []
+    for i in range(len(HI_SCORE)):
+        char = pygame.image.load(HI_SCORE[i]).convert_alpha()
+        char.set_colorkey(BLACK, pygame.RLEACCEL)
+        if i < 3:
+            char_corner = char.get_rect(center=((SCREEN_WIDTH / 2) - HALF_HISCORE_SIZE + (i * LETTER_SPACING),
+                                                SCREEN_HEIGHT / 2 - 200))
+        else:
+            char_corner = char.get_rect(
+                center=((SCREEN_WIDTH / 2) - HALF_HISCORE_SIZE + (i * LETTER_SPACING) + WORD_SPACE,
+                        SCREEN_HEIGHT / 2 - 200))
+        hi_score.append([char, char_corner])
+
+    return hi_score
+
+
 def write_new_hiscore(scoreboard, hi_score, hi_score_iter, last_char_time, text_hiscore, font, screen):
     """
     Renders new hi-score text on the screen.
@@ -185,6 +226,7 @@ def write_new_hiscore(scoreboard, hi_score, hi_score_iter, last_char_time, text_
     """
     # Write high score
     if scoreboard.score > scoreboard.hi_score:
+        print("Writing new H")
         scoreboard.write_hi_score()
     # Write new hi-score text
     while hi_score_iter < len(hi_score):
@@ -192,6 +234,4 @@ def write_new_hiscore(scoreboard, hi_score, hi_score_iter, last_char_time, text_
             last_char_time = pygame.time.get_ticks()
             screen.blit(hi_score[hi_score_iter][0], hi_score[hi_score_iter][1])
             hi_score_iter += 1
-        # update to show the rendered text
-        text_hiscore = font.render(f"{scoreboard.hi_score} POINTS!", True, RED)
         pygame.display.update()
