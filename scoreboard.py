@@ -24,11 +24,9 @@ class Scoreboard(pygame.sprite.Sprite):
         # create hud line
         self.green_line = []
         self.build_hud_line()
-        # self.green_line = pygame.Surface((SCREEN_WIDTH, GREEN_LINE_HEIGHT))
-        # self.green_line.fill(GREEN)
-        # self.line_corner = self.lives_text.get_rect(topleft=(0, SCREEN_HEIGHT - 70))
 
     def load_hi_score(self):
+        """Load self.hi_score from json file, if it exists."""
         try:
             with open(HI_SCORE_PATH, "r") as file:
                 data = json.load(file)
@@ -38,9 +36,10 @@ class Scoreboard(pygame.sprite.Sprite):
             print("No previous hi-score found.")
 
     def write_hi_score(self):
+        """Write self.hi_score to json file."""
         # update hi_score first
         self.update_hiscore()
-        # write new hiscore
+        # write new hi-score
         data = {
             "hi-score": self.hi_score
         }
@@ -49,6 +48,7 @@ class Scoreboard(pygame.sprite.Sprite):
         print("New hi-score saved.")
 
     def update_hiscore(self):
+        """Update self.hi_score."""
         if self.score > self.hi_score:
             self.hi_score = self.score
 
@@ -65,17 +65,22 @@ class Scoreboard(pygame.sprite.Sprite):
             self.green_line.append(dictionary)
 
     def update_score(self):
+        """Updates SCORE and HI-SCORE texts."""
         self.score_text = self.font.render(f"SCORE: {self.score}", True, WHITE)
-        # if self.score > self.hi_score:
-        #     self.hi_score = self.score
         self.hi_score_text = self.font.render(f"HI-SCORE: {self.hi_score}", True, WHITE)
         self.lives_text = self.font.render(f"LIVES: {self.lives}", True, WHITE)
 
     def increase(self, alien):
+        """
+        Increase score by amount of points in alien.
+        :param alien: int
+        :return:
+        """
         self.score += alien.points
         self.update_score()
 
     def decrease(self):
+        """Decrease self.score."""
         if self.score >= 5:
             self.score -= 5
         else:
@@ -83,6 +88,7 @@ class Scoreboard(pygame.sprite.Sprite):
         self.update_score()
 
     def remove_life(self):
+        """Removes life. from self.lives."""
         if self.lives > 0:
             self.lives -= 1
             self.update_score()

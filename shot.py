@@ -24,15 +24,19 @@ class Shot(pygame.sprite.Sprite):
         self.player_shoot_sound()
 
     def move(self):
+        """Moves shot in the up direction."""
         self.corner.move_ip(self.direction_x * self.speed, self.direction_y * self.speed)
 
     def player_shoot_sound(self):
+        """Plays the player's shooting sound."""
         self.shoot_sound.play()
 
     def player_shoot_sound_stop(self):
+        """Stops the player's shooting sound."""
         self.shoot_sound.stop()
 
     def out_of_screen(self):
+        """Detect if player shot has left the screen, initiate shot destruction if it has."""
         # If shot gets out of screen area
         if self.corner.top <= SHOT_EXPLOSION_WIDTH // 2:
             # destroy shot only if it has not been hit already
@@ -40,23 +44,31 @@ class Shot(pygame.sprite.Sprite):
                 # stop playing the shoot sound
                 self.player_shoot_sound_stop()
                 # initialize destruction
-                self.init_destruction(explosion_sprite=PLAYER_SHOT_EXPLOSION_RED)
+                self.init_destruction(explosion_sprite_path=PLAYER_SHOT_EXPLOSION_RED)
 
-    def init_destruction(self, explosion_sprite=PLAYER_SHOT_EXPLOSION):
+    def init_destruction(self, explosion_sprite_path=PLAYER_SHOT_EXPLOSION):
+        """
+        Initiate shot destruction.
+        Changes shot sprite for shot explosion sprite and sets self.destruction_start_time.
+        :param explosion_sprite_path: string
+        :return:
+        """
         # center the player shot explosion sprite
         self.corner = self.surface.get_rect(center=(self.corner[0] - SHOT_EXPLOSION_WIDTH // 2, self.corner[1]))
         # show player shot explosion
-        self.surface = pygame.image.load(explosion_sprite).convert_alpha()
+        self.surface = pygame.image.load(explosion_sprite_path).convert_alpha()
         # get current time in milliseconds
         self.destruct_start_time = pygame.time.get_ticks()
 
     def destroy(self):
+        """Destroys the shot and resets the self.destruct_start_time."""
         # reset destruction start time
         self.destruct_start_time = None
         # destroy shot
         self.kill()
 
     def update_destroyed(self):
+        """Checks whether the DESTRUCTION_TIME has elapsed and if shot is to be destroyed."""
         # check whether player shot is to be destroyed
         if self.destruct_start_time and (pygame.time.get_ticks() - self.destruct_start_time >= DESTRUCTION_TIME):
             self.destroy()
@@ -64,6 +76,12 @@ class Shot(pygame.sprite.Sprite):
         return False
 
     def fleet_collision(self, fleet_group, scoreboard):
+        """
+        Detects collision with aliens in the fleet_group.
+        :param fleet_group: list[alien.Alien]
+        :param scoreboard: scoreboard.Scoreboard
+        :return: bool
+        """
         for alien in fleet_group:
             if alien is not None:
                 if self.corner.colliderect(alien.corner):
@@ -83,6 +101,11 @@ class Shot(pygame.sprite.Sprite):
         return False
 
     def wall_collision(self, wall_group_list):
+        """
+        Detects collision with walls in wall_group_list.
+        :param wall_group_list: list[pygame.sprite.Group]
+        :return:
+        """
         for wall_group in wall_group_list:
             for wall_piece in wall_group:
                 if self.corner.colliderect(wall_piece.corner):
@@ -94,7 +117,7 @@ class Shot(pygame.sprite.Sprite):
                         # destroy wall
                         wall_piece.destroy(wall_group)
                         # initiate shot destruction
-                        self.init_destruction(explosion_sprite=ALIEN_SHOT_EXPLOSION_GREEN)
+                        self.init_destruction(explosion_sprite_path=ALIEN_SHOT_EXPLOSION_GREEN)
                         # reset penetration counter
                         self.penetration_counter = 0
                     else:
@@ -102,6 +125,11 @@ class Shot(pygame.sprite.Sprite):
                         self.penetration_counter += 1
 
     def alien_shot_collision(self, alien_shots):
+        """
+        Detects collision with alien shots in alien_shots.
+        :param alien_shots: list[alien_shot.AlienShot]
+        :return:
+        """
         for alien_shot in alien_shots:
             if self.corner.colliderect(alien_shot.corner):
                 # destroy alien shot
@@ -113,6 +141,12 @@ class Shot(pygame.sprite.Sprite):
                     self.init_destruction()
 
     def boss_collision(self, boss_group, scoreboard):
+        """
+        Detects collision with alien bosses in boss_group.
+        :param boss_group: pygame.sprite.Group
+        :param scoreboard: scoreboard.Scoreboard
+        :return:
+        """
         for boss in boss_group:
             if boss is not None:
                 if self.corner.colliderect(boss.corner):
@@ -128,6 +162,15 @@ class Shot(pygame.sprite.Sprite):
                         self.kill()
 
     def collision_detect(self, fleet_group, wall_group_list, alien_shots, boss_group, scoreboard):
+        """
+        Collision detection parent method. Calls all collision detection methods.
+        :param fleet_group: list[alien.Alien]
+        :param wall_group_list: list[pygame.sprite.Group]
+        :param alien_shots: list[alien_shot.AlienShot]
+        :param boss_group: pygame.sprite.Group
+        :param scoreboard: scoreboard.Scoreboard
+        :return: bool
+        """
         hit = False
         # Alien fleet collision detection
         hit = self.fleet_collision(fleet_group, scoreboard)
