@@ -39,6 +39,7 @@ class Alien(pygame.sprite.Sprite):
         self.fleet_group = []
 
     def animate(self):
+        """Animates alien by swapping alien sprites."""
         if self.anim_iterator == 0:
             self.anim_iterator = 1
         else:
@@ -47,9 +48,14 @@ class Alien(pygame.sprite.Sprite):
         self.surface = pygame.image.load(self.alien_paths[self.anim_iterator]).convert_alpha()
 
     def hit_sound(self):
+        """
+        Plays alien explosion sound.
+        :return:
+        """
         self.alien_explosion_sound.play()
 
     def move(self):
+        """Moves alien."""
         # check whether alien is to be destroyed
         if not self.update_destroyed():
             # animate
@@ -58,6 +64,7 @@ class Alien(pygame.sprite.Sprite):
             self.corner.move_ip(self.direction * self.alien_movement, self.step_down_amount)
 
     def step_down(self):
+        """Moves alien down one line closer to the player."""
         # check whether alien is to be destroyed
         if not self.update_destroyed():
             # increase step_down_amount coordinates
@@ -67,6 +74,10 @@ class Alien(pygame.sprite.Sprite):
             self.step_down_amount = 0
 
     def update_destroyed(self):
+        """
+        Check whether DESTRUCTION_TIME has elapsed.
+        :return: bool
+        """
         # check whether alien is to be destroyed
         if self.destruct_start_time and (pygame.time.get_ticks() - self.destruct_start_time >= DESTRUCTION_TIME):
             self.destroy()
@@ -74,6 +85,11 @@ class Alien(pygame.sprite.Sprite):
         return False
 
     def init_destruction(self, fleet):
+        """
+        Initiates alien destruction.
+        :param fleet: list[alien.Alien]
+        :return:
+        """
         # show alien explosion
         self.surface = pygame.image.load(ALIEN_EXPLOSION).convert_alpha()
         # get current time in milliseconds
@@ -84,6 +100,10 @@ class Alien(pygame.sprite.Sprite):
         self.hit_sound()
 
     def destroy(self):
+        """
+        Destroys alien.
+        :return:
+        """
         # calculate position in the fleet
         position = self.row * COLUMNS + self.column
         # remove alien - replace with None
@@ -94,6 +114,11 @@ class Alien(pygame.sprite.Sprite):
         self.kill()
 
     def wall_collision(self, wall_group_list):
+        """
+        Detects alien collision with the walls in wall_group_list.
+        :param wall_group_list: list[pygame.sprite.Group()]
+        :return:
+        """
         for wall_group in wall_group_list:
             for wall_piece in wall_group:
                 if self.corner.colliderect(wall_piece.corner):
@@ -101,10 +126,19 @@ class Alien(pygame.sprite.Sprite):
                     wall_piece.kill()
 
     def out_of_screen(self):
+        """
+        Detects whether alien has left the screen.
+        :return: bool
+        """
         # If alien gets out of screen (reaches the bottom green HUD line)
         if self.corner.bottom >= SCREEN_HEIGHT - 70:
             return True
         return False
 
     def collision_detection(self, wall_group_list):
+        """
+        Collision detection parent method. Calls collision detection methods.
+        :param wall_group_list: list[pygame.sprite.Group()]
+        :return:
+        """
         self.wall_collision(wall_group_list)

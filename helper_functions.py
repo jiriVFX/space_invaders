@@ -7,7 +7,7 @@ from alien import Alien
 def build_wall(wall_group_list):
     """
     Builds protective barrier walls with Wall class objects.
-    :param wall_group_list: pygame.sprite.Group()
+    :param wall_group_list: list[]
     :return:
     """
     for w in range(4):
@@ -221,12 +221,11 @@ def write_new_hiscore(scoreboard, hi_score, hi_score_iter, last_char_time, text_
     :param last_char_time: int
     :param text_hiscore: font.render
     :param font: pygame.font.SysFont
-    :param screen:
+    :param screen: pygame.display
     :return:
     """
     # Write high score
     if scoreboard.score > scoreboard.hi_score:
-        print("Writing new H")
         scoreboard.write_hi_score()
     # Write new hi-score text
     while hi_score_iter < len(hi_score):
