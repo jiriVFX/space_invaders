@@ -29,6 +29,8 @@ LIVES = 1
 SPACESHIP_MOVEMENT_SPEED = 5
 # spaceship destruction time in milliseconds
 SPACESHIP_DESTRUCTION_TIME = 900
+# time before displaying new spaceship sprite after sprite removal when explosion is done
+SPACESHIP_DOWNTIME = 400
 # spaceship explosion time in milliseconds
 SPACESHIP_EXPLOSION_TIME = 50
 # player shot penetration - how many pieces of wall shot destroys before its own destruction
