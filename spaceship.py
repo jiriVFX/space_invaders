@@ -5,6 +5,12 @@ import time
 
 class SpaceShip(pygame.sprite.Sprite):
     def __init__(self, spaceship_path, spaceship_width=44, spaceship_height=32, spaceship_color=WHITE):
+        """
+        :param spaceship_path: str
+        :param spaceship_width: int
+        :param spaceship_height: int
+        :param spaceship_color: (int, int, int)
+        """
         super().__init__()
         try:
             self.surface = pygame.image.load(spaceship_path).convert_alpha()
@@ -31,9 +37,11 @@ class SpaceShip(pygame.sprite.Sprite):
         self.explosion_time = None
 
     def control(self, pressed_keys):
-        """Controls spaceship movement and shooting.
-        :type pressed_keys: pygame.key.get_pressed()
-        :rtype: bool"""
+        """
+        Controls spaceship movement and shooting.
+        :type pressed_keys: pygame.key.ScancodeWrapper
+        :rtype: bool
+        """
         self.direction = 0
         shoot = False
         if pressed_keys[pygame.K_LEFT] or pressed_keys[pygame.K_a]:
@@ -57,6 +65,11 @@ class SpaceShip(pygame.sprite.Sprite):
         return shoot
 
     def update_destroyed(self):
+        """
+        Checks whether SPACESHIP_DESTRUCTION_TIME has elapsed.
+        Removes spaceship explosion sprite SPACESHIP_DOWNTIME milliseconds before calling self.new_life().
+        :return: bool
+        """
         # check whether spaceship is to be destroyed
         if self.destruct_start_time and (
                 pygame.time.get_ticks() - self.destruct_start_time >= SPACESHIP_DESTRUCTION_TIME):
@@ -64,7 +77,7 @@ class SpaceShip(pygame.sprite.Sprite):
             return True
         # remove surface just before bringing new spaceship to life
         elif self.destruct_start_time and (
-                pygame.time.get_ticks() - self.destruct_start_time >= SPACESHIP_DESTRUCTION_TIME - 400):
+                pygame.time.get_ticks() - self.destruct_start_time >= SPACESHIP_DESTRUCTION_TIME - SPACESHIP_DOWNTIME):
             self.surface = None
         elif pygame.time.get_ticks() - self.explosion_time >= SPACESHIP_EXPLOSION_TIME:
             # change explosion sprites to animate
@@ -79,12 +92,14 @@ class SpaceShip(pygame.sprite.Sprite):
         return False
 
     def new_life(self):
+        """Resets self.explosion_time and self.destruct_start_time variables and displays spaceship sprite."""
         # display spaceship sprite
         self.surface = pygame.image.load(SPACESHIP_PATH).convert_alpha()
         self.explosion_time = None
         self.destruct_start_time = None
 
     def init_destruction(self):
+        """Initializes spaceship destruction. Changes spaceship sprite for explosion sprite."""
         # set explosion and destruction times in milliseconds
         # explosion time is necessary for changing explosion sprites in update_destroyed
         self.explosion_time = pygame.time.get_ticks()
@@ -93,5 +108,6 @@ class SpaceShip(pygame.sprite.Sprite):
         self.surface = pygame.image.load(SPACESHIP_EXPLOSION_1).convert_alpha()
 
     def remove_life(self):
+        """Calls self.init_destruction() method and removes one life from self.lives."""
         self.init_destruction()
         self.lives -= 1
