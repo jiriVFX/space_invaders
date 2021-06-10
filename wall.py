@@ -5,6 +5,13 @@ import random
 
 class Wall(pygame.sprite.Sprite):
     def __init__(self, position_x, position_y, wall_width=WALL_PIX_SIZE, wall_height=WALL_PIX_SIZE, wall_color=GREEN):
+        """
+        :param position_x: int
+        :param position_y: int
+        :param wall_width: int
+        :param wall_height: int
+        :param wall_color: (int, int, int)
+        """
         super().__init__()
         self.width = wall_width
         self.height = wall_height
