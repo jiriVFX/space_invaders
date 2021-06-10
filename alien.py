@@ -92,6 +92,7 @@ class Alien(pygame.sprite.Sprite):
         """
         # show alien explosion
         self.surface = pygame.image.load(ALIEN_EXPLOSION).convert_alpha()
+        self.surface.set_colorkey(BLACK, pygame.RLEACCEL)
         # get current time in milliseconds
         self.destruct_start_time = pygame.time.get_ticks()
         # remember the row

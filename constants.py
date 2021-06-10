@@ -24,7 +24,7 @@ PLAYER_SHOT_EXPLOSION_RED = "static/img/player_shot_explosion_red.png"
 SHOT_EXPLOSION_WIDTH = 32
 SPACESHIP_EXPLOSION_1 = "static/img/spaceship_explosion_1.png"
 SPACESHIP_EXPLOSION_2 = "static/img/spaceship_explosion_2.png"
-LIVES = 1
+LIVES = 3
 # spaceship movement speed
 SPACESHIP_MOVEMENT_SPEED = 5
 # spaceship destruction time in milliseconds
