@@ -168,7 +168,8 @@ class AlienShot(pygame.sprite.Sprite):
         :type green_line: list[dict]
         :type spaceship: pygame.sprite.Sprite
         :type scoreboard: scoreboard.Scoreboard
-        :rtype: bool"""
+        :rtype: bool
+        """
         # Shield obstacles fleet collision detection
         self.wall_collision(wall_group_list)
         # Detect if shot is out of screen
