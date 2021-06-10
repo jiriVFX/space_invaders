@@ -11,6 +11,10 @@ class Boss(pygame.sprite.Sprite):
     pygame.mixer.music.load(BOSS_SOUND)
 
     def __init__(self, position_y=ALIEN_BOSS_Y_POS, alien_color=RED):
+        """
+        :param position_y: int
+        :param alien_color: (int, int, int)
+        """
         super().__init__()
         try:
             self.surface = pygame.image.load(POINTS_100).convert_alpha()
@@ -43,6 +47,7 @@ class Boss(pygame.sprite.Sprite):
         pygame.mixer.music.play(loops=-1)
 
     def move(self):
+        """Moves alien boss."""
         # check whether alien is to be destroyed
         if not self.update_destroyed():
             # move
@@ -51,9 +56,15 @@ class Boss(pygame.sprite.Sprite):
             # self.boss_sound.play()
 
     def hit_sound(self):
+        """Plays alien boss explosion sound."""
         self.boss_explosion_sound.play()
 
     def update_destroyed(self):
+        """
+        Checks whether BOSS_DESTRUCTION_TIME has elapsed. If it has, calls self.destroy() on alien boss.
+        Changes explosion sprite when BOSS_DESTRUCTION_TIME // 3 time has elapsed.
+        :return: bool
+        """
         # check whether alien is to be destroyed
         if self.destruct_start_time and (pygame.time.get_ticks() - self.destruct_start_time >= BOSS_DESTRUCTION_TIME):
             self.destroy()
@@ -66,6 +77,10 @@ class Boss(pygame.sprite.Sprite):
         return False
 
     def init_destruction(self):
+        """
+        Initializes alien boss destruction.
+        Changes boss sprite for the first alien boss explosion sprite.
+        """
         # stop the boss sound
         pygame.mixer.music.stop()
         # show alien explosion
@@ -77,12 +92,14 @@ class Boss(pygame.sprite.Sprite):
         self.hit_sound()
 
     def destroy(self):
+        """Destroys alien boss."""
         # reset destruction start time
         self.destruct_start_time = None
         # destroy alien
         self.kill()
 
     def out_of_screen(self):
+        """Detects whether alien bos has left the screen area. If it has, kills the alien boss object."""
         # If alien gets out of screen (reaches the bottom green HUD line)
         if self.corner.right <= 0 or self.corner.left >= SCREEN_WIDTH:
             # stop the boss sound
