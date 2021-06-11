@@ -353,16 +353,6 @@ while game_on:
         life_corner = life_icon.get_rect(center=(150 + j * 60, SCREEN_HEIGHT - 35))
         screen.blit(life_icon, life_corner)
 
-    # Render End Game text - has to be the last to render, otherwise covered by other surfaces
-    # if alien_count == 0:
-    #     # Play winning sound
-    #     game_over_sound.play()
-    #     # screen.blit(text_won, text_won_corner)
-    #     pygame.display.update()
-    #     # Wait for x milliseconds until closing the game
-    #     pygame.time.delay(END_SCREEN_TIME)
-    #     game_on = False
-
     # Render end screen text -------------------------------------------------------------------------------------------
     # Check whether player has any lives left
     # Check whether aliens crossed the bottom of the screen
