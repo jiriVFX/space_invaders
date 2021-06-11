@@ -198,6 +198,11 @@ while game_on:
         if turned_counter == 0:
             out_of_bounds = False
             for alien in fleet_group:
+                # update aliens being destroyed
+                # updating even here to reduce glitches when explosion is not displayed
+                if alien is not None:
+                    alien.update_destroyed()
+
                 # check whether any alien crossed the boundaries
                 if alien is not None and (alien.corner.left <= 40 or alien.corner.right >= SCREEN_WIDTH - 40):
                     column_crossed = alien.column
@@ -266,6 +271,18 @@ while game_on:
 
         # recalculate speed --------------------------------------------------------------------------------------------
         movement_delay = MOVEMENT_DELAY - (missing_columns * (MOVEMENT_DELAY / (COLUMNS - 1)))
+        # further increase speed if only one column is left
+        if COLUMNS - missing_columns == 2:
+            for alien in fleet_group:
+                if alien is not None:
+                    alien.alien_movement = int(1.5 * ALIEN_MOVEMENT)
+        elif COLUMNS - missing_columns <= 1:
+            print(COLUMNS - missing_columns)
+            for alien in fleet_group:
+                if alien is not None:
+                    alien.alien_movement = 2 * ALIEN_MOVEMENT
+                    print(f"alien speed: {alien.alien_movement}")
+
         movement_sound_delay = MOVEMENT_SOUND_DELAY - (missing_columns * (MOVEMENT_SOUND_DELAY / 1.1 / (COLUMNS - 1)))
 
         if movement_delay <= 0:
