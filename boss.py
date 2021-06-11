@@ -59,6 +59,10 @@ class Boss(pygame.sprite.Sprite):
         """Plays alien boss explosion sound."""
         self.boss_explosion_sound.play()
 
+    def stop_sound(self):
+        """Stop playing alien boss sound"""
+        pygame.mixer.music.stop()
+
     def update_destroyed(self):
         """
         Checks whether BOSS_DESTRUCTION_TIME has elapsed. If it has, calls self.destroy() on alien boss.

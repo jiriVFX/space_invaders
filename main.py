@@ -368,6 +368,10 @@ while game_on:
     # Check whether aliens crossed the bottom of the screen
     # Render End Game text - has to be the last to render, otherwise covered by other surfaces
     if scoreboard.lives == 0 or out_of_screen or alien_count == 0:
+        # stop playing any alien boss sounds
+        for boss in boss_group:
+            boss.stop_sound()
+
         # Play game over sound
         game_over_sound.play()
 
