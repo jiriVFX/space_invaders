@@ -281,7 +281,6 @@ while game_on:
             for alien in fleet_group:
                 if alien is not None:
                     alien.alien_movement = 2 * ALIEN_MOVEMENT
-                    print(f"alien speed: {alien.alien_movement}")
 
         movement_sound_delay = MOVEMENT_SOUND_DELAY - (missing_columns * (MOVEMENT_SOUND_DELAY / 1.1 / (COLUMNS - 1)))
 
