@@ -1,5 +1,5 @@
 # Space Invaders
-<img src="static/img/space_invaders_cover.jpg" />
+<a href="https://youtu.be/D68G5wjjrwQ"><img src="static/img/space_invaders_cover.jpg" /></a>
 See it in action on YouTube - <a href="https://youtu.be/D68G5wjjrwQ">https://youtu.be/D68G5wjjrwQ</a>
 
 ## My shot at recreating the first level of the legendary 1978 Space Invaders game.
