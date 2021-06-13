@@ -1,7 +1,8 @@
 # Space Invaders
 <img src="static/img/space_invaders_cover.jpg" />
+See it in action on YouTube - <a href="https://youtu.be/D68G5wjjrwQ">https://youtu.be/D68G5wjjrwQ</a>
 
-## My shot at the recreation of the first level of the legendary 1978 Space Invaders game.
+## My shot at recreating the first level of the legendary 1978 Space Invaders game.
 Space Invaders is a simple looking game and does not have complicated game mechanics, so one can easily underestimate the effort that has to go into recreating it.
 Nonetheless, there are a few hurdles one has to overcome in order to get closer to the original game mechanics.
 
